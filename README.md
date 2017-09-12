@@ -1,5 +1,7 @@
 # Telegram
 
+  [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram)
+
   Telegram library for the Elixir language.
 
 ## Telegram API
