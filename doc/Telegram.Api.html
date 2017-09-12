@@ -1,0 +1,456 @@
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.16.4">
+    <title>Telegram.Api – telegram v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
+    
+    
+    <script src="dist/sidebar_items-f04624109a.js"></script>
+    
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        telegram
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">telegram v0.1.0</small>
+        Telegram.Api
+        
+          <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L19" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Telegram Bot API request.</p>
+<p>The module expose a light layer over the Telegram Bot API HTTP-based interface,
+it does not expose any “(data)binding” over the HTTP interface and tries to abstract
+away only the boilerplate for building / sending / serializing the API requests.</p>
+<p>Compared to a full-binded interface it could result less elixir frendly but it will
+work with any version of the Bot API, hopefully without updates or incompatibily
+with new BOT API versions (as much as they remain backward compatible).</p>
+<p>References:</p>
+<ul>
+<li><a href="https://core.telegram.org/bots/api">API specification</a>
+</li>
+<li><a href="https://core.telegram.org/bots">BOT intro for developers</a>
+</li>
+</ul>
+<p>Given the token of your BOT you can issue any request using:</p>
+<ul>
+<li>method: Telegram API method name (ex. “getMe”, “sendMessage”)
+</li>
+<li>options: Telegram API method specific parameters (you can use elixir native types)
+</li>
+</ul>
+<h2 id="module-examples" class="section-heading">
+  <a href="#module-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples:
+</h2>
+
+<p>Given the bot token (something like):</p>
+<pre><code class="elixir">token = &quot;123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11&quot;</code></pre>
+<h3 id="module-getme" class="section-heading">
+  <a href="#module-getme" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="https://core.telegram.org/bots/api#getme">getMe</a>
+</h3>
+
+<pre><code class="elixir">Telegram.Api.request(token, &quot;getMe&quot;)
+
+{:ok, %{&quot;first_name&quot; =&gt; &quot;Abc&quot;, &quot;id&quot; =&gt; 1234567, &quot;is_bot&quot; =&gt; true, &quot;username&quot; =&gt; &quot;ABC&quot;}}</code></pre>
+<h3 id="module-sendmessage" class="section-heading">
+  <a href="#module-sendmessage" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a>
+</h3>
+
+<pre><code class="elixir">Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quot;Hello! .. silently&quot;, disable_notification: true)
+
+{:ok,
+ %{&quot;chat&quot; =&gt; %{&quot;first_name&quot; =&gt; &quot;Firstname&quot;,
+     &quot;id&quot; =&gt; 208255328,
+     &quot;last_name&quot; =&gt; &quot;Lastname&quot;,
+     &quot;type&quot; =&gt; &quot;private&quot;,
+     &quot;username&quot; =&gt; &quot;xxxx&quot;},
+   &quot;date&quot; =&gt; 1505118722,
+   &quot;from&quot; =&gt; %{&quot;first_name&quot; =&gt; &quot;Yyy&quot;,
+     &quot;id&quot; =&gt; 234027650,
+     &quot;is_bot&quot; =&gt; true,
+     &quot;username&quot; =&gt; &quot;yyy&quot;},
+   &quot;message_id&quot; =&gt; 1402,
+   &quot;text&quot; =&gt; &quot;Hello! .. silently&quot;}}</code></pre>
+<h3 id="module-getupdates" class="section-heading">
+  <a href="#module-getupdates" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="https://core.telegram.org/bots/api#getupdates">getUpdates</a>
+</h3>
+
+<pre><code class="elixir">Telegram.Api.request(token, &quot;getUpdates&quot;, offset: -1, timeout: 30)
+
+{:ok,
+ [%{&quot;message&quot; =&gt; %{&quot;chat&quot; =&gt; %{&quot;first_name&quot; =&gt; &quot;Firstname&quot;,
+        &quot;id&quot; =&gt; 208255328,
+        &quot;last_name&quot; =&gt; &quot;Lastname&quot;,
+        &quot;type&quot; =&gt; &quot;private&quot;,
+        &quot;username&quot; =&gt; &quot;xxxx&quot;},
+      &quot;date&quot; =&gt; 1505118098,
+      &quot;from&quot; =&gt; %{&quot;first_name&quot; =&gt; &quot;Firstname&quot;,
+        &quot;id&quot; =&gt; 208255328,
+        &quot;is_bot&quot; =&gt; false,
+        &quot;language_code&quot; =&gt; &quot;en-IT&quot;,
+        &quot;last_name&quot; =&gt; &quot;Lastname&quot;,
+        &quot;username&quot; =&gt; &quot;xxxx&quot;},
+      &quot;message_id&quot; =&gt; 1401,
+      &quot;text&quot; =&gt; &quot;Hello!&quot;},
+    &quot;update_id&quot; =&gt; 129745295}]}</code></pre>
+<h2 id="module-sending-files" class="section-heading">
+  <a href="#module-sending-files" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Sending files
+</h2>
+
+<p>If a API parameter has a InputFile type and you want to send a local file,
+for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
+value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>.</p>
+<h3 id="module-sendphoto" class="section-heading">
+  <a href="#module-sendphoto" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a>
+</h3>
+
+<pre><code class="elixir">Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file, &quot;/tmp/photo.jpg&quot;})</code></pre>
+<h2 id="module-reply-markup" class="section-heading">
+  <a href="#module-reply-markup" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Reply Markup
+</h2>
+
+<p>If a API parameter has a “A JSON-serialized object” type (InlineKeyboardMarkup, ReplyKeyboardMarkup, etc),
+just wrap the parameter value in a tuple <code class="inline">{:json, value}</code>.</p>
+<p>Reference: <a href="https://core.telegram.org/bots#keyboards">Keyboards</a>,
+<a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">Inline Keyboards</a></p>
+<h3 id="module-sendmessage-with-keyboard" class="section-heading">
+  <a href="#module-sendmessage-with-keyboard" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a> with keyboard
+</h3>
+
+<pre><code class="elixir">keyboard = [
+  [&quot;A0&quot;, &quot;A1&quot;],
+  [&quot;B0&quot;, &quot;B1&quot;, &quot;B2&quot;]
+]
+keyboard_markup = %{one_time_keyboard: true, keyboard: keyboard}
+Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quot;Here a keyboard!&quot;, reply_markup: {:json, keyboard_markup})</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:method/0">method()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:options/0">options()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:request_result/0">request_result()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:token/0">token()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#request/3">request(token, method, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Send a Telegram Bot API request</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:method/0">
+  
+  
+  <div class="detail-header">
+    <a href="#t:method/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <span class="signature">method()</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L134" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>method() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:options/0">
+  
+  
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <span class="signature">options()</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L135" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>options() :: <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:request_result/0">
+  
+  
+  <div class="detail-header">
+    <a href="#t:request_result/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <span class="signature">request_result()</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L136" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>request_result() :: {:ok, term} | {:error, term}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:token/0">
+  
+  
+  <div class="detail-header">
+    <a href="#t:token/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <span class="signature">token()</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L133" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>token() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="request/3">
+  
+  
+    <span id="request/2"></span>
+  
+  <div class="detail-header">
+    <a href="#request/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <span class="signature">request(token, method, options \\ [])</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L144" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>request(<a href="#t:token/0">token</a>, <a href="#t:method/0">method</a>, <a href="#t:options/0">options</a>) :: <a href="#t:request_result/0">request_result</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Send a Telegram Bot API request.</p>
+<p>Reference: https://core.telegram.org/bots/api</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.16.4),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-da04b39d0c.js"></script>
+  
+  </body>
+</html>
+

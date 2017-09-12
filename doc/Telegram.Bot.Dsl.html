@@ -1,0 +1,665 @@
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.16.4">
+    <title>Telegram.Bot.Dsl – telegram v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
+    
+    
+    <script src="dist/sidebar_items-f04624109a.js"></script>
+    
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        telegram
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">telegram v0.1.0</small>
+        Telegram.Bot.Dsl
+        
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L226" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Telegram.Bot DSL macros.</p>
+<h2 id="module-update-object" class="section-heading">
+  <a href="#module-update-object" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Update object
+</h2>
+
+<p>Every macro inject in the body scope a <code class="inline">update</code> variable holding
+the received specific update object (Message, InlineQuery, …),
+with the exception of <a href="#any/1"><code class="inline">any/1</code></a> where <code class="inline">update</code> holds the Update object.</p>
+<p><a href="https://core.telegram.org/bots/api#update">Reference: Update</a></p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#any/1">any(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match any Telegram update.
+This should be the very last fallback clause in your bot</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#callback_query/1">callback_query(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram callback_query</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#channel_post/1">channel_post(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram channel_post</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#chosen_inline_result/2">chosen_inline_result(query, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a Telegram chosen_inline_query</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#command/2">command(text, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match any other not matched command</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#command/3">command(text, args, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match Telegram “/command arg1 arg2” (with args, if any)</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#edited_channel_post/1">edited_channel_post(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram edited_channel_post</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#edited_message/1">edited_message(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram edited_message</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#inline_query/2">inline_query(query, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a Telegram inline_query</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#message/1">message(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram message</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pre_checkout_query/1">pre_checkout_query(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram pre_checkout_query</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#request/2">request(method, options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>A small wrapper for <code class="inline">Telegram.Api.request</code>.
+Autofill the token parameter with the <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> configured</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#shipping_query/1">shipping_query(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Match a generic Telegram shipping_query</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="any/1">
+  
+  
+  <div class="detail-header">
+    <a href="#any/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">any(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L367" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match any Telegram update.
+This should be the very last fallback clause in your bot.</p>
+<pre><code class="elixir">any do
+  IO.puts(&quot;ANY #{inspect update}&quot;)
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="callback_query/1">
+  
+  
+  <div class="detail-header">
+    <a href="#callback_query/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">callback_query(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram callback_query.</p>
+<pre><code class="elixir">callback_query do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="channel_post/1">
+  
+  
+  <div class="detail-header">
+    <a href="#channel_post/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">channel_post(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram channel_post.</p>
+<pre><code class="elixir">channel_post do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="chosen_inline_result/2">
+  
+  
+  <div class="detail-header">
+    <a href="#chosen_inline_result/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">chosen_inline_result(query, list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L353" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a Telegram chosen_inline_query</p>
+<pre><code class="elixir">chosen_inline_result query do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="command/2">
+  
+  
+  <div class="detail-header">
+    <a href="#command/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">command(text, list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L285" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match any other not matched command.</p>
+<pre><code class="elixir">command &quot;start&quot;, args do
+  # handler code
+end
+
+command unknown do
+  # ex: telegram -&gt; &quot;/end hello&quot;
+  #     unknown = &quot;end hello&quot;
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="command/3">
+  
+  
+  <div class="detail-header">
+    <a href="#command/3" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">command(text, args, list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L260" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match Telegram “/command arg1 arg2” (with args, if any).</p>
+<pre><code class="elixir">command &quot;start&quot;, args do
+  # ex: telegram -&gt; &quot;/start hello 1&quot;
+  #     args = [&quot;hello&quot;, &quot;1&quot;]
+end</code></pre>
+<p>or a set of commands:</p>
+<pre><code class="elixir">command [&quot;start&quot;, &quot;go&quot;], args do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="edited_channel_post/1">
+  
+  
+  <div class="detail-header">
+    <a href="#edited_channel_post/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">edited_channel_post(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram edited_channel_post.</p>
+<pre><code class="elixir">edited_channel_post do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="edited_message/1">
+  
+  
+  <div class="detail-header">
+    <a href="#edited_message/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">edited_message(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram edited_message.</p>
+<pre><code class="elixir">edited_message do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="inline_query/2">
+  
+  
+  <div class="detail-header">
+    <a href="#inline_query/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">inline_query(query, list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L340" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a Telegram inline_query</p>
+<pre><code class="elixir">inline_query query do
+  # ex: telegram -&gt; &quot;@your_bot queeery!&quot;
+  #     query = &quot;queeery!&quot;
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="message/1">
+  
+  
+  <div class="detail-header">
+    <a href="#message/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">message(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L310" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram message.</p>
+<pre><code class="elixir">message do
+  # ex: telegram -&gt; &quot;go!&quot;
+  #     update[&quot;text&quot;] = &quot;go!&quot;
+end</code></pre>
+<h2 id="message/1-note" class="section-heading">
+  <a href="#message/1-note" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Note:
+</h2>
+
+<p>Since Telegram commands are just messages starting with “/“,
+this can match also commands.
+In general you should put <a href="#command/3"><code class="inline">command/3</code></a> before <code class="inline">message/2</code> clause:</p>
+<pre><code class="elixir">command &quot;start&quot;, args, do: :something
+command unknown, do: :something_for_unknown_commands
+message do: :something_for_messages</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="pre_checkout_query/1">
+  
+  
+  <div class="detail-header">
+    <a href="#pre_checkout_query/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">pre_checkout_query(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram pre_checkout_query.</p>
+<pre><code class="elixir">pre_checkout_query do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="request/2">
+  
+  
+  <div class="detail-header">
+    <a href="#request/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">request(method, options)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L382" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>A small wrapper for <code class="inline">Telegram.Api.request</code>.
+Autofill the token parameter with the <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> configured.</p>
+<pre><code class="elixir">command &quot;hello&quot;, args do
+  request &quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+    text: &quot;Hello #{inspect update[&quot;from&quot;][&quot;username&quot;]}&quot;
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="shipping_query/1">
+  
+  
+  <div class="detail-header">
+    <a href="#shipping_query/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">shipping_query(list)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Match a generic Telegram shipping_query.</p>
+<pre><code class="elixir">shipping_query do
+  # handler code
+end</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.16.4),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-da04b39d0c.js"></script>
+  
+  </body>
+</html>
+

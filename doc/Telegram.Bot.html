@@ -1,0 +1,339 @@
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.16.4">
+    <title>Telegram.Bot – telegram v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
+    
+    
+    <script src="dist/sidebar_items-f04624109a.js"></script>
+    
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        telegram
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">telegram v0.1.0</small>
+        Telegram.Bot <small>behaviour</small>
+        
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>A simple BOT behaviour and DSL.</p>
+<h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+
+<pre><code class="elixir">defmodule Simple.Bot do
+  use Telegram.Bot,
+    token: &quot;123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11&quot;,
+    username: &quot;simple_bot&quot;,
+    auth: [&quot;user1&quot;, &quot;user2&quot;]
+
+  command [&quot;ciao&quot;, &quot;hello&quot;], args do
+    # handle the commands: &quot;/ciao&quot; and &quot;/hello&quot;
+
+    # reply with a text message
+    request &quot;sendMessage&quot;,
+      chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+      text: &quot;ciao! #{inspect args}&quot;
+  end
+
+  command unknown do
+    request &quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+      text: &quot;Unknow command `#{unknown}`&quot;
+  end
+
+  message do
+    request &quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+      text: &quot;Hey! You sent me a message: #{inspect update}&quot;
+  end
+
+  edited_message do
+    # handler code
+  end
+
+  channel_post do
+    # handler code
+  end
+
+  edited_channel_post do
+    # handler code
+  end
+
+  inline_query _query do
+    # handler code
+  end
+
+  chosen_inline_result _query do
+    # handler code
+  end
+
+  callback_query do
+    # handler code
+  end
+
+  shipping_query do
+    # handler code
+  end
+
+  pre_checkout_query do
+    # handler code
+  end
+
+  any do
+    # handler code
+  end
+end</code></pre>
+<p>See <code class="inline">Telegram.Bot.Dsl</code> documentation for all available macros.</p>
+<h2 id="module-options" class="section-heading">
+  <a href="#module-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+
+<pre><code class="elixir">use Telegram.Bot,
+  token: &quot;your bot auth token&quot;,   # required
+  username: &quot;your bot username&quot;,  # required
+  auth: [&quot;user1&quot;, &quot;user2&quot;]        # optional, list of authorized users
+                                  # or authorizing function (String.t -&gt; boolean)</code></pre>
+<h2 id="module-execution-model" class="section-heading">
+  <a href="#module-execution-model" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Execution model
+</h2>
+
+<p>The bot defined using the <a href="Telegram.Bot.html#content"><code class="inline">Telegram.Bot</code></a> behaviour is based on <a href="https://hexdocs.pm/elixir/Task.html"><code class="inline">Task</code></a>
+and will run in a single erlang process, processing updates sequentially.</p>
+<p>You can add the bot to you application supervisor tree, for example:</p>
+<pre><code class="elixir">  children = [Simple.Bot, ...]
+  opts = [strategy: :one_for_one, name: MyApplication.Supervisor]
+  Supervisor.start_link(children, opts)</code></pre>
+<p>or directly start and link the bot with:</p>
+<pre><code class="elixir">{:ok, pid} = Simple.Bot.start_link()</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+
+          
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:handle_auth/1">handle_auth(username)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:handle_update/2">handle_update(token, update)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:init/0">init()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+        </section>
+      
+
+      
+
+      
+
+      
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Callbacks
+          </h1>
+          <div class="detail" id="c:handle_auth/1">
+  
+  
+  <div class="detail-header">
+    <a href="#c:handle_auth/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <span class="signature">handle_auth(username)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L111" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>handle_auth(username :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:handle_update/2">
+  
+  
+  <div class="detail-header">
+    <a href="#c:handle_update/2" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <span class="signature">handle_update(token, update)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L112" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>handle_update(token :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, update :: map) :: any</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:init/0">
+  
+  
+  <div class="detail-header">
+    <a href="#c:init/0" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <span class="signature">init()</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L110" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>init() :: any</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.16.4),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-da04b39d0c.js"></script>
+  
+  </body>
+</html>
+
