@@ -1,6 +1,7 @@
 # Telegram
 
-[![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram)
+[![Build Status](https://travis-ci.org/visciang/telegram.svg?branch=master)](https://travis-ci.org/visciang/telegram) [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram/readme.html) [![Coverage Status](https://coveralls.io/repos/github/visciang/telegram/badge.svg)](https://coveralls.io/github/visciang/telegram)
+
 
 Telegram library for the Elixir language.
 
@@ -206,9 +207,9 @@ and will run in a single erlang process, processing updates sequentially.
 You can add the bot to you application supervisor tree, for example:
 
 ```elixir
-  children = [Simple.Bot, ...]
-  opts = [strategy: :one_for_one, name: MyApplication.Supervisor]
-  Supervisor.start_link(children, opts)
+children = [Simple.Bot, ...]
+opts = [strategy: :one_for_one, name: MyApplication.Supervisor]
+Supervisor.start_link(children, opts)
 ```
 
 or directly start and link the bot with:
