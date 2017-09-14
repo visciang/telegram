@@ -3,7 +3,7 @@ defmodule Telegram.Api.Maxwell do
 
   use Maxwell.Builder, [:post]
   adapter Maxwell.Adapter.Httpc
-  middleware Maxwell.Middleware.BaseUrl, "https://api.telegram.org"
+  middleware Maxwell.Middleware.BaseUrl, Application.get_env(:telegram, :telegram_api_base_url, "https://api.telegram.org")
   middleware Maxwell.Middleware.Opts, [timeout: 60_000, connect_timeout: 5_000]
   middleware Maxwell.Middleware.Json
   middleware Maxwell.Middleware.Retry
@@ -138,7 +138,7 @@ defmodule Telegram.Api do
   @doc """
   Send a Telegram Bot API request.
 
-  Reference: https://core.telegram.org/bots/api
+  Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
   @spec request(token, method, options) :: request_result
   def request(token, method, options \\ []) do

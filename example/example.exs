@@ -28,6 +28,13 @@ defmodule Example.Bot do
       text: "received update: #{inspect update}"
   end
 
+  command "halt", _ do
+    request "sendMessage", chat_id: update["chat"]["id"],
+      text: "bye"
+
+    halt "HALT!"
+  end
+
   command unknown do
     request "sendMessage", chat_id: update["chat"]["id"],
       text: "Unknow command `#{unknown}`"

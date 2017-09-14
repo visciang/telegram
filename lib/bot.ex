@@ -76,8 +76,9 @@ defmodule Telegram.Bot do
   use Telegram.Bot,
     token: "your bot auth token",   # required
     username: "your bot username",  # required
-    auth: ["user1", "user2"]        # optional, list of authorized users
+    auth: ["user1", "user2"],       # optional, list of authorized users
                                     # or authorizing function (String.t -> boolean)
+    restart: policy                 # optional, default :permanent
   ```
 
   ## Execution model
@@ -107,6 +108,11 @@ defmodule Telegram.Bot do
     @type t :: %__MODULE__{module: module, token: String.t, offset: integer}
   end
 
+  defmodule Halt do
+    @moduledoc false
+    defexception [:message]
+  end
+
   @callback init() :: any
   @callback handle_auth(username :: String.t) :: boolean
   @callback handle_update(token :: String.t, update :: map) :: any
@@ -116,7 +122,8 @@ defmodule Telegram.Bot do
   defmacro __using__(opts) do
     token = Keyword.fetch!(opts, :token)
     username = Keyword.fetch!(opts, :username)
-    auth = Keyword.get(opts, :auth, fn (_) -> true end)
+    auth = Keyword.get(opts, :auth, Macro.escape(nil))
+    restart = Keyword.get(opts, :restart, Macro.escape(:permanent))
 
     quote location: :keep do
       @behaviour Telegram.Bot
@@ -125,8 +132,12 @@ defmodule Telegram.Bot do
       @username unquote(username)
       @auth unquote(auth)
 
-      use Task, restart: :permanent
+      use Task, restart: unquote(restart)
       import Telegram.Bot.Dsl
+
+      def start() do
+        Task.start(Telegram.Bot, :run, [__MODULE__, @token, @username])
+      end
 
       def start_link(_args \\ nil) do
         Task.start_link(Telegram.Bot, :run, [__MODULE__, @token, @username])
@@ -136,14 +147,19 @@ defmodule Telegram.Bot do
         :ok
       end
 
-      if is_list(@auth) do
-        def handle_auth(username) do
-          username in @auth
-        end
-      else
-        def handle_auth(username) do
-          @auth(username)
-        end
+      cond do
+        is_nil(@auth) ->
+          def handle_auth(_username) do
+            true
+          end
+        is_list(@auth) ->
+          def handle_auth(username) do
+            username in @auth
+          end
+        is_function(@auth) ->
+          def handle_auth(username) do
+            @auth.(username)
+          end
       end
 
       defoverridable [init: 0, handle_auth: 1]
@@ -157,11 +173,12 @@ defmodule Telegram.Bot do
     {:ok, me} = Telegram.Api.request(token, "getMe")
 
     if me["username"] != username do
-      Logger.error("""
+      raise ArgumentError, message:
+        """
         The username associated with the provided token `#{inspect token}` is
         #{inspect me["username"]} and it does not match the configured
         one (#{inspect username}).
-      """)
+        """
     end
 
     apply(module, :init, [])
@@ -171,11 +188,22 @@ defmodule Telegram.Bot do
   defp loop(context) do
     updates = wait_updates(context)
 
-    updates
-    |> filter_authorized_users(context)
-    |> process_updates(context)
+    halt? =
+      try do
+        updates
+        |> filter_authorized_users(context)
+        |> process_updates(context)
+      rescue
+        Halt -> true
+      else
+        _ -> false
+      end
 
-    loop(%Context{context | offset: next_update_offset(context, updates)})
+    if halt? do
+      Logger.info("Telegram.Bot HALT.")
+    else
+      loop(%Context{context | offset: next_update_offset(context, updates)})
+    end
   end
 
   defp next_update_offset(context, updates) do
@@ -234,6 +262,21 @@ defmodule Telegram.Bot.Dsl do
 
   [Reference: Update](https://core.telegram.org/bots/api#update)
   """
+
+  @doc ~S"""
+  Halts the Bot.
+
+  ```elixir
+  command "stop", _args do
+    halt "user requested to stop the bot"
+  end
+  ```
+  """
+  defmacro halt(message) do
+    quote do
+      raise Telegram.Bot.Halt, unquote(message)
+    end
+  end
 
   @doc ~S"""
   Match Telegram "/command arg1 arg2" (with args, if any).
