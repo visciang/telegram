@@ -1,0 +1,9 @@
+language: elixir
+
+matrix:
+  include:
+    - otp_release: 20.0
+      elixir: 1.5
+
+before_script: mix deps.get
+script: MIX_ENV=test mix coveralls.travis
