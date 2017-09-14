@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
     
     
-    <script src="dist/sidebar_items-f04624109a.js"></script>
+    <script src="dist/sidebar_items-0725720b26.js"></script>
     
   </head>
   <body data-type="modules">
@@ -68,7 +68,7 @@
         <small class="visible-xs">telegram v0.1.0</small>
         Telegram.Bot.Dsl
         
-          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L226" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L254" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -182,6 +182,15 @@ This should be the very last fallback clause in your bot</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#halt/1">halt(message)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Halts the Bot</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#inline_query/2">inline_query(query, list)</a>
   </div>
   
@@ -256,7 +265,7 @@ Autofill the token parameter with the <a href="Telegram.Bot.html"><code class="i
     </a>
     <span class="signature">any(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L367" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L410" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -285,7 +294,7 @@ end</code></pre>
     </a>
     <span class="signature">callback_query(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -313,7 +322,7 @@ end</code></pre>
     </a>
     <span class="signature">channel_post(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -341,7 +350,7 @@ end</code></pre>
     </a>
     <span class="signature">chosen_inline_result(query, list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L353" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L396" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -369,7 +378,7 @@ end</code></pre>
     </a>
     <span class="signature">command(text, list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L285" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L328" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -402,7 +411,7 @@ end</code></pre>
     </a>
     <span class="signature">command(text, args, list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L260" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L303" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -435,7 +444,7 @@ end</code></pre>
     </a>
     <span class="signature">edited_channel_post(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -463,7 +472,7 @@ end</code></pre>
     </a>
     <span class="signature">edited_message(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -481,6 +490,34 @@ end</code></pre>
 
   </section>
 </div>
+<div class="detail" id="halt/1">
+  
+  
+  <div class="detail-header">
+    <a href="#halt/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <span class="signature">halt(message)</span>
+    
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L275" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+      <span class="note">(macro)</span>
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Halts the Bot.</p>
+<pre><code class="elixir">command &quot;stop&quot;, _args do
+  halt &quot;user requested to stop the bot&quot;
+end</code></pre>
+
+  </section>
+</div>
 <div class="detail" id="inline_query/2">
   
   
@@ -491,7 +528,7 @@ end</code></pre>
     </a>
     <span class="signature">inline_query(query, list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L340" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L383" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -520,7 +557,7 @@ end</code></pre>
     </a>
     <span class="signature">message(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L310" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L353" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -560,7 +597,7 @@ message do: :something_for_messages</code></pre>
     </a>
     <span class="signature">pre_checkout_query(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -588,7 +625,7 @@ end</code></pre>
     </a>
     <span class="signature">request(method, options)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L382" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L425" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -618,7 +655,7 @@ end</code></pre>
     </a>
     <span class="signature">shipping_query(list)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L368" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

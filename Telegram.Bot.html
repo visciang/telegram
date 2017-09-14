@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
     
     
-    <script src="dist/sidebar_items-f04624109a.js"></script>
+    <script src="dist/sidebar_items-0725720b26.js"></script>
     
   </head>
   <body data-type="modules">
@@ -153,8 +153,9 @@ end</code></pre>
 <pre><code class="elixir">use Telegram.Bot,
   token: &quot;your bot auth token&quot;,   # required
   username: &quot;your bot username&quot;,  # required
-  auth: [&quot;user1&quot;, &quot;user2&quot;]        # optional, list of authorized users
-                                  # or authorizing function (String.t -&gt; boolean)</code></pre>
+  auth: [&quot;user1&quot;, &quot;user2&quot;],       # optional, list of authorized users
+                                  # or authorizing function (String.t -&gt; boolean)
+  restart: policy                 # optional, default :permanent</code></pre>
 <h2 id="module-execution-model" class="section-heading">
   <a href="#module-execution-model" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Execution model
@@ -238,7 +239,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">handle_auth(username)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L111" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L117" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -266,7 +267,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">handle_update(token, update)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L112" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L118" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -294,7 +295,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">init()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L110" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L116" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
