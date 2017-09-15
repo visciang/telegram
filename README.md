@@ -5,6 +5,18 @@
 
 Telegram library for the Elixir language.
 
+## Installation
+
+The package can be installed by adding `telegram` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:telegram, git: "https://github.com/visciang/telegram.git", tag: "0.2.1"}
+  ]
+end
+```
+
 ## Telegram API
 
 Telegram Bot API request.
