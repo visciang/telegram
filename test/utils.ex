@@ -19,7 +19,8 @@ defmodule Test.Utils do
       {:DOWN, ^ref, :process, _object, :normal} ->
         :ok
     after
-      5000 ->
+      # should be > Telegram.Bot.@retry_quiet_period
+      21000 ->
         :error
     end
   end
@@ -31,8 +32,14 @@ defmodule Test.Utils do
       {:DOWN, ^ref, :process, _object, {%ArgumentError{}, _}} ->
         :ok
     after
-      5000 ->
+      21000 ->
         :error
     end
+  end
+
+  def wait_bypass_exit(bypass) do
+    # https://github.com/PSPDFKit-labs/bypass/issues/51
+    Bypass.down(bypass)
+    Process.sleep(200)
   end
 end

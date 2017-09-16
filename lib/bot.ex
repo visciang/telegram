@@ -118,6 +118,7 @@ defmodule Telegram.Bot do
   @callback handle_update(token :: String.t, update :: map) :: any
 
   @poll_timeout 30
+  @retry_quiet_period 5
 
   defmacro __using__(opts) do
     token = Keyword.fetch!(opts, :token)
@@ -170,19 +171,26 @@ defmodule Telegram.Bot do
   def run(module, token, username, offset \\ -1) do
     Logger.debug("Telegram.Bot running: module=#{inspect module}, username=#{inspect username}")
 
-    {:ok, me} = Telegram.Api.request(token, "getMe")
-
-    if me["username"] != username do
-      raise ArgumentError, message:
-        """
-        The username associated with the provided token `#{inspect token}` is
-        #{inspect me["username"]} and it does not match the configured
-        one (#{inspect username}).
-        """
-    end
-
+    check_bot(token, username)
     apply(module, :init, [])
     loop(%Telegram.Bot.Context{module: module, token: token, offset: offset})
+  end
+
+  defp check_bot(token, username) do
+    case Telegram.Api.request(token, "getMe") do
+      {:ok, me} ->
+        if me["username"] != username do
+          raise ArgumentError, message:
+            """
+            The username associated with the provided token `#{inspect token}` is
+            #{inspect me["username"]} and it does not match the configured
+            one (#{inspect username}).
+            """
+        end
+      {:error, reason} ->
+        cooldown(@retry_quiet_period, "Telegram.Api.request 'getMe' error: #{inspect reason}")
+        check_bot(token, username)
+    end
   end
 
   defp loop(context) do
@@ -219,7 +227,7 @@ defmodule Telegram.Bot do
       {:ok, updates} ->
         updates
       {:error, reason} ->
-        Logger.warn("#{inspect reason}")
+        cooldown(@retry_quiet_period, "Telegram.Api.request 'getUpdates' error: #{inspect reason}")
         wait_updates(context)
     end
   end
@@ -248,6 +256,12 @@ defmodule Telegram.Bot do
   defp process_update(update, context) do
     Logger.debug("handle_update: #{inspect update}")
     apply(context.module, :handle_update, [context.token, update])
+  end
+
+  defp cooldown(seconds, reason_str) do
+    Logger.warn(reason_str)
+    Logger.warn("Retry in #{seconds}s.")
+    Process.sleep(seconds * 1000)
   end
 end
 
@@ -366,7 +380,7 @@ defmodule Telegram.Bot.Dsl do
     ```
     """
     defmacro unquote(type)(do: body) do
-      quote_handle_update_for_type(unquote(to_string(type)), body)
+      quote_handle_update_for_type(to_string(unquote(type)), body)
     end
   end
 

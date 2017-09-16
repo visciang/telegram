@@ -138,7 +138,7 @@ defmodule Test.Telegram.Bot do
     end
 
     on_exit fn ->
-      Bypass.down(bypass)
+      Test.Utils.wait_bypass_exit(bypass)
     end
 
     {:ok, bypass: bypass}
@@ -210,7 +210,7 @@ defmodule Test.Telegram.Bot do
     end
 
     @tag :capture_log
-    test "getUpdate response error", %{bypass: bypass} do
+    test "response error", %{bypass: bypass} do
       Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
         if Test.HaltSemaphore.halt? do
           result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
@@ -235,7 +235,7 @@ defmodule Test.Telegram.BotSpecError do
     bypass = Bypass.open(port: Test.Utils.tg_port)
 
     on_exit fn ->
-      Bypass.down(bypass)
+      Test.Utils.wait_bypass_exit(bypass)
     end
 
     {:ok, bypass: bypass}
@@ -256,5 +256,45 @@ defmodule Test.Telegram.BotSpecError do
     assert_raise ArgumentError, "expected list of commands as strings", fn ->
       Code.require_file "bad_bot.ex", __DIR__
     end
+  end
+end
+
+defmodule Test.Telegram.BotBootstrap do
+  use ExUnit.Case, async: false
+
+  setup do
+    bypass = Bypass.open(port: Test.Utils.tg_port)
+
+    on_exit fn ->
+      Test.Utils.wait_bypass_exit(bypass)
+    end
+
+    {:ok, bypass: bypass}
+  end
+
+  @tag :capture_log
+  test "Telegram.Bot bootstrap getMe retries", %{bypass: bypass} do
+    {:ok, _} = Test.HaltSemaphore.start_link()
+
+    Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getMe"), fn conn ->
+      if Test.HaltSemaphore.halt? do
+        # second call
+        result = %{"username" => "test_bot"}
+        Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+      else
+        # first call
+        Test.HaltSemaphore.halt()
+
+        Test.Utils.put_json_resp(conn, 500, %{"ok" => false, "description" => "500"})
+      end
+    end
+
+    Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
+      result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
+      Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+    end
+
+    {:ok, bot} = Test.Bot.start()
+    assert :ok == Test.Utils.wait_exit(bot)
   end
 end
