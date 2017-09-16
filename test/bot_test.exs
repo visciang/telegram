@@ -138,8 +138,7 @@ defmodule Test.Telegram.Bot do
     end
 
     on_exit fn ->
-      Bypass.down(bypass)
-      Test.Utils.wait_socket_release()
+      Test.Utils.wait_bypass_exit(bypass)
     end
 
     {:ok, bypass: bypass}
@@ -236,8 +235,7 @@ defmodule Test.Telegram.BotSpecError do
     bypass = Bypass.open(port: Test.Utils.tg_port)
 
     on_exit fn ->
-      Bypass.down(bypass)
-      Test.Utils.wait_socket_release()
+      Test.Utils.wait_bypass_exit(bypass)
     end
 
     {:ok, bypass: bypass}
@@ -268,8 +266,7 @@ defmodule Test.Telegram.BotBootstrap do
     bypass = Bypass.open(port: Test.Utils.tg_port)
 
     on_exit fn ->
-      Bypass.down(bypass)
-      Test.Utils.wait_socket_release()
+      Test.Utils.wait_bypass_exit(bypass)
     end
 
     {:ok, bypass: bypass}

@@ -37,8 +37,9 @@ defmodule Test.Utils do
     end
   end
 
-  def wait_socket_release() do
+  def wait_bypass_exit(bypass) do
     # https://github.com/PSPDFKit-labs/bypass/issues/51
+    Bypass.down(bypass)
     Process.sleep(200)
   end
 end
