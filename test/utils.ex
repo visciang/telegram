@@ -20,7 +20,7 @@ defmodule Test.Utils do
         :ok
     after
       # should be > Telegram.Bot.@retry_quiet_period
-      10000 ->
+      21000 ->
         :error
     end
   end
@@ -32,7 +32,7 @@ defmodule Test.Utils do
       {:DOWN, ^ref, :process, _object, {%ArgumentError{}, _}} ->
         :ok
     after
-      10000 ->
+      21000 ->
         :error
     end
   end
