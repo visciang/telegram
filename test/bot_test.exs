@@ -139,6 +139,7 @@ defmodule Test.Telegram.Bot do
 
     on_exit fn ->
       Bypass.down(bypass)
+      Test.Utils.wait_socket_release()
     end
 
     {:ok, bypass: bypass}
@@ -236,6 +237,7 @@ defmodule Test.Telegram.BotSpecError do
 
     on_exit fn ->
       Bypass.down(bypass)
+      Test.Utils.wait_socket_release()
     end
 
     {:ok, bypass: bypass}
@@ -267,6 +269,7 @@ defmodule Test.Telegram.BotBootstrap do
 
     on_exit fn ->
       Bypass.down(bypass)
+      Test.Utils.wait_socket_release()
     end
 
     {:ok, bypass: bypass}

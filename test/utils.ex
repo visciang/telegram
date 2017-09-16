@@ -36,4 +36,9 @@ defmodule Test.Utils do
         :error
     end
   end
+
+  def wait_socket_release() do
+    # https://github.com/PSPDFKit-labs/bypass/issues/51
+    Process.sleep(200)
+  end
 end
