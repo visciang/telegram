@@ -12,7 +12,7 @@ The package can be installed by adding `telegram` to your list of dependencies i
 ```elixir
 def deps do
   [
-    {:telegram, git: "https://github.com/visciang/telegram.git", tag: "0.2.1"}
+    {:telegram, git: "https://github.com/visciang/telegram.git", tag: "xxx"}
   ]
 end
 ```
