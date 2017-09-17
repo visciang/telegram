@@ -209,7 +209,6 @@ defmodule Test.Telegram.Bot do
       assert :ok == Test.Utils.wait_exit(bot)
     end
 
-    @tag :capture_log
     test "response error", %{bypass: bypass} do
       Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
         if Test.HaltSemaphore.halt? do
@@ -241,7 +240,6 @@ defmodule Test.Telegram.BotSpecError do
     {:ok, bypass: bypass}
   end
 
-  @tag :capture_log
   test "Telegram.Bot wrong bot username", %{bypass: bypass} do
     Bypass.expect_once bypass, Test.Utils.http_method, Test.Utils.tg_path("getMe"), fn conn ->
       result = %{"username" => "not_test_bot"}
@@ -272,7 +270,6 @@ defmodule Test.Telegram.BotBootstrap do
     {:ok, bypass: bypass}
   end
 
-  @tag :capture_log
   test "Telegram.Bot bootstrap getMe retries", %{bypass: bypass} do
     {:ok, _} = Test.HaltSemaphore.start_link()
 
