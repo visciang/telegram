@@ -9,7 +9,8 @@ defmodule Example.Bot do
   use Telegram.Bot,
     token: ,
     username: ,
-    auth:
+    auth: ,
+    purge: true
 
   command "ciao", args do
     request "sendMessage", chat_id: update["chat"]["id"],
