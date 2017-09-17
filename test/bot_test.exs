@@ -3,8 +3,13 @@ defmodule Test.Template do
     quote do
       test unquote(test_name), %{bypass: bypass} do
         Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
+          {:ok, req_body, _} = Plug.Conn.read_body(conn)
+          req = Poison.decode!(req_body)
+
           if Test.HaltSemaphore.halt? do
-            result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
+            assert req["offset"] == 2
+
+            result = [%{"update_id" => 2, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
             Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
           else
             result = [%{"update_id" => 1, unquote(type) => %{unquote(text_field) => unquote(send_text), "from" => %{"username" => "tester"}}}]
@@ -20,90 +25,10 @@ defmodule Test.Template do
           Test.Utils.put_json_resp(conn, 200, "")
         end
 
-        {:ok, bot} = Test.Bot.start_link()
+        {:ok, bot} = Test.GoodBot.start_link()
         assert :ok == Test.Utils.wait_exit(bot)
       end
     end
-  end
-end
-
-defmodule Test.Bot do
-  use Telegram.Bot,
-    token: Test.Utils.tg_token,
-    username: "test_bot",
-    auth: ["tester"]
-
-  command "halt", _ do
-    halt "halt"
-  end
-
-  command "test1", args do
-    [] = args
-    request "testResult", result: "ok test1"
-  end
-
-  command ["test2a", "test2b"], args do
-    [] = args
-    request "testResult", result: "ok test2"
-  end
-
-  command "test3", ["a", "b"] do
-    request "testResult", result: "ok test3"
-  end
-
-  command unknown do
-    "test4" = unknown
-    request "testResult", result: "ok test4"
-  end
-
-  message do
-    "test5" = update["text"]
-    request "testResult", result: "ok test5"
-  end
-
-  edited_message do
-    "test6" = update["text"]
-    request "testResult", result: "ok test6"
-  end
-
-  channel_post do
-    "test7" = update["text"]
-    request "testResult", result: "ok test7"
-  end
-
-  edited_channel_post do
-    "test8" = update["text"]
-    request "testResult", result: "ok test8"
-  end
-
-  callback_query do
-    "test9" = update["text"]
-    request "testResult", result: "ok test9"
-  end
-
-  shipping_query do
-    "test10" = update["text"]
-    request "testResult", result: "ok test10"
-  end
-
-  pre_checkout_query do
-    "test11" = update["text"]
-    request "testResult", result: "ok test11"
-  end
-
-  inline_query query do
-    "test12" = query
-    request "testResult", result: "ok test12"
-  end
-
-  chosen_inline_result query do
-    "test13" = query
-    request "testResult", result: "ok test13"
-  end
-
-  any do
-    "test14" = update["_any_"]["text"]
-    request "testResult", result: "ok test14"
   end
 end
 
@@ -205,11 +130,10 @@ defmodule Test.Telegram.Bot do
         end
       end
 
-      {:ok, bot} = Test.Bot.start_link()
+      {:ok, bot} = Test.GoodBot.start_link()
       assert :ok == Test.Utils.wait_exit(bot)
     end
 
-    @tag :capture_log
     test "response error", %{bypass: bypass} do
       Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
         if Test.HaltSemaphore.halt? do
@@ -222,7 +146,7 @@ defmodule Test.Telegram.Bot do
         end
       end
 
-      {:ok, bot} = Test.Bot.start_link()
+      {:ok, bot} = Test.GoodBot.start_link()
       assert :ok == Test.Utils.wait_exit(bot)
     end
   end
@@ -241,14 +165,13 @@ defmodule Test.Telegram.BotSpecError do
     {:ok, bypass: bypass}
   end
 
-  @tag :capture_log
   test "Telegram.Bot wrong bot username", %{bypass: bypass} do
     Bypass.expect_once bypass, Test.Utils.http_method, Test.Utils.tg_path("getMe"), fn conn ->
       result = %{"username" => "not_test_bot"}
       Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
     end
 
-    {:ok, bot} = Test.Bot.start()
+    {:ok, bot} = Test.GoodBot.start()
     assert :ok == Test.Utils.wait_exit_with_ArgumentError(bot)
   end
 
@@ -272,7 +195,6 @@ defmodule Test.Telegram.BotBootstrap do
     {:ok, bypass: bypass}
   end
 
-  @tag :capture_log
   test "Telegram.Bot bootstrap getMe retries", %{bypass: bypass} do
     {:ok, _} = Test.HaltSemaphore.start_link()
 
@@ -294,7 +216,52 @@ defmodule Test.Telegram.BotBootstrap do
       Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
     end
 
-    {:ok, bot} = Test.Bot.start()
+    {:ok, bot} = Test.GoodBot.start()
+    assert :ok == Test.Utils.wait_exit(bot)
+  end
+end
+
+defmodule Test.Telegram.BotPurge do
+  use ExUnit.Case, async: false
+
+  setup do
+    bypass = Bypass.open(port: Test.Utils.tg_port)
+
+    Bypass.expect_once bypass, Test.Utils.http_method, Test.Utils.tg_path("getMe"), fn conn ->
+      result = %{"username" => "test_bot"}
+      Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+    end
+
+    on_exit fn ->
+      Test.Utils.wait_bypass_exit(bypass)
+    end
+
+    {:ok, bypass: bypass}
+  end
+
+  test "Telegram.Bot purge old messages", %{bypass: bypass} do
+    Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
+      now = DateTime.utc_now() |> DateTime.to_unix(:second)
+      old = now - 1000
+
+      {:ok, req_body, _} = Plug.Conn.read_body(conn)
+      req = Poison.decode!(req_body)
+
+      cond do
+        req["offset"] == 4 ->
+          result = [%{"update_id" => 4, "message" => %{"text" => "/halt", "date" => now, "from" => %{"username" => "tester"}}}]
+          Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+        req["offset"] == 3 ->
+          result = [%{"update_id" => 3, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}}]
+          Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+        req["offset"] == nil ->
+          result = [%{"update_id" => 1, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}},
+                    %{"update_id" => 2, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}}]
+          Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+      end
+    end
+
+    {:ok, bot} = Test.PurgeBot.start()
     assert :ok == Test.Utils.wait_exit(bot)
   end
 end

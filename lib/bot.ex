@@ -78,6 +78,7 @@ defmodule Telegram.Bot do
     username: "your bot username",  # required
     auth: ["user1", "user2"],       # optional, list of authorized users
                                     # or authorizing function (String.t -> boolean)
+    purge: boolean()                # purge old messages at startup, default: false
     restart: policy                 # optional, default :permanent
   ```
 
@@ -119,11 +120,13 @@ defmodule Telegram.Bot do
 
   @poll_timeout 30
   @retry_quiet_period 5
+  @delta_purge (@poll_timeout * 2)
 
   defmacro __using__(opts) do
     token = Keyword.fetch!(opts, :token)
     username = Keyword.fetch!(opts, :username)
     auth = Keyword.get(opts, :auth, Macro.escape(nil))
+    purge = Keyword.get(opts, :purge, Macro.escape(false))
     restart = Keyword.get(opts, :restart, Macro.escape(:permanent))
 
     quote location: :keep do
@@ -132,16 +135,18 @@ defmodule Telegram.Bot do
       @token unquote(token)
       @username unquote(username)
       @auth unquote(auth)
+      @purge unquote(purge)
 
       use Task, restart: unquote(restart)
+      require Logger
       import Telegram.Bot.Dsl
 
       def start() do
-        Task.start(Telegram.Bot, :run, [__MODULE__, @token, @username])
+        Task.start(Telegram.Bot, :run, [__MODULE__, @token, @username, @purge])
       end
 
       def start_link(_args \\ nil) do
-        Task.start_link(Telegram.Bot, :run, [__MODULE__, @token, @username])
+        Task.start_link(Telegram.Bot, :run, [__MODULE__, @token, @username, @purge])
       end
 
       def init() do
@@ -155,7 +160,12 @@ defmodule Telegram.Bot do
           end
         is_list(@auth) ->
           def handle_auth(username) do
-            username in @auth
+            if username in @auth do
+              true
+            else
+              Logger.debug("Unauthorized user message (#{username})")
+              false
+            end
           end
         is_function(@auth) ->
           def handle_auth(username) do
@@ -168,12 +178,22 @@ defmodule Telegram.Bot do
   end
 
   @doc false
-  def run(module, token, username, offset \\ -1) do
-    Logger.debug("Telegram.Bot running: module=#{inspect module}, username=#{inspect username}")
+  def run(module, token, username, purge) do
+    Logger.debug("Telegram.Bot (#{module}) running: username=#{username} purge=#{purge}")
+
+    context = %Context{module: module, token: token, offset: nil}
 
     check_bot(token, username)
+
+    next_offset =
+      if purge do
+        purge_old_messages(context, @delta_purge)
+      else
+        nil
+      end
+
     apply(module, :init, [])
-    loop(%Telegram.Bot.Context{module: module, token: token, offset: offset})
+    loop(%Context{context | offset: next_offset})
   end
 
   defp check_bot(token, username) do
@@ -182,9 +202,9 @@ defmodule Telegram.Bot do
         if me["username"] != username do
           raise ArgumentError, message:
             """
-            The username associated with the provided token `#{inspect token}` is
-            #{inspect me["username"]} and it does not match the configured
-            one (#{inspect username}).
+            The username associated with the provided token `#{token}` is
+            #{me["username"]} and it does not match the configured
+            one (#{username}).
             """
         end
       {:error, reason} ->
@@ -223,7 +243,14 @@ defmodule Telegram.Bot do
   end
 
   defp wait_updates(context) do
-    case Telegram.Api.request(context.token, "getUpdates", offset: context.offset, timeout: @poll_timeout) do
+    opts = [timeout: @poll_timeout] ++
+      if context.offset != nil do
+        [offset: context.offset]
+      else
+        []
+      end
+
+    case Telegram.Api.request(context.token, "getUpdates", opts) do
       {:ok, updates} ->
         updates
       {:error, reason} ->
@@ -249,6 +276,17 @@ defmodule Telegram.Bot do
     )
   end
 
+  defp get_sent_date(update) do
+    Enum.find_value(update,
+      fn
+        ({_, %{"date" => date}}) ->
+          date
+        (_) ->
+          nil
+      end
+    )
+  end
+
   defp process_updates(updates, context) do
     Enum.each(updates, &(process_update(&1, context)))
   end
@@ -262,6 +300,38 @@ defmodule Telegram.Bot do
     Logger.warn(reason_str)
     Logger.warn("Retry in #{seconds}s.")
     Process.sleep(seconds * 1000)
+  end
+
+  defp purge_old_messages(context, delta) do
+    next =
+      wait_updates(context)
+      |> Enum.reduce_while(nil, &(old_message(&1, &2, delta)))
+
+    case next do
+      {:purge, next_offset} ->
+        purge_old_messages(%Context{context | offset: next_offset}, delta)
+      offset ->
+        offset
+    end
+  end
+
+  defp old_message(update, _offset, delta) do
+    sent_unix_time = get_sent_date(update)
+
+    if sent_unix_time != nil do
+      # sent date is UTC
+      sent = DateTime.from_unix!(sent_unix_time, :second)
+      now = DateTime.utc_now()
+
+      if DateTime.diff(now, sent, :second) > delta do
+        Logger.debug("Purge old message (sent: #{inspect sent}, now: #{inspect now})")
+        {:cont, {:purge, update["update_id"] + 1}}
+      else
+        {:halt, update["update_id"]}
+      end
+    else
+      {:halt, update["update_id"]}
+    end
   end
 end
 
