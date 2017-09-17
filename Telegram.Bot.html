@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.16.4">
-    <title>Telegram.Bot – telegram v0.2.1</title>
+    <title>Telegram.Bot – telegram v0.2.3</title>
     <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
     
     
@@ -29,7 +29,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.2.1
+        v0.2.3
       </h2>
     </div>
     
@@ -65,7 +65,7 @@
 
 
       <h1>
-        <small class="visible-xs">telegram v0.2.1</small>
+        <small class="visible-xs">telegram v0.2.3</small>
         Telegram.Bot <small>behaviour</small>
         
           <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
@@ -155,6 +155,7 @@ end</code></pre>
   username: &quot;your bot username&quot;,  # required
   auth: [&quot;user1&quot;, &quot;user2&quot;],       # optional, list of authorized users
                                   # or authorizing function (String.t -&gt; boolean)
+  purge: boolean()                # purge old messages at startup, default: false
   restart: policy                 # optional, default :permanent</code></pre>
 <h2 id="module-execution-model" class="section-heading">
   <a href="#module-execution-model" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -239,7 +240,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">handle_auth(username)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L117" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L118" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -267,7 +268,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">handle_update(token, update)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L118" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L119" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -295,7 +296,7 @@ and will run in a single erlang process, processing updates sequentially.</p>
     </a>
     <span class="signature">init()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L116" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L117" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

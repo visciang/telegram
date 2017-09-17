@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.16.4">
-    <title>Telegram – telegram v0.2.1</title>
+    <title>Telegram – telegram v0.2.3</title>
     <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
     
     
@@ -29,7 +29,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.2.1
+        v0.2.3
       </h2>
     </div>
     
@@ -75,7 +75,7 @@
 <p>The package can be installed by adding <code class="inline">telegram</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p>
 <pre><code class="elixir">def deps do
   [
-    {:telegram, git: &quot;https://github.com/visciang/telegram.git&quot;, tag: &quot;0.2.1&quot;}
+    {:telegram, git: &quot;https://github.com/visciang/telegram.git&quot;, tag: &quot;xxx&quot;}
   ]
 end</code></pre>
 <h2 id="telegram-api" class="section-heading">
@@ -259,6 +259,7 @@ end</code></pre>
   username: &quot;your bot username&quot;,  # required
   auth: [&quot;user1&quot;, &quot;user2&quot;],       # optional, list of authorized users
                                   # or authorizing function (String.t -&gt; boolean)
+  purge: boolean()                # purge old messages at startup, default: false
   restart: policy                 # optional, default :permanent</code></pre>
 <h2 id="execution-model" class="section-heading">
   <a href="#execution-model" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
