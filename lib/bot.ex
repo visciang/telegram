@@ -78,6 +78,7 @@ defmodule Telegram.Bot do
     username: "your bot username",  # required
     auth: ["user1", "user2"],       # optional, list of authorized users
                                     # or authorizing function (String.t -> boolean)
+    purge: boolean()                # purge old messages at startup, default: false
     restart: policy                 # optional, default :permanent
   ```
 
