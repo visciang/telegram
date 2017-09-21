@@ -40,6 +40,6 @@ defmodule Test.Utils do
   def wait_bypass_exit(bypass) do
     # https://github.com/PSPDFKit-labs/bypass/issues/51
     Bypass.down(bypass)
-    Process.sleep(200)
+    Process.sleep(50)
   end
 end

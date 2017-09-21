@@ -1,3 +1,7 @@
 use Mix.Config
 
-config :telegram, :telegram_api_base_url, "http://localhost:8000"
+config :telegram, [
+    api_base_url: "http://localhost:8000",
+    get_updates_poll_timeout: 1,
+    on_error_retry_quiet_period: 1
+]

@@ -1,10 +1,15 @@
 defmodule Telegram.Api.Maxwell do
   @moduledoc false
 
+  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
+  # timeout configuration opts unit: seconds
+  @timeout Application.get_env(:telegram, :timeout, 60) * 1000
+  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
+
   use Maxwell.Builder, [:post]
   adapter Maxwell.Adapter.Httpc
-  middleware Maxwell.Middleware.BaseUrl, Application.get_env(:telegram, :telegram_api_base_url, "https://api.telegram.org")
-  middleware Maxwell.Middleware.Opts, [timeout: 60_000, connect_timeout: 5_000]
+  middleware Maxwell.Middleware.BaseUrl, @api_base_url
+  middleware Maxwell.Middleware.Opts, [timeout: @timeout, connect_timeout: @connect_timeout]
   middleware Maxwell.Middleware.Json
   middleware Maxwell.Middleware.Retry
 

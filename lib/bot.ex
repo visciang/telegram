@@ -118,9 +118,10 @@ defmodule Telegram.Bot do
   @callback handle_auth(username :: String.t) :: boolean
   @callback handle_update(token :: String.t, update :: map) :: any
 
-  @poll_timeout 30
-  @retry_quiet_period 5
-  @delta_purge (@poll_timeout * 2)
+  # timeout configuration opts unit: seconds
+  @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
+  @on_error_retry_quiet_period Application.get_env(:telegram, :on_error_retry_quiet_period, 5)
+  @purge_after (@get_updates_poll_timeout * 2)
 
   defmacro __using__(opts) do
     token = Keyword.fetch!(opts, :token)
@@ -187,7 +188,7 @@ defmodule Telegram.Bot do
 
     next_offset =
       if purge do
-        purge_old_messages(context, @delta_purge)
+        purge_old_messages(context, @purge_after)
       else
         nil
       end
@@ -208,7 +209,7 @@ defmodule Telegram.Bot do
             """
         end
       {:error, reason} ->
-        cooldown(@retry_quiet_period, "Telegram.Api.request 'getMe' error: #{inspect reason}")
+        cooldown(@on_error_retry_quiet_period, "Telegram.Api.request 'getMe' error: #{inspect reason}")
         check_bot(token, username)
     end
   end
@@ -243,7 +244,7 @@ defmodule Telegram.Bot do
   end
 
   defp wait_updates(context) do
-    opts = [timeout: @poll_timeout] ++
+    opts = [timeout: @get_updates_poll_timeout] ++
       if context.offset != nil do
         [offset: context.offset]
       else
@@ -254,7 +255,7 @@ defmodule Telegram.Bot do
       {:ok, updates} ->
         updates
       {:error, reason} ->
-        cooldown(@retry_quiet_period, "Telegram.Api.request 'getUpdates' error: #{inspect reason}")
+        cooldown(@on_error_retry_quiet_period, "Telegram.Api.request 'getUpdates' error: #{inspect reason}")
         wait_updates(context)
     end
   end
