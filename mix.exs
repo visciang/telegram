@@ -21,7 +21,8 @@ defmodule Telegram.Mixfile do
 
   defp deps do
     [
-      {:maxwell, "~> 2.2"},
+      # {:maxwell, "~> 2.2"},
+      {:maxwell, git: "https://github.com/visciang/maxwell", branch: "multipart_file_content"},
       {:poison, "~> 3.1"},
       {:bypass, "~> 0.8", only: :test},
       {:excoveralls, "~> 0.7.3", only: :test},

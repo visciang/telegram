@@ -182,7 +182,10 @@ defmodule Telegram.Api do
   end
 
   defp request_with_file?(options) do
-    Enum.any?(options, &(match?({_name, {:file, _file}}, &1)))
+    Enum.any?(options, &(
+      match?({_name, {:file, _}}, &1) or
+      match?({_name, {:file_content, _, _}}, &1))
+    )
   end
 
   defp do_multipart_body(options) do
@@ -190,6 +193,8 @@ defmodule Telegram.Api do
       fn
         ({name, {:file, file}}, multipart) ->
           Maxwell.Multipart.add_file_with_name(multipart, file, to_string(name))
+        ({name, {:file_content, file_content, filename}}, multipart) ->
+          Maxwell.Multipart.add_file_content_with_name(multipart, file_content, filename, to_string(name))
         ({name, value}, multipart) ->
           Maxwell.Multipart.add_field(multipart, to_string(name), to_string(value))
       end

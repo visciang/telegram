@@ -57,7 +57,25 @@ defmodule Test.Telegram.Api do
       [content_type] = Plug.Conn.get_req_header(conn, "content-type")
       assert content_type =~ ~r(multipart/form-data; boundary=.+)
 
-        # we should decode the multipart data and check that everything is there ..
+      # we should decode the multipart data and check that everything is there ..
+      {:ok, req_body, _} = Plug.Conn.read_body(conn)
+      assert String.length(req_body) > 0
+
+      Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+    end
+
+    assert {:ok, result} == Telegram.Api.request(Test.Utils.tg_token, Test.Utils.tg_method, parameters)
+  end
+
+  test "request with 'file_content' parameter", %{bypass: bypass} do
+    parameters = [par1: 1, par2: {:file_content, "test", "test.txt"}]
+    result = %{"something" => [1, 2, 3]}
+
+    Bypass.expect_once bypass, Test.Utils.http_method, Test.Utils.tg_path, fn conn ->
+      [content_type] = Plug.Conn.get_req_header(conn, "content-type")
+      assert content_type =~ ~r(multipart/form-data; boundary=.+)
+
+      # we should decode the multipart data and check that everything is there ..
       {:ok, req_body, _} = Plug.Conn.read_body(conn)
       assert String.length(req_body) > 0
 
