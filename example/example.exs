@@ -7,9 +7,9 @@ defmodule Example.Bot do
   require Logger
 
   use Telegram.Bot,
-    token: ,
-    username: ,
-    auth: ,
+    token: "234067150:AAE4QJ1E2XeUuAjOZeQ3bb1nWzqAOoOMJW8",
+    username: "raspberry_favaglie_bot",
+    auth: ["visciang"],
     purge: true
 
   command "ciao", args do
@@ -27,6 +27,16 @@ defmodule Example.Bot do
     # and holds the received telegram Update object
     request "sendMessage", chat_id: update["chat"]["id"],
       text: "received update: #{inspect update}"
+  end
+
+  command "photo", _args do
+    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file, "./example/photo.jpg"}
+  end
+
+  command "photo2", _args do
+    filename = "./example/photo.jpg"
+    photo = File.read!(filename)
+    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file_content, photo, filename}
   end
 
   command "halt", _ do
