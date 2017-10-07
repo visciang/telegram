@@ -7,9 +7,9 @@ defmodule Example.Bot do
   require Logger
 
   use Telegram.Bot,
-    token: "234067150:AAE4QJ1E2XeUuAjOZeQ3bb1nWzqAOoOMJW8",
-    username: "raspberry_favaglie_bot",
-    auth: ["visciang"],
+    token: ,
+    username: ,
+    auth: ,
     purge: true
 
   command "ciao", args do
