@@ -99,14 +99,16 @@ Telegram.Api.request(token, "getUpdates", offset: -1, timeout: 30)
 
 ### Sending files
 
-If a API parameter has a InputFile type and you want to send a local file,
-for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
-value in a tuple `{:file, "/tmp/photo.jpg"}`.
+  If a API parameter has a InputFile type and you want to send a local file,
+  for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
+  value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
+  wrap it in {:file_content, data, "photo.jpg"} tuple.
 
 #### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
 ```elixir
 Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file, "/tmp/photo.jpg"})
+Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file_content, photo, "photo.jpg"})
 ```
 
 ### Reply Markup

@@ -29,6 +29,16 @@ defmodule Example.Bot do
       text: "received update: #{inspect update}"
   end
 
+  command "photo", _args do
+    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file, "./example/photo.jpg"}
+  end
+
+  command "photo2", _args do
+    filename = "./example/photo.jpg"
+    photo = File.read!(filename)
+    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file_content, photo, filename}
+  end
+
   command "halt", _ do
     request "sendMessage", chat_id: update["chat"]["id"],
       text: "bye"

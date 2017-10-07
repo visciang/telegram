@@ -1,26 +1,3 @@
-defmodule Telegram.Api.Maxwell do
-  @moduledoc false
-
-  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
-  # timeout configuration opts unit: seconds
-  @timeout Application.get_env(:telegram, :timeout, 60) * 1000
-  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
-
-  use Maxwell.Builder, [:post]
-  adapter Maxwell.Adapter.Httpc
-  middleware Maxwell.Middleware.BaseUrl, @api_base_url
-  middleware Maxwell.Middleware.Opts, [timeout: @timeout, connect_timeout: @connect_timeout]
-  middleware Maxwell.Middleware.Json
-  middleware Maxwell.Middleware.Retry
-
-  defmacro __using__([]) do
-    quote do
-      import Telegram.Api.Maxwell
-      import Maxwell.Conn
-    end
-  end
-end
-
 defmodule Telegram.Api do
   @moduledoc ~S"""
   Telegram Bot API request.
@@ -105,12 +82,14 @@ defmodule Telegram.Api do
 
   If a API parameter has a InputFile type and you want to send a local file,
   for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
-  value in a tuple `{:file, "/tmp/photo.jpg"}`.
+  value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
+  wrap it in {:file_content, data, "photo.jpg"} tuple.
 
   ### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
   ```elixir
   Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file, "/tmp/photo.jpg"})
+  Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file_content, photo, "photo.jpg"})
   ```
 
   ## Reply Markup
@@ -133,7 +112,18 @@ defmodule Telegram.Api do
   ```
   """
 
-  use Telegram.Api.Maxwell
+  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
+  # timeout configuration opts unit: seconds
+  @timeout Application.get_env(:telegram, :timeout, 60) * 1000
+  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
+
+  use Tesla, only: [:post], docs: false
+  
+  plug Tesla.Middleware.Tuples
+  plug Tesla.Middleware.BaseUrl, @api_base_url
+  plug Tesla.Middleware.Opts, [timeout: @timeout, connect_timeout: @connect_timeout]
+  plug Tesla.Middleware.JSON
+  plug Tesla.Middleware.Retry
 
   @type token :: String.t
   @type method :: String.t
@@ -159,39 +149,41 @@ defmodule Telegram.Api do
   end
 
   defp do_request(token, method, body) do
-    path(token, method)
-    |> new()
-    |> put_req_body(body)
-    |> post()
-    |> do_response()
+    result = post("/bot#{token}/#{method}", body)
+    do_response(result)
   end
 
-  defp do_response({:ok, conn}) do
-    case get_resp_body(conn) do
+  defp do_response({:ok, env}) do
+    case env.body do
       %{"ok" => true, "result" => result} ->
         {:ok, result}
       %{"ok" => false, "description" => description} ->
         {:error, description}
       _ ->
-        {:error, {:http_error, get_status(conn)}}
+        {:error, {:http_error, env.status}}
     end
   end
 
-  defp do_response({:error, reason, _conn}) do
+  defp do_response({:error, reason}) do
     {:error, reason}
   end
 
   defp request_with_file?(options) do
-    Enum.any?(options, &(match?({_name, {:file, _file}}, &1)))
+    Enum.any?(options, &(
+      match?({_name, {:file, _}}, &1) or
+      match?({_name, {:file_content, _, _}}, &1))
+    )
   end
 
   defp do_multipart_body(options) do
-    Enum.reduce(options, Maxwell.Multipart.new(),
+    Enum.reduce(options, Tesla.Multipart.new(),
       fn
         ({name, {:file, file}}, multipart) ->
-          Maxwell.Multipart.add_file_with_name(multipart, file, to_string(name))
+          Tesla.Multipart.add_file(multipart, file, name: to_string(name))
+        ({name, {:file_content, file_content, filename}}, multipart) ->
+          Tesla.Multipart.add_file_content(multipart, file_content, filename, name: to_string(name))
         ({name, value}, multipart) ->
-          Maxwell.Multipart.add_field(multipart, to_string(name), to_string(value))
+          Tesla.Multipart.add_field(multipart, to_string(name), to_string(value))
       end
     )
   end
@@ -205,9 +197,5 @@ defmodule Telegram.Api do
           others
       end
     )
-  end
-
-  defp path(token, method) do
-    "/bot#{token}/#{method}"
   end
 end
