@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.16.4">
-    <title>Telegram.Api – telegram v0.2.4</title>
-    <link rel="stylesheet" href="dist/app-5b9e160cec.css" />
+    <meta name="generator" content="ExDoc v0.17.1">
+    <title>Telegram.Api – telegram v0.3.0</title>
+    <link rel="stylesheet" href="dist/app-110d9134a6.css" />
     
     
-    <script src="dist/sidebar_items-abf9da3594.js"></script>
+    <script src="dist/sidebar_items-edfb6754b1.js"></script>
     
   </head>
   <body data-type="modules">
@@ -29,7 +29,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.2.4
+        v0.3.0
       </h2>
     </div>
     
@@ -52,8 +52,6 @@
     
 
     
-
-    
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -65,10 +63,10 @@
 
 
       <h1>
-        <small class="visible-xs">telegram v0.2.4</small>
+        <small class="visible-xs">telegram v0.3.0</small>
         Telegram.Api
         
-          <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L24" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -163,13 +161,15 @@ with new BOT API versions (as much as they remain backward compatible).</p>
 
 <p>If a API parameter has a InputFile type and you want to send a local file,
 for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
-value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>.</p>
+value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>. If the file content is in memory
+wrap it in {:file_content, data, “photo.jpg”} tuple.</p>
 <h3 id="module-sendphoto" class="section-heading">
   <a href="#module-sendphoto" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a>
 </h3>
 
-<pre><code class="elixir">Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file, &quot;/tmp/photo.jpg&quot;})</code></pre>
+<pre><code class="elixir">Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file, &quot;/tmp/photo.jpg&quot;})
+Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file_content, photo, &quot;photo.jpg&quot;})</code></pre>
 <h2 id="module-reply-markup" class="section-heading">
   <a href="#module-reply-markup" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Reply Markup
@@ -279,7 +279,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">method()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L139" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L129" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -307,7 +307,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">options()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L140" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L130" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -335,7 +335,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">request_result()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L141" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L131" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -363,7 +363,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">token()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L138" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L128" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -407,7 +407,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">request(token, method, options \\ [])</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L149" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L139" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -436,7 +436,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.16.4),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.17.1),
           </span>
           <span class="line">
             designed by
@@ -449,7 +449,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
   </div>
 </section>
 </div>
-  <script src="dist/app-da04b39d0c.js"></script>
+  <script src="dist/app-4cfb39be16.js"></script>
   
   </body>
 </html>
