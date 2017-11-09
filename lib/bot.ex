@@ -139,7 +139,6 @@ defmodule Telegram.Bot do
       @purge unquote(purge)
 
       use Task, restart: unquote(restart)
-      require Logger
       import Telegram.Bot.Dsl
 
       def start() do
@@ -161,12 +160,7 @@ defmodule Telegram.Bot do
           end
         is_list(@auth) ->
           def handle_auth(username) do
-            if username in @auth do
-              true
-            else
-              Logger.debug("Unauthorized user message (#{username})")
-              false
-            end
+            username in @auth
           end
         is_function(@auth) ->
           def handle_auth(username) do
@@ -217,39 +211,18 @@ defmodule Telegram.Bot do
   defp loop(context) do
     updates = wait_updates(context)
 
-    halt? =
-      try do
-        updates
-        |> filter_authorized_users(context)
-        |> process_updates(context)
-      rescue
-        Halt -> true
-      else
-        _ -> false
-      end
-
-    if halt? do
-      Logger.info("Telegram.Bot HALT.")
-    else
-      loop(%Context{context | offset: next_update_offset(context, updates)})
-    end
-  end
-
-  defp next_update_offset(context, updates) do
-    if updates == [] do
-      context.offset
-    else
-      List.last(updates)["update_id"] + 1
+    case process_updates(updates, context) do
+      {:halt, last_offset} ->
+        confirm_message(last_offset, context)
+        Logger.info("Telegram.Bot HALT.")
+      next_offset ->
+        loop(%Context{context | offset: next_offset})
     end
   end
 
   defp wait_updates(context) do
-    opts = [timeout: @get_updates_poll_timeout] ++
-      if context.offset != nil do
-        [offset: context.offset]
-      else
-        []
-      end
+    opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
+    opts = [timeout: @get_updates_poll_timeout] ++ opts_offset
 
     case Telegram.Api.request(context.token, "getUpdates", opts) do
       {:ok, updates} ->
@@ -260,8 +233,13 @@ defmodule Telegram.Bot do
     end
   end
 
-  defp filter_authorized_users(updates, context) do
-    Enum.filter(updates, &(apply(context.module, :handle_auth, [get_from_username(&1)])))
+  defp confirm_message(offset, context) do
+    Telegram.Api.request(context.token, "getUpdates", [limit: 1, offset: offset + 1, timeout: 0])
+    :ok
+  end
+
+  defp authorized?(update, context) do
+    apply(context.module, :handle_auth, [get_from_username(update)])
   end
 
   defp get_from_username(update) do
@@ -289,12 +267,24 @@ defmodule Telegram.Bot do
   end
 
   defp process_updates(updates, context) do
-    Enum.each(updates, &(process_update(&1, context)))
+    updates |> Enum.reduce_while(nil, &(process_update(&1, &2, context)))
   end
 
-  defp process_update(update, context) do
-    Logger.debug("handle_update: #{inspect update}")
-    apply(context.module, :handle_update, [context.token, update])
+  def process_update(update, _acc, context) do
+    Logger.debug("process_update: #{inspect update}")
+
+    if authorized?(update, context) do
+      try do
+        apply(context.module, :handle_update, [context.token, update])
+      rescue
+        Halt -> {:halt, {:halt, update["update_id"]}}
+      else
+        _ -> {:cont, update["update_id"] + 1}
+      end
+    else
+      Logger.debug("Unauthorized user message (#{get_from_username(update)})")
+      {:cont, update["update_id"] + 1}
+    end
   end
 
   defp cooldown(seconds, reason_str) do
@@ -370,6 +360,17 @@ defmodule Telegram.Bot.Dsl do
   command "start", args do
     # ex: telegram -> "/start hello 1"
     #     args = ["hello", "1"]
+  end
+  ```
+
+  ```elixir
+  command "start", ["hello", "2"] do
+    # ex: telegram -> "/start hello 2"
+    #
+    # NOTE: the args are not whitespace normalized (stripped)
+    #       so the pattern matching is an identity match with the string
+    #       "/start hello 2" (one space char separator),
+    #       ie. "/start   hello 2" won't match
   end
   ```
 
@@ -555,30 +556,52 @@ defmodule Telegram.Bot.Dsl do
   end
 
   defp quote_handle_update_for_command(text, args, body) do
-    quote do
-      def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text)}}) do
-        _ = var!(update)
-        _ = var!(token__)
-        unquote(args) = []
-        unquote(body)
+    if is_list(args) and Enum.all?(args, &is_binary/1) do
+      args_string =
+        if args == [] do
+          ""
+        else
+         " " <> Enum.join(args, " ")
+        end
+
+      quote do
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> unquote(args_string)}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(body)
+        end
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username <> unquote(args_string)}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(body)
+        end
       end
-      def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> " " <> rest}}) do
-        _ = var!(update)
-        _ = var!(token__)
-        unquote(args) = String.split(rest)
-        unquote(body)
-      end
-      def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username}}) do
-        _ = var!(update)
-        _ = var!(token__)
-        unquote(args) = []
-        unquote(body)
-      end
-      def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username <> " " <> rest}}) do
-        _ = var!(update)
-        _ = var!(token__)
-        unquote(args) = String.split(rest)
-        unquote(body)
+    else
+      quote do
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text)}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(args) = []
+          unquote(body)
+        end
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> " " <> rest}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(args) = String.split(rest)
+          unquote(body)
+        end
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(args) = []
+          unquote(body)
+        end
+        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username <> " " <> rest}}) do
+          _ = var!(update)
+          _ = var!(token__)
+          unquote(args) = String.split(rest)
+          unquote(body)
+        end
       end
     end
   end

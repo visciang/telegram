@@ -7,7 +7,7 @@ defmodule Test.Template do
           req = Poison.decode!(req_body)
 
           if Test.HaltSemaphore.halt? do
-            assert req["offset"] == 2
+            assert (req["offset"] == 2 or req["offset"] == 3)
 
             result = [%{"update_id" => 2, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
             Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
@@ -149,6 +149,28 @@ defmodule Test.Telegram.Bot do
       {:ok, bot} = Test.GoodBot.start_link()
       assert :ok == Test.Utils.wait_exit(bot)
     end
+
+    test "unauthorized user", %{bypass: bypass} do
+      Bypass.expect bypass, Test.Utils.http_method, Test.Utils.tg_path("getUpdates"), fn conn ->
+        {:ok, req_body, _} = Plug.Conn.read_body(conn)
+        req = Poison.decode!(req_body)
+  
+        cond do
+          req["offset"] == 3 ->
+            result = []
+            Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+          req["offset"] == 2 ->
+            result = [%{"update_id" => 2, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
+            Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+          req["offset"] == nil ->
+            result = [%{"update_id" => 1, "message" => %{"text" => "unauth", "from" => %{"username" => "unauth_user"}}}]
+            Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
+        end
+      end
+
+      {:ok, bot} = Test.GoodBot.start_link()
+      assert :ok == Test.Utils.wait_exit(bot)
+    end
   end
 end
 
@@ -248,6 +270,9 @@ defmodule Test.Telegram.BotPurge do
       req = Poison.decode!(req_body)
 
       cond do
+        req["offset"] == 5 ->
+          assert req["timeout"] == 0
+          Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => []})
         req["offset"] == 4 ->
           result = [%{"update_id" => 4, "message" => %{"text" => "/halt", "date" => now, "from" => %{"username" => "tester"}}}]
           Test.Utils.put_json_resp(conn, 200, %{"ok" => true, "result" => result})
