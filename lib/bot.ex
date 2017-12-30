@@ -187,7 +187,7 @@ defmodule Telegram.Bot do
         nil
       end
 
-    apply(module, :init, [])
+    module.init()
     loop(%Context{context | offset: next_offset})
   end
 
@@ -239,7 +239,7 @@ defmodule Telegram.Bot do
   end
 
   defp authorized?(update, context) do
-    apply(context.module, :handle_auth, [get_from_username(update)])
+    context.module.handle_auth(get_from_username(update))
   end
 
   defp get_from_username(update) do
@@ -275,7 +275,7 @@ defmodule Telegram.Bot do
 
     if authorized?(update, context) do
       try do
-        apply(context.module, :handle_update, [context.token, update])
+        context.module.handle_update(context.token, update)
       rescue
         Halt -> {:halt, {:halt, update["update_id"]}}
       else

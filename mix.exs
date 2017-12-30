@@ -4,7 +4,7 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.3.2",
+      version: "0.3.3",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       test_coverage: [tool: ExCoveralls],
@@ -21,11 +21,11 @@ defmodule Telegram.Mixfile do
 
   defp deps do
     [
-      {:tesla, "~> 0.9"},
+      {:tesla, "~> 0.10"},
       {:hackney, "~> 1.9"},
       {:poison, "~> 3.1"},
       {:bypass, "~> 0.8", only: :test},
-      {:excoveralls, "~> 0.7.3", only: :test},
+      {:excoveralls, "~> 0.8", only: :test},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
   end
