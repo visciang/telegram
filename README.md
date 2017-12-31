@@ -1,7 +1,6 @@
 # Telegram
 
-[![Build Status](https://travis-ci.org/visciang/telegram.svg?branch=master)](https://travis-ci.org/visciang/telegram) [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram/readme.html) [![Coverage Status](https://coveralls.io/repos/github/visciang/telegram/badge.svg)](https://coveralls.io/github/visciang/telegram)
-
+[![Build Status](https://travis-ci.org/visciang/telegram.svg?branch=master)](https://travis-ci.org/visciang/telegram) [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram/readme.html) [![Coverage Status](https://coveralls.io/repos/github/visciang/telegram/badge.svg?branch=master)](https://coveralls.io/github/visciang/telegram?branch=master)
 
 Telegram library for the Elixir language.
 
