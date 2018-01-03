@@ -1,45 +1,56 @@
 defmodule Test.Utils do
-  def tg_port, do: 8000
-  def tg_token, do: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-  def tg_method, do: "getFoo"
-  def tg_path, do: "/bot" <> tg_token() <> "/" <> tg_method()
-  def tg_path(method), do: "/bot" <> tg_token() <> "/" <> method
-  def http_method, do: "POST"
+  import ExUnit.Assertions, only: [assert_receive: 2, flunk: 1]
 
-  def put_json_resp(conn, status, body) do
-    conn
-    |> Plug.Conn.put_resp_content_type("application/json")
-    |> Plug.Conn.resp(status, Poison.encode!(body))
+  @base_url Application.get_env(:telegram, :api_base_url)
+  @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+  @method "getFoo"
+
+  @retry_wait_period ((Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000) + 500)
+
+  defmacro tg_token do
+    quote do: unquote(@token)
   end
 
-  def wait_exit(proc) do
-    ref = Process.monitor(proc)
+  defmacro http_method do
+    quote do: unquote(:post)
+  end
 
-    receive do
-      {:DOWN, ^ref, :process, _object, :normal} ->
-        :ok
-    after
-      # should be > Telegram.Bot.@retry_quiet_period
-      21000 ->
-        :error
+  defmacro tg_method() do
+    quote do: unquote(@method)
+  end
+
+  defmacro tg_url(tg_method \\ @method) do
+    quote do: unquote(@base_url) <> "/bot" <> unquote(@token) <> "/" <> unquote(tg_method)
+  end
+
+  def tesla_env_json(data) do
+    %Tesla.Env{headers: %{"Content-Type" => "application/json"}, body: Poison.encode!(data)}
+  end
+
+  def tesla_mock_global_async(test_pid) do
+    Tesla.Mock.mock_global fn
+      request_env ->
+        send(test_pid, {:tesla_mock_request_env, self(), request_env})
+
+        receive do
+          {:tesla_mock_response_env, response_env} ->
+            response_env
+        end
     end
   end
 
-  def wait_exit_with_ArgumentError(proc) do
-    ref = Process.monitor(proc)
+  def tesla_mock_expect(fun, timeout \\ @retry_wait_period) do
+    assert_receive {:tesla_mock_request_env, mock_pid, req_env}, timeout
 
-    receive do
-      {:DOWN, ^ref, :process, _object, {%ArgumentError{}, _}} ->
+    try do
+      fun.(req_env)
+    rescue
+      FunctionClauseError ->
+        {:no_match, req_env}
+    else
+      res_env ->
+        send(mock_pid, {:tesla_mock_response_env, res_env})
         :ok
-    after
-      21000 ->
-        :error
     end
-  end
-
-  def wait_bypass_exit(bypass) do
-    # https://github.com/PSPDFKit-labs/bypass/issues/51
-    Bypass.down(bypass)
-    Process.sleep(50)
   end
 end

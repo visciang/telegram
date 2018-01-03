@@ -118,8 +118,6 @@ defmodule Telegram.Api do
   @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
 
   use Tesla, only: [:post], docs: false
-  
-  adapter :hackney
 
   plug Tesla.Middleware.Tuples
   plug Tesla.Middleware.BaseUrl, @api_base_url
