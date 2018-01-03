@@ -1,4 +1,6 @@
 defmodule Test.PurgeBot do
+  require Test.Utils
+
   use Telegram.Bot,
     token: Test.Utils.tg_token,
     username: "test_bot",
