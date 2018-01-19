@@ -5,7 +5,7 @@ defmodule Test.Utils do
   @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
   @method "getFoo"
 
-  @retry_wait_period ((Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000) + 500)
+  @retry_wait_period Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000 + 500
 
   defmacro tg_token do
     quote do: unquote(@token)
@@ -28,15 +28,14 @@ defmodule Test.Utils do
   end
 
   def tesla_mock_global_async(test_pid) do
-    Tesla.Mock.mock_global fn
-      request_env ->
-        send(test_pid, {:tesla_mock_request_env, self(), request_env})
+    Tesla.Mock.mock_global(fn request_env ->
+      send(test_pid, {:tesla_mock_request_env, self(), request_env})
 
-        receive do
-          {:tesla_mock_response_env, response_env} ->
-            response_env
-        end
-    end
+      receive do
+        {:tesla_mock_response_env, response_env} ->
+          response_env
+      end
+    end)
   end
 
   def tesla_mock_expect(fun, timeout \\ @retry_wait_period) do

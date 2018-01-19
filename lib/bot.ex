@@ -106,7 +106,7 @@ defmodule Telegram.Bot do
   defmodule Context do
     @moduledoc false
     defstruct [:module, :token, :offset, :type]
-    @type t :: %__MODULE__{module: module, token: String.t, offset: integer}
+    @type t :: %__MODULE__{module: module, token: String.t(), offset: integer}
   end
 
   defmodule Halt do
@@ -115,13 +115,13 @@ defmodule Telegram.Bot do
   end
 
   @callback init() :: any
-  @callback handle_auth(username :: String.t) :: boolean
-  @callback handle_update(token :: String.t, update :: map) :: any
+  @callback handle_auth(username :: String.t()) :: boolean
+  @callback handle_update(token :: String.t(), update :: map) :: any
 
   # timeout configuration opts unit: seconds
   @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
   @on_error_retry_quiet_period Application.get_env(:telegram, :on_error_retry_quiet_period, 5)
-  @purge_after (@get_updates_poll_timeout * 2)
+  @purge_after @get_updates_poll_timeout * 2
 
   defmacro __using__(opts) do
     token = Keyword.fetch!(opts, :token)
@@ -158,17 +158,19 @@ defmodule Telegram.Bot do
           def handle_auth(_username) do
             true
           end
+
         is_list(@auth) ->
           def handle_auth(username) do
             username in @auth
           end
+
         is_function(@auth) ->
           def handle_auth(username) do
             @auth.(username)
           end
       end
 
-      defoverridable [init: 0, handle_auth: 1]
+      defoverridable init: 0, handle_auth: 1
     end
   end
 
@@ -195,15 +197,20 @@ defmodule Telegram.Bot do
     case Telegram.Api.request(token, "getMe") do
       {:ok, me} ->
         if me["username"] != username do
-          raise ArgumentError, message:
-            """
+          raise ArgumentError,
+            message: """
             The username associated with the provided token `#{token}` is
             #{me["username"]} and it does not match the configured
             one (#{username}).
             """
         end
+
       {:error, reason} ->
-        cooldown(@on_error_retry_quiet_period, "Telegram.Api.request 'getMe' error: #{inspect reason}")
+        cooldown(
+          @on_error_retry_quiet_period,
+          "Telegram.Api.request 'getMe' error: #{inspect(reason)}"
+        )
+
         check_bot(token, username)
     end
   end
@@ -215,6 +222,7 @@ defmodule Telegram.Bot do
       {:halt, last_offset} ->
         confirm_message(last_offset, context)
         Logger.info("Telegram.Bot HALT.")
+
       next_offset ->
         loop(%Context{context | offset: next_offset})
     end
@@ -227,14 +235,19 @@ defmodule Telegram.Bot do
     case Telegram.Api.request(context.token, "getUpdates", opts) do
       {:ok, updates} ->
         updates
+
       {:error, reason} ->
-        cooldown(@on_error_retry_quiet_period, "Telegram.Api.request 'getUpdates' error: #{inspect reason}")
+        cooldown(
+          @on_error_retry_quiet_period,
+          "Telegram.Api.request 'getUpdates' error: #{inspect(reason)}"
+        )
+
         wait_updates(context)
     end
   end
 
   defp confirm_message(offset, context) do
-    Telegram.Api.request(context.token, "getUpdates", [limit: 1, offset: offset + 1, timeout: 0])
+    Telegram.Api.request(context.token, "getUpdates", limit: 1, offset: offset + 1, timeout: 0)
     :ok
   end
 
@@ -245,33 +258,31 @@ defmodule Telegram.Bot do
   defp get_from_username(update) do
     # https://core.telegram.org/bots/api#update
     # should be always present, in any type of Update object
-    Enum.find_value(update,
-      fn
-        ({_, %{"from" => %{"username" => username}}}) ->
-          username
-        (_) ->
-          false
-      end
-    )
+    Enum.find_value(update, fn
+      {_, %{"from" => %{"username" => username}}} ->
+        username
+
+      _ ->
+        false
+    end)
   end
 
   defp get_sent_date(update) do
-    Enum.find_value(update,
-      fn
-        ({_, %{"date" => date}}) ->
-          date
-        (_) ->
-          nil
-      end
-    )
+    Enum.find_value(update, fn
+      {_, %{"date" => date}} ->
+        date
+
+      _ ->
+        nil
+    end)
   end
 
   defp process_updates(updates, context) do
-    updates |> Enum.reduce_while(nil, &(process_update(&1, &2, context)))
+    updates |> Enum.reduce_while(nil, &process_update(&1, &2, context))
   end
 
   def process_update(update, _acc, context) do
-    Logger.debug("process_update: #{inspect update}")
+    Logger.debug("process_update: #{inspect(update)}")
 
     if authorized?(update, context) do
       try do
@@ -296,11 +307,12 @@ defmodule Telegram.Bot do
   defp purge_old_messages(context, delta) do
     next =
       wait_updates(context)
-      |> Enum.reduce_while(nil, &(old_message(&1, &2, delta)))
+      |> Enum.reduce_while(nil, &old_message(&1, &2, delta))
 
     case next do
       {:purge, next_offset} ->
         purge_old_messages(%Context{context | offset: next_offset}, delta)
+
       offset ->
         offset
     end
@@ -315,7 +327,7 @@ defmodule Telegram.Bot do
       now = DateTime.utc_now()
 
       if DateTime.diff(now, sent, :second) > delta do
-        Logger.debug("Purge old message (sent: #{inspect sent}, now: #{inspect now})")
+        Logger.debug("Purge old message (sent: #{inspect(sent)}, now: #{inspect(now)})")
         {:cont, {:purge, update["update_id"] + 1}}
       else
         {:halt, update["update_id"]}
@@ -387,14 +399,13 @@ defmodule Telegram.Bot.Dsl do
   end
 
   defmacro command(commands, args, do: body) when is_list(commands) do
-    Enum.each(commands,
-      fn (command) ->
-        if not is_binary(command) do
-          raise ArgumentError, message: "expected list of commands as strings"
-        end
+    Enum.each(commands, fn command ->
+      if not is_binary(command) do
+        raise ArgumentError, message: "expected list of commands as strings"
       end
-    )
-    Enum.map(commands, &(quote_handle_update_for_command(&1, args, body)))
+    end)
+
+    Enum.map(commands, &quote_handle_update_for_command(&1, args, body))
   end
 
   @doc ~S"""
@@ -440,8 +451,14 @@ defmodule Telegram.Bot.Dsl do
     quote_handle_update_for_type("message", body)
   end
 
-  for type <- [:edited_message, :channel_post, :edited_channel_post,
-               :callback_query, :shipping_query, :pre_checkout_query] do
+  for type <- [
+        :edited_message,
+        :channel_post,
+        :edited_channel_post,
+        :callback_query,
+        :shipping_query,
+        :pre_checkout_query
+      ] do
     @doc """
     Match a generic Telegram #{type}.
 
@@ -536,7 +553,9 @@ defmodule Telegram.Bot.Dsl do
 
   defp quote_handle_update_for_text(update_type, text_field, text, body) do
     quote do
-      def handle_update(var!(token__), %{unquote(update_type) => var!(update)=%{unquote(text_field) => unquote(text)}}) do
+      def handle_update(var!(token__), %{
+            unquote(update_type) => var!(update) = %{unquote(text_field) => unquote(text)}
+          }) do
         _ = var!(token__)
         _ = var!(update)
         unquote(body)
@@ -546,7 +565,7 @@ defmodule Telegram.Bot.Dsl do
 
   defp quote_handle_update_for_command(text, body) do
     quote do
-      def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> rest}}) do
+      def handle_update(var!(token__), %{"message" => var!(update) = %{"text" => "/" <> rest}}) do
         _ = var!(update)
         _ = var!(token__)
         unquote(text) = rest
@@ -561,16 +580,25 @@ defmodule Telegram.Bot.Dsl do
         if args == [] do
           ""
         else
-         " " <> Enum.join(args, " ")
+          " " <> Enum.join(args, " ")
         end
 
       quote do
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> unquote(args_string)}}) do
+        def handle_update(var!(token__), %{
+              "message" =>
+                var!(update) = %{"text" => "/" <> unquote(text) <> unquote(args_string)}
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(body)
         end
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username <> unquote(args_string)}}) do
+
+        def handle_update(var!(token__), %{
+              "message" =>
+                var!(update) = %{
+                  "text" => "/" <> unquote(text) <> "@" <> @username <> unquote(args_string)
+                }
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(body)
@@ -578,25 +606,39 @@ defmodule Telegram.Bot.Dsl do
       end
     else
       quote do
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text)}}) do
+        def handle_update(var!(token__), %{
+              "message" => var!(update) = %{"text" => "/" <> unquote(text)}
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(args) = []
           unquote(body)
         end
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> " " <> rest}}) do
+
+        def handle_update(var!(token__), %{
+              "message" => var!(update) = %{"text" => "/" <> unquote(text) <> " " <> rest}
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(args) = String.split(rest)
           unquote(body)
         end
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username}}) do
+
+        def handle_update(var!(token__), %{
+              "message" => var!(update) = %{"text" => "/" <> unquote(text) <> "@" <> @username}
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(args) = []
           unquote(body)
         end
-        def handle_update(var!(token__), %{"message" => var!(update)=%{"text" => "/" <> unquote(text) <> "@" <> @username <> " " <> rest}}) do
+
+        def handle_update(var!(token__), %{
+              "message" =>
+                var!(update) = %{
+                  "text" => "/" <> unquote(text) <> "@" <> @username <> " " <> rest
+                }
+            }) do
           _ = var!(update)
           _ = var!(token__)
           unquote(args) = String.split(rest)

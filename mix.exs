@@ -6,7 +6,7 @@ defmodule Telegram.Mixfile do
       app: :telegram,
       version: "0.3.4",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
       deps: deps(),
       docs: docs()
