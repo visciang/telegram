@@ -12,8 +12,7 @@ export_locals_without_parens = [
   inline_query: 2,
   chosen_inline_result: 2,
   any: 1,
-  request: 2,
-  tesla_mock_expect: 1
+  request: 2
 ]
 
 [
