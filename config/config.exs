@@ -1,6 +1,9 @@
 use Mix.Config
 
-config :tesla,
-  adapter: :hackney
-
-import_config "#{Mix.env}.exs"
+if Mix.env == :test do
+  config :telegram, [
+    api_base_url: "http://localhost:8000",
+    get_updates_poll_timeout: 1,
+    on_error_retry_quiet_period: 1
+  ]
+end
