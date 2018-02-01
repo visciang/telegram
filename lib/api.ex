@@ -119,6 +119,12 @@ defmodule Telegram.Api do
 
   use Tesla, only: [:post], docs: false
 
+  if Mix.env == :test do
+    adapter :mock
+  else
+    adapter :hackney
+  end
+
   plug Tesla.Middleware.Tuples
   plug Tesla.Middleware.BaseUrl, @api_base_url
 
