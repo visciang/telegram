@@ -119,7 +119,7 @@ defmodule Telegram.Api do
 
   use Tesla, only: [:post], docs: false
 
-  if Mix.env == :test do
+  if Mix.env() == :test do
     adapter :mock
   else
     adapter :hackney
