@@ -114,21 +114,15 @@ defmodule Telegram.Api do
 
   @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
   # timeout configuration opts unit: seconds
-  @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
+  @timeout Application.get_env(:telegram, :timeout, 60) * 1000
   @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
 
   use Tesla, only: [:post], docs: false
 
-  if Mix.env() == :test do
-    adapter :mock
-  else
-    adapter :hackney
-  end
-
   plug Tesla.Middleware.Tuples
   plug Tesla.Middleware.BaseUrl, @api_base_url
 
-  plug Tesla.Middleware.Opts, [:insecure] ++ [recv_timeout: @recv_timeout, connect_timeout: @connect_timeout]
+  plug Tesla.Middleware.Opts, [body_format: :binary, timeout: @timeout, connect_timeout: @connect_timeout]
 
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Retry
