@@ -1,6 +1,5 @@
 # Used by "mix format" and to export configuration.
 export_locals_without_parens = [
-  halt: 1,
   command: :*,
   message: 1,
   edited_message: 1,
@@ -11,8 +10,7 @@ export_locals_without_parens = [
   pre_checkout_query: 1,
   inline_query: 2,
   chosen_inline_result: 2,
-  any: 1,
-  request: 2
+  any: 1
 ]
 
 [

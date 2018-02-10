@@ -25,6 +25,7 @@ defmodule Telegram.Mixfile do
       {:hackney, "~> 1.9"},
       {:poison, "~> 3.1"},
       {:excoveralls, "~> 0.8", only: :test},
+      {:meck, "~> 0.8.9", only: :test},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
   end

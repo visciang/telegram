@@ -111,7 +111,7 @@ defmodule Telegram.Bot do
 
   defmodule Halt do
     @moduledoc false
-    defexception [:message]
+    defexception [:message, :system_stop]
   end
 
   @callback init() :: any
@@ -219,9 +219,13 @@ defmodule Telegram.Bot do
     updates = wait_updates(context)
 
     case process_updates(updates, context) do
-      {:halt, last_offset} ->
+      {:bot_halt, last_offset, system_stop} ->
         confirm_message(last_offset, context)
         Logger.info("Telegram.Bot HALT.")
+
+        if system_stop do
+          System.stop()
+        end
 
       next_offset ->
         loop(%Context{context | offset: next_offset})
@@ -288,7 +292,7 @@ defmodule Telegram.Bot do
       try do
         context.module.handle_update(context.token, update)
       rescue
-        Halt -> {:halt, {:halt, update["update_id"]}}
+        e in Halt -> {:halt, {:bot_halt, update["update_id"], e.system_stop}}
       else
         _ -> {:cont, update["update_id"] + 1}
       end
@@ -354,15 +358,17 @@ defmodule Telegram.Bot.Dsl do
   Halts the Bot.
 
   ```elixir
-  command "stop", _args do
-    halt "user requested to stop the bot"
+  command "stop_bot", _args do
+    halt("user requested to stop the bot")
+  end
+
+  command "stop_system", _args do
+    halt("user requested to stop the system", true)
   end
   ```
   """
-  defmacro halt(message) do
-    quote do
-      raise Telegram.Bot.Halt, unquote(message)
-    end
+  def halt(message, system_stop \\ false) do
+    raise Telegram.Bot.Halt, message: message, system_stop: system_stop
   end
 
   @doc ~S"""

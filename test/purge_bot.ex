@@ -8,10 +8,10 @@ defmodule Test.PurgeBot do
     purge: true
 
   command "halt", _ do
-    halt "halt"
+    halt("halt")
   end
 
   any do
-    request "testResult", result: "KO"
+    request("testResult", result: "KO")
   end
 end

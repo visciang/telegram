@@ -230,6 +230,34 @@ defmodule Test.Telegram.Bot do
       assert :ok == Test.Base.wait_exit(context.bot)
     end
 
+    test "halt the system", context do
+      # mock System.stop
+      :meck.new(System, [:passthrough])
+      :meck.expect(System, :stop, fn -> nil end)
+
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "/system_halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
+      assert :ok == Test.Base.wait_exit(context.bot)
+
+      # assert System.stop mock has been called
+      assert true == :meck.called(System, :stop, :_, context.bot)
+      :meck.unload(System)
+    end
+
     test "response error", context do
       assert :ok ==
                Utils.tesla_mock_expect(fn %{
