@@ -119,7 +119,7 @@ defmodule Telegram.Api do
 
   use Tesla, only: [:post], docs: false
 
-  if Mix.env == :test do
+  if Application.get_env(:telegram, :mock) == true do
     adapter :mock
   else
     adapter :hackney
@@ -127,13 +127,15 @@ defmodule Telegram.Api do
 
   plug Tesla.Middleware.Tuples
   plug Tesla.Middleware.BaseUrl, @api_base_url
-  plug Tesla.Middleware.Opts, [:insecure] ++ [recv_timeout: @recv_timeout, connect_timeout: @connect_timeout]
+
+  plug Tesla.Middleware.Opts, [recv_timeout: @recv_timeout, connect_timeout: @connect_timeout]
+
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Retry
 
-  @type token :: String.t
-  @type method :: String.t
-  @type options :: Keyword.t
+  @type token :: String.t()
+  @type method :: String.t()
+  @type options :: Keyword.t()
   @type request_result :: {:ok, term} | {:error, term}
 
   @doc """
@@ -163,8 +165,10 @@ defmodule Telegram.Api do
     case env.body do
       %{"ok" => true, "result" => result} ->
         {:ok, result}
+
       %{"ok" => false, "description" => description} ->
         {:error, description}
+
       _ ->
         {:error, {:http_error, env.status}}
     end
@@ -175,33 +179,32 @@ defmodule Telegram.Api do
   end
 
   defp request_with_file?(options) do
-    Enum.any?(options, &(
-      match?({_name, {:file, _}}, &1) or
-      match?({_name, {:file_content, _, _}}, &1))
+    Enum.any?(
+      options,
+      &(match?({_name, {:file, _}}, &1) or match?({_name, {:file_content, _, _}}, &1))
     )
   end
 
   defp do_multipart_body(options) do
-    Enum.reduce(options, Tesla.Multipart.new(),
-      fn
-        ({name, {:file, file}}, multipart) ->
-          Tesla.Multipart.add_file(multipart, file, name: to_string(name))
-        ({name, {:file_content, file_content, filename}}, multipart) ->
-          Tesla.Multipart.add_file_content(multipart, file_content, filename, name: to_string(name))
-        ({name, value}, multipart) ->
-          Tesla.Multipart.add_field(multipart, to_string(name), to_string(value))
-      end
-    )
+    Enum.reduce(options, Tesla.Multipart.new(), fn
+      {name, {:file, file}}, multipart ->
+        Tesla.Multipart.add_file(multipart, file, name: to_string(name))
+
+      {name, {:file_content, file_content, filename}}, multipart ->
+        Tesla.Multipart.add_file_content(multipart, file_content, filename, name: to_string(name))
+
+      {name, value}, multipart ->
+        Tesla.Multipart.add_field(multipart, to_string(name), to_string(value))
+    end)
   end
 
   defp do_json_markup(options) do
-    Enum.map(options,
-      fn
-        ({name, {:json, value}}) ->
-          {name, Poison.encode!(value)}
-        (others) ->
-          others
-      end
-    )
+    Enum.map(options, fn
+      {name, {:json, value}} ->
+        {name, Poison.encode!(value)}
+
+      others ->
+        others
+    end)
   end
 end

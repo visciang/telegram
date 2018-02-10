@@ -146,19 +146,19 @@ defmodule Simple.Bot do
     # handle the commands: "/ciao" and "/hello"
 
     # reply with a text message
-    request "sendMessage",
+    request("sendMessage",
       chat_id: update["chat"]["id"],
-      text: "ciao! #{inspect args}"
+      text: "ciao! #{inspect args}")
   end
 
   command unknown do
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "Unknow command `#{unknown}`"
+    request("sendMessage", chat_id: update["chat"]["id"],
+      text: "Unknow command `#{unknown}`")
   end
 
   message do
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "Hey! You sent me a message: #{inspect update}"
+    request("sendMessage", chat_id: update["chat"]["id"],
+      text: "Hey! You sent me a message: #{inspect update}")
   end
 
   edited_message do

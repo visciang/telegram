@@ -7,53 +7,71 @@ defmodule Example.Bot do
   require Logger
 
   use Telegram.Bot,
-    token: "234067150:AAE4QJ1E2XeUuAjOZeQ3bb1nWzqAOoOMJW8",
-    username: "raspberry_favaglie_bot",
-    auth: ["visciang", "MademoiselleCake", "lofortef"],
+    token: ,
+    username: ,
+    auth: ,
     purge: true
 
   command "ciao", args do
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "ciao! #{inspect args}"
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
+      text: "ciao! #{inspect(args)}"
+    )
   end
 
   command ["arrivederci", "goodbye"], args do
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "arrivederci! #{inspect args}"
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
+      text: "arrivederci! #{inspect(args)}"
+    )
   end
 
   command "echo", _args do
     # update var is injected in every macro body
     # and holds the received telegram Update object
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "received update: #{inspect update}"
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
+      text: "received update: #{inspect(update)}"
+    )
   end
 
   command "photo", _args do
-    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file, "./example/photo.jpg"}
+    request("sendPhoto", chat_id: update["chat"]["id"], photo: {:file, "./example/photo.jpg"})
   end
 
   command "photo2", _args do
     filename = "./example/photo.jpg"
     photo = File.read!(filename)
-    request "sendPhoto", chat_id: update["chat"]["id"], photo: {:file_content, photo, filename}
+    request("sendPhoto", chat_id: update["chat"]["id"], photo: {:file_content, photo, filename})
   end
 
   command "halt", _ do
-    request "sendMessage", chat_id: update["chat"]["id"],
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
       text: "bye"
+    )
 
-    halt "HALT!"
+    halt("HALT!")
   end
 
   command unknown do
-    request "sendMessage", chat_id: update["chat"]["id"],
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
       text: "Unknow command `#{unknown}`"
+    )
   end
 
   message do
-    request "sendMessage", chat_id: update["chat"]["id"],
-      text: "Hey! You sent me a message: #{inspect update}"
+    request(
+      "sendMessage",
+      chat_id: update["chat"]["id"],
+      text: "Hey! You sent me a message: #{inspect(update)}"
+    )
   end
 
   edited_message do

@@ -4,9 +4,9 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.3.5",
+      version: "0.3.6",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
       deps: deps(),
       docs: docs()
@@ -25,6 +25,7 @@ defmodule Telegram.Mixfile do
       {:hackney, "~> 1.9"},
       {:poison, "~> 3.1"},
       {:excoveralls, "~> 0.8", only: :test},
+      {:meck, "~> 0.8.9", only: :test},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
   end

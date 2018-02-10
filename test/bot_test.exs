@@ -2,52 +2,87 @@ defmodule Test.Base do
   import ExUnit.Assertions
   require Test.Utils, as: Utils
 
-  @after_timeout (Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000) + 1000
+  @after_timeout Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000 + 1000
 
   defmacro test_base(test_name, type, text_field, send_text) do
     quote do
       test unquote(test_name), context do
-        Test.Base.do_test(context.bot, unquote(test_name), unquote(type), unquote(text_field), unquote(send_text))
+        Test.Base.do_test(
+          context.bot,
+          unquote(test_name),
+          unquote(type),
+          unquote(text_field),
+          unquote(send_text)
+        )
       end
     end
   end
 
   def do_test(bot, test_name, type, text_field, send_text) do
-    assert :ok == Utils.tesla_mock_expect fn
-      %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-        result = [%{"update_id" => 1, type => %{text_field => send_text, "from" => %{"username" => "tester"}}}]
-        response = %{"ok" => true, "result" => result}
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-    end
+    assert :ok ==
+             Utils.tesla_mock_expect(fn %{
+                                          method: Utils.http_method(),
+                                          url: Utils.tg_url("getUpdates")
+                                        } ->
+               result = [
+                 %{
+                   "update_id" => 1,
+                   type => %{text_field => send_text, "from" => %{"username" => "tester"}}
+                 }
+               ]
+
+               response = %{"ok" => true, "result" => result}
+               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+             end)
 
     body = ~s({"result":"ok #{test_name}"})
-    assert :ok == Utils.tesla_mock_expect fn
-      %{method: Utils.http_method, url: Utils.tg_url("testResult"), body: ^body} ->
-        %Tesla.Env{status: 200}
-    end
 
-    assert :ok == Utils.tesla_mock_expect fn
-      %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-        request = Poison.decode!(body)
-        assert request["offset"] == 2
-        result = [%{"update_id" => 2, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
-        response = %{"ok" => true, "result" => result}
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-    end
+    assert :ok ==
+             Utils.tesla_mock_expect(fn %{
+                                          method: Utils.http_method(),
+                                          url: Utils.tg_url("testResult"),
+                                          body: ^body
+                                        } ->
+               %Tesla.Env{status: 200}
+             end)
+
+    assert :ok ==
+             Utils.tesla_mock_expect(fn %{
+                                          method: Utils.http_method(),
+                                          url: Utils.tg_url("getUpdates"),
+                                          body: body
+                                        } ->
+               request = Poison.decode!(body)
+               assert request["offset"] == 2
+
+               result = [
+                 %{
+                   "update_id" => 2,
+                   "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}
+                 }
+               ]
+
+               response = %{"ok" => true, "result" => result}
+               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+             end)
 
     assert :ok == Test.Base.wait_exit(bot)
   end
 
   def wait_exit(proc) do
     # confirm last message on halt
-    assert :ok == Utils.tesla_mock_expect fn
-      %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-        request = Poison.decode!(body)
-        assert request["timeout"] == 0
-        result = []
-        response = %{"ok" => true, "result" => result}
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-    end
+    assert :ok ==
+             Utils.tesla_mock_expect(fn %{
+                                          method: Utils.http_method(),
+                                          url: Utils.tg_url("getUpdates"),
+                                          body: body
+                                        } ->
+               request = Poison.decode!(body)
+               assert request["timeout"] == 0
+               result = []
+               response = %{"ok" => true, "result" => result}
+               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+             end)
 
     ref = Process.monitor(proc)
 
@@ -94,12 +129,13 @@ defmodule Test.Telegram.Bot do
   end
 
   defp expect_get_me(_context) do
-    assert :ok == Utils.tesla_mock_expect fn
-      %{method: Utils.http_method, url: Utils.tg_url("getMe")} ->
-        result = %{"username" => "test_bot"}
-        response = %{"ok" => true, "result" => result}
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-    end
+    assert :ok ==
+             Utils.tesla_mock_expect(fn %{method: Utils.http_method(), url: Utils.tg_url("getMe")} ->
+               result = %{"username" => "test_bot"}
+               response = %{"ok" => true, "result" => result}
+               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+             end)
+
     :ok
   end
 
@@ -165,58 +201,132 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_good_bot, :expect_get_me]
 
     test "no update", context do
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-          result = []
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = []
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-          result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
     end
 
-    test "response error", context do
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-          response = %{"ok" => false,  "description" => "AZZ"}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+    test "halt the system", context do
+      # mock System.stop
+      :meck.new(System, [:passthrough])
+      :meck.expect(System, :stop, fn -> nil end)
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-          result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "/system_halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
+      assert :ok == Test.Base.wait_exit(context.bot)
+
+      # assert System.stop mock has been called
+      assert true == :meck.called(System, :stop, :_, context.bot)
+      :meck.unload(System)
+    end
+
+    test "response error", context do
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 response = %{"ok" => false, "description" => "AZZ"}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
     end
 
     test "unauthorized user", context do
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          request = Poison.decode!(body)
-          assert request["offset"] == nil
-          result = [%{"update_id" => 1, "message" => %{"text" => "unauth", "from" => %{"username" => "unauth_user"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 request = Poison.decode!(body)
+                 assert request["offset"] == nil
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          request = Poison.decode!(body)
-          assert request["offset"] == 2
-          result = [%{"update_id" => 2, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "unauth", "from" => %{"username" => "unauth_user"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 request = Poison.decode!(body)
+                 assert request["offset"] == 2
+
+                 result = [
+                   %{
+                     "update_id" => 2,
+                     "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
     end
@@ -226,25 +336,40 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_good_bot]
 
     test "Telegram.Bot bootstrap getMe retries", context do
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getMe")} ->
-          response = %{"ok" => false, "description" => "500"}
-          Map.merge(%Tesla.Env{status: 500}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getMe")
+                                          } ->
+                 response = %{"ok" => false, "description" => "500"}
+                 Map.merge(%Tesla.Env{status: 500}, Utils.tesla_env_json(response))
+               end)
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getMe")} ->
-          result = %{"username" => "test_bot"}
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getMe")
+                                          } ->
+                 result = %{"username" => "test_bot"}
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates")} ->
-          result = [%{"update_id" => 1, "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates")
+                                          } ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{"text" => "/halt", "from" => %{"username" => "tester"}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
     end
@@ -254,58 +379,121 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_purge_bot, :expect_get_me]
 
     test "Telegram.Bot purge old messages", context do
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          now = DateTime.utc_now() |> DateTime.to_unix(:second)
-          old = now - 1000
-    
-          request = Poison.decode!(body)
-          assert request["offset"] == nil
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 now = DateTime.utc_now() |> DateTime.to_unix(:second)
+                 old = now - 1000
 
-          result = [%{"update_id" => 1, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}},
-                    %{"update_id" => 2, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+                 request = Poison.decode!(body)
+                 assert request["offset"] == nil
 
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          now = DateTime.utc_now() |> DateTime.to_unix(:second)
-          old = now - 1000
-    
-          request = Poison.decode!(body)
-          assert request["offset"] == 3
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "message" => %{
+                       "text" => "OLD",
+                       "date" => old,
+                       "from" => %{"username" => "tester"}
+                     }
+                   },
+                   %{
+                     "update_id" => 2,
+                     "message" => %{
+                       "text" => "OLD",
+                       "date" => old,
+                       "from" => %{"username" => "tester"}
+                     }
+                   }
+                 ]
 
-          result = [%{"update_id" => 3, "message" => %{"text" => "OLD", "date" => old, "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 now = DateTime.utc_now() |> DateTime.to_unix(:second)
+                 old = now - 1000
+
+                 request = Poison.decode!(body)
+                 assert request["offset"] == 3
+
+                 result = [
+                   %{
+                     "update_id" => 3,
+                     "message" => %{
+                       "text" => "OLD",
+                       "date" => old,
+                       "from" => %{"username" => "tester"}
+                     }
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       # first not purged update
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          now = DateTime.utc_now() |> DateTime.to_unix(:second)
-    
-          request = Poison.decode!(body)
-          assert request["offset"] == 4
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-          result = [%{"update_id" => 4, "message" => %{"text" => "/halt", "date" => now, "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+                 request = Poison.decode!(body)
+                 assert request["offset"] == 4
+
+                 result = [
+                   %{
+                     "update_id" => 4,
+                     "message" => %{
+                       "text" => "/halt",
+                       "date" => now,
+                       "from" => %{"username" => "tester"}
+                     }
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       # first not purged update asked again in the main loop
-      assert :ok == Utils.tesla_mock_expect fn
-        %{method: Utils.http_method, url: Utils.tg_url("getUpdates"), body: body} ->
-          now = DateTime.utc_now() |> DateTime.to_unix(:second)
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getUpdates"),
+                                            body: body
+                                          } ->
+                 now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-          request = Poison.decode!(body)
-          assert request["timeout"] != 0
+                 request = Poison.decode!(body)
+                 assert request["timeout"] != 0
 
-          result = [%{"update_id" => 4, "message" => %{"text" => "/halt", "date" => now, "from" => %{"username" => "tester"}}}]
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end
+                 result = [
+                   %{
+                     "update_id" => 4,
+                     "message" => %{
+                       "text" => "/halt",
+                       "date" => now,
+                       "from" => %{"username" => "tester"}
+                     }
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
     end
@@ -315,13 +503,16 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_good_bot]
 
     test "Telegram.Bot wrong bot username", context do
-      assert :ok == Utils.tesla_mock_expect(fn
-        %{method: Utils.http_method, url: Utils.tg_url("getMe")} ->
-          result = %{"username" => "not_test_bot"}
-          response = %{"ok" => true, "result" => result}
-          Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
-      end)
-  
+      assert :ok ==
+               Utils.tesla_mock_expect(fn %{
+                                            method: Utils.http_method(),
+                                            url: Utils.tg_url("getMe")
+                                          } ->
+                 result = %{"username" => "not_test_bot"}
+                 response = %{"ok" => true, "result" => result}
+                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               end)
+
       assert :ok == Test.Base.wait_exit_with_ArgumentError(context.bot)
     end
   end
