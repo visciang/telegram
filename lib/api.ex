@@ -114,7 +114,7 @@ defmodule Telegram.Api do
 
   @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
   # timeout configuration opts unit: seconds
-  @recv_timeout Application.get_env(:telegram, :timeout, 60) * 1000
+  @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
   @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
 
   use Tesla, only: [:post], docs: false
