@@ -92,6 +92,26 @@ defmodule Telegram.Api do
   Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file_content, photo, "photo.jpg"})
   ```
 
+  ## Downloading files
+
+  To download a file from the telegram server you need a `file_path` pointer to the file.
+  With that you can download the file via `Telegram.Api.file`
+
+  ```elixir
+  {:ok, res} = Telegram.Api.request(token, "sendPhoto", chat_id: 12345, photo: {:file, "example/photo.jpg"})
+  # pick the 'file_obj' with the desired resolution
+  [file_obj | _] = res["photo"]
+  # get the 'file_id'
+  file_id = file_obj["file_id"]
+  ```
+
+  ### [getFile](https://core.telegram.org/bots/api#getfile)
+
+  ```elixir
+  {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
+  {:ok, file} = Telegram.Api.file(token, file_path)
+  ```
+
   ## Reply Markup
 
   If a API parameter has a "A JSON-serialized object" type (InlineKeyboardMarkup, ReplyKeyboardMarkup, etc),
@@ -117,7 +137,7 @@ defmodule Telegram.Api do
   @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
   @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
 
-  use Tesla, only: [:post], docs: false
+  use Tesla, only: [:get, :post], docs: false
 
   if Application.get_env(:telegram, :mock) == true do
     adapter :mock
@@ -136,7 +156,8 @@ defmodule Telegram.Api do
   @type token :: String.t()
   @type method :: String.t()
   @type options :: Keyword.t()
-  @type request_result :: {:ok, term} | {:error, term}
+  @type file_path :: String.t()
+  @type request_result :: {:ok, term} | {:error, term} | no_return()
 
   @doc """
   Send a Telegram Bot API request.
@@ -154,6 +175,44 @@ defmodule Telegram.Api do
       # body encoded as "application/json"
       do_request(token, method, Map.new(options))
     end
+  end
+
+  @doc """
+  Download a file.
+  
+  Reference: [BOT Api](https://core.telegram.org/bots/api#file)
+
+  Example:
+  ```elixir
+  # send a photo
+  {:ok, res} = Telegram.Api.request(token, "sendPhoto", chat_id: 12345, photo: {:file, "example/photo.jpg"})
+  # pick the 'file_obj' with the desired resolution
+  [file_obj | _] = res["photo"]
+  # get the 'file_id'
+  file_id = file_obj["file_id"]
+
+  # obtain the 'file_path' to dowload the file identified by 'file_id'
+  {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
+  {:ok, file} = Telegram.Api.file(token, file_path)
+  ```
+  """
+  @spec file(token, file_path) :: request_result
+  def file(token, file_path) do
+    result = get("/file/bot#{token}/#{file_path}")
+    do_file(result)
+  end
+
+  defp do_file({:ok, env}) do
+    case env.status do
+      200 ->
+        {:ok, env.body}
+      status ->
+        {:error, {:http_error, status}}
+    end
+  end
+  
+  defp do_file({:error, reason}) do
+    {:error, reason}
   end
 
   defp do_request(token, method, body) do

@@ -15,19 +15,19 @@ defmodule Telegram.Bot do
       # handle the commands: "/ciao" and "/hello"
 
       # reply with a text message
-      request "sendMessage",
+      request("sendMessage",
         chat_id: update["chat"]["id"],
-        text: "ciao! #{inspect args}"
+        text: "ciao! #{inspect args}")
     end
 
     command unknown do
-      request "sendMessage", chat_id: update["chat"]["id"],
-        text: "Unknow command `#{unknown}`"
+      request("sendMessage", chat_id: update["chat"]["id"],
+        text: "Unknow command `#{unknown}`")
     end
 
     message do
-      request "sendMessage", chat_id: update["chat"]["id"],
-        text: "Hey! You sent me a message: #{inspect update}"
+      request("sendMessage", chat_id: update["chat"]["id"],
+        text: "Hey! You sent me a message: #{inspect update}")
     end
 
     edited_message do
@@ -367,8 +367,10 @@ defmodule Telegram.Bot.Dsl do
   end
   ```
   """
+  @spec halt(message :: String.t()) :: no_return()
+  @spec halt(message :: String.t(), system_stop :: boolean()) :: no_return()
   def halt(message, system_stop \\ false) do
-    raise Telegram.Bot.Halt, message: message, system_stop: system_stop
+    raise(Telegram.Bot.Halt, message: message, system_stop: system_stop)
   end
 
   @doc ~S"""

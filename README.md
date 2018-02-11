@@ -98,16 +98,36 @@ Telegram.Api.request(token, "getUpdates", offset: -1, timeout: 30)
 
 ### Sending files
 
-  If a API parameter has a InputFile type and you want to send a local file,
-  for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
-  value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
-  wrap it in {:file_content, data, "photo.jpg"} tuple.
+If a API parameter has a InputFile type and you want to send a local file,
+for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
+value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
+wrap it in {:file_content, data, "photo.jpg"} tuple.
 
 #### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
 ```elixir
 Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file, "/tmp/photo.jpg"})
 Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file_content, photo, "photo.jpg"})
+```
+
+### Downloading files
+
+To download a file from the telegram server you need a `file_path` pointer to the file.
+With that you can download the file via `Telegram.Api.file`.
+
+```elixir
+{:ok, res} = Telegram.Api.request(token, "sendPhoto", chat_id: 12345, photo: {:file, "example/photo.jpg"})
+# pick the 'file_obj' with the desired resolution
+[file_obj | _] = res["photo"]
+# get the 'file_id'
+file_id = file_obj["file_id"]
+```
+
+#### [getFile](https://core.telegram.org/bots/api#getfile)
+
+```elixir
+{:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
+{:ok, file} = Telegram.Api.file(token, file_path)
 ```
 
 ### Reply Markup
