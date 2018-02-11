@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.18.1">
-    <title>Telegram – telegram v0.3.2</title>
-    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
+    <meta name="generator" content="ExDoc v0.18.2">
+    <title>Telegram – telegram v0.4.0</title>
+    <link rel="stylesheet" href="dist/app-81d381dea4.css" />
     
-    <script src="dist/sidebar_items-96f1cc6c5a.js"></script>
+    <script src="dist/sidebar_items-b392b9fe6a.js"></script>
     
     
     
@@ -18,9 +18,13 @@
     <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
 <div class="main">
-<button class="sidebar-toggle">
+<button class="sidebar-button sidebar-toggle">
   <span class="icon-menu" aria-hidden="true"></span>
   <span class="sr-only">Toggle Sidebar</span>
+</button>
+<button class="sidebar-button night-mode-toggle">
+  <span class="icon-theme" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Theme</span>
 </button>
 <section class="sidebar">
 
@@ -31,7 +35,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.3.2
+        v0.4.0
       </h2>
     </div>
     
@@ -41,7 +45,7 @@
     <button type="submit" class="search-button">
       <span class="icon-search" aria-hidden="true"></span>
     </button>
-    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="Search" aria-label="Search" autocomplete="off" />
   </form>
 
   <ul class="sidebar-listNav">
@@ -65,7 +69,7 @@
 
 
 <h1>Telegram</h1>
-<p><a href="https://travis-ci.org/visciang/telegram"><img src="https://travis-ci.org/visciang/telegram.svg?branch=master" alt="Build Status"/></a> <a href="https://visciang.github.io/telegram/readme.html"><img src="https://img.shields.io/badge/docs-latest-green.svg" alt="Docs"/></a> <a href="https://coveralls.io/github/visciang/telegram"><img src="https://coveralls.io/repos/github/visciang/telegram/badge.svg" alt="Coverage Status"/></a></p>
+<p><a href="https://travis-ci.org/visciang/telegram"><img src="https://travis-ci.org/visciang/telegram.svg?branch=master" alt="Build Status"/></a> <a href="https://visciang.github.io/telegram/readme.html"><img src="https://img.shields.io/badge/docs-latest-green.svg" alt="Docs"/></a> <a href="https://coveralls.io/github/visciang/telegram?branch=master"><img src="https://coveralls.io/repos/github/visciang/telegram/badge.svg?branch=master" alt="Coverage Status"/></a></p>
 <p>Telegram library for the Elixir language.</p>
 <h2 id="installation" class="section-heading">
   <a href="#installation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -155,13 +159,28 @@ with new BOT API versions (as much as they remain backward compatible).</p>
   Sending files
 </h3>
 
-<p>  If a API parameter has a InputFile type and you want to send a local file,
-  for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
-  value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>. If the file content is in memory
-  wrap it in {:file_content, data, “photo.jpg”} tuple.</p>
+<p>If a API parameter has a InputFile type and you want to send a local file,
+for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
+value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>. If the file content is in memory
+wrap it in {:file_content, data, “photo.jpg”} tuple.</p>
 <h4><a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a></h4>
 <pre><code class="elixir">Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file, &quot;/tmp/photo.jpg&quot;})
 Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file_content, photo, &quot;photo.jpg&quot;})</code></pre>
+<h3 id="downloading-files" class="section-heading">
+  <a href="#downloading-files" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Downloading files
+</h3>
+
+<p>To download a file from the telegram server you need a <code class="inline">file_path</code> pointer to the file.
+With that you can download the file via <code class="inline">Telegram.Api.file</code>.</p>
+<pre><code class="elixir">{:ok, res} = Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 12345, photo: {:file, &quot;example/photo.jpg&quot;})
+# pick the &#39;file_obj&#39; with the desired resolution
+[file_obj | _] = res[&quot;photo&quot;]
+# get the &#39;file_id&#39;
+file_id = file_obj[&quot;file_id&quot;]</code></pre>
+<h4><a href="https://core.telegram.org/bots/api#getfile">getFile</a></h4>
+<pre><code class="elixir">{:ok, %{&quot;file_path&quot; =&gt; file_path}} = Telegram.Api.request(token, &quot;getFile&quot;, file_id: file_id)
+{:ok, file} = Telegram.Api.file(token, file_path)</code></pre>
 <h3 id="reply-markup" class="section-heading">
   <a href="#reply-markup" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Reply Markup
@@ -199,19 +218,19 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     # handle the commands: &quot;/ciao&quot; and &quot;/hello&quot;
 
     # reply with a text message
-    request &quot;sendMessage&quot;,
+    request(&quot;sendMessage&quot;,
       chat_id: update[&quot;chat&quot;][&quot;id&quot;],
-      text: &quot;ciao! #{inspect args}&quot;
+      text: &quot;ciao! #{inspect args}&quot;)
   end
 
   command unknown do
-    request &quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
-      text: &quot;Unknow command `#{unknown}`&quot;
+    request(&quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+      text: &quot;Unknow command `#{unknown}`&quot;)
   end
 
   message do
-    request &quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
-      text: &quot;Hey! You sent me a message: #{inspect update}&quot;
+    request(&quot;sendMessage&quot;, chat_id: update[&quot;chat&quot;][&quot;id&quot;],
+      text: &quot;Hey! You sent me a message: #{inspect update}&quot;)
   end
 
   edited_message do
@@ -281,20 +300,19 @@ Supervisor.start_link(children, opts)</code></pre>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.2),
           </span>
           <span class="line">
             designed by
             <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
             </span>
         </p>
-        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
       </footer>
     </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-778c9ef903.js"></script>
+  <script src="dist/app-ad33bc0e7d.js"></script>
   
   
   
