@@ -140,18 +140,18 @@ defmodule Telegram.Api do
   use Tesla, only: [:get, :post], docs: false
 
   if Application.get_env(:telegram, :mock) == true do
-    adapter :mock
+    adapter(:mock)
   else
-    adapter :hackney
+    adapter(:hackney)
   end
 
-  plug Tesla.Middleware.Tuples
-  plug Tesla.Middleware.BaseUrl, @api_base_url
+  plug(Tesla.Middleware.Tuples)
+  plug(Tesla.Middleware.BaseUrl, @api_base_url)
 
-  plug Tesla.Middleware.Opts, [recv_timeout: @recv_timeout, connect_timeout: @connect_timeout]
+  plug(Tesla.Middleware.Opts, recv_timeout: @recv_timeout, connect_timeout: @connect_timeout)
 
-  plug Tesla.Middleware.JSON
-  plug Tesla.Middleware.Retry
+  plug(Tesla.Middleware.JSON)
+  plug(Tesla.Middleware.Retry)
 
   @type token :: String.t()
   @type method :: String.t()
@@ -179,7 +179,7 @@ defmodule Telegram.Api do
 
   @doc """
   Download a file.
-  
+
   Reference: [BOT Api](https://core.telegram.org/bots/api#file)
 
   Example:
@@ -206,11 +206,12 @@ defmodule Telegram.Api do
     case env.status do
       200 ->
         {:ok, env.body}
+
       status ->
         {:error, {:http_error, status}}
     end
   end
-  
+
   defp do_file({:error, reason}) do
     {:error, reason}
   end

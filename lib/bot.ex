@@ -435,6 +435,78 @@ defmodule Telegram.Bot.Dsl do
   end
 
   @doc ~S"""
+  Match Telegram callback_data "/callback_query arg1 arg2" (with args, if any).
+
+  ```elixir
+  callback_query "set_language", args do
+    # ex: callback_data -> "/set_language en 1"
+    #     args = ["en", "1"]
+  end
+  ```
+
+  ```elixir
+  callback_query "set_language", ["fr", "2"] do
+    # ex: callback_data -> "/set_language fr 2"
+  end
+  ```
+
+  or a set of commands:
+
+  ```elixir
+  callback_query ["set_language", "set_alternative_language"], args do
+    # handler code
+  end
+  ```
+  """
+
+  defmacro callback_query(text, args, do: body) when is_binary(text) do
+    quote_handle_update_for_callback_query(text, args, body)
+  end
+
+  defmacro callback_query(callback_queries, args, do: body) when is_list(callback_queries) do
+    Enum.each(callback_queries, fn callback_query ->
+      if not is_binary(callback_query) do
+        raise ArgumentError, message: "expected list of callback_queries as strings"
+      end
+    end)
+
+    Enum.map(callback_queries, &quote_handle_update_for_callback_query(&1, args, body))
+  end
+
+  @doc ~S"""
+  Match any other not matched callback_query.
+
+  ```elixir
+  callback_query "set_some", args do
+    # handler code
+  end
+
+  callback_query unknown do
+    # ex: telegram -> "/end hello"
+    #     unknown = "end hello"
+  end
+  ```
+  """
+
+  defmacro callback_query(text, do: body) do
+    quote_handle_update_for_callback_query(text, body)
+  end
+
+  @doc ~S"""
+  Match callback_query as a generic Telegram message for retrocompatibility.
+
+  ```elixir
+  callback_query do
+    # handler code
+  end
+  ```
+  """
+
+  defmacro callback_query(do: body) do
+    quote_handle_update_for_callback_query(body)
+  end
+
+  @doc ~S"""
   Match a generic Telegram message.
 
   ```elixir
@@ -463,7 +535,6 @@ defmodule Telegram.Bot.Dsl do
         :edited_message,
         :channel_post,
         :edited_channel_post,
-        :callback_query,
         :shipping_query,
         :pre_checkout_query
       ] do
@@ -584,12 +655,7 @@ defmodule Telegram.Bot.Dsl do
 
   defp quote_handle_update_for_command(text, args, body) do
     if is_list(args) and Enum.all?(args, &is_binary/1) do
-      args_string =
-        if args == [] do
-          ""
-        else
-          " " <> Enum.join(args, " ")
-        end
+      args_string = args_to_string(args)
 
       quote do
         def handle_update(var!(token__), %{
@@ -654,5 +720,57 @@ defmodule Telegram.Bot.Dsl do
         end
       end
     end
+  end
+
+  # retrocompatibility
+  defp quote_handle_update_for_callback_query(body) do
+    quote_handle_update_for_type("callback_query", body)
+  end
+
+  defp quote_handle_update_for_callback_query(text, body) do
+    quote do
+      def handle_update(var!(token__), %{
+            "callback_query" => var!(update) = %{"data" => "/" <> rest}
+          }) do
+        _ = var!(update)
+        _ = var!(token__)
+        unquote(text) = rest
+        unquote(body)
+      end
+    end
+  end
+
+  defp quote_handle_update_for_callback_query(text, args, body) when is_list(args) do
+    args_string = args_to_string(args)
+
+    quote do
+      def handle_update(var!(token__), %{
+            "callback_query" =>
+              var!(update) = %{"data" => "/" <> unquote(text) <> unquote(args_string)}
+          }) do
+        _ = var!(update)
+        _ = var!(token__)
+        unquote(body)
+      end
+    end
+  end
+
+  defp quote_handle_update_for_callback_query(text, args, body) do
+    quote do
+      def handle_update(var!(token__), %{
+            "callback_query" => var!(update) = %{"data" => "/" <> unquote(text) <> " " <> rest}
+          }) do
+        _ = var!(update)
+        _ = var!(token__)
+        unquote(args) = String.split(rest)
+        unquote(body)
+      end
+    end
+  end
+
+  defp args_to_string([]), do: ""
+
+  defp args_to_string(args) do
+    " " <> Enum.join(args, " ")
   end
 end
