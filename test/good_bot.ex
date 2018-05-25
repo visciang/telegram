@@ -66,6 +66,30 @@ defmodule Test.GoodBot do
     end
   end
 
+  callback_query "callback_query_test_9", [] do
+    request("testResult", result: "ok callback_query_test_9.1")
+  end
+
+  callback_query ["callback_query_test_9_a", "callback_query_test_9_b"], [] do
+    request("testResult", result: "ok callback_query_test_9_a_b")
+  end
+
+  callback_query "callback_query_test_9_args", ["a", "b"] do
+    request("testResult", result: "ok callback_query_test_9_a_b_args")
+  end
+
+  callback_query "set_language", ["fr"] do
+    request("testResult", result: "ok test9 french")
+  end
+
+  callback_query "set_language", args do
+    request("testResult", result: "ok test9 #{args}")
+  end
+
+  callback_query unknown do
+    request("testResult", result: "ok test9 unknown #{unknown}")
+  end
+
   callback_query do
     if "test9" == update["text"] do
       request("testResult", result: "ok test9")

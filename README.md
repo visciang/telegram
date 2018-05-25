@@ -181,6 +181,10 @@ defmodule Simple.Bot do
       text: "Hey! You sent me a message: #{inspect update}")
   end
 
+  callback_query "set_language", ["en"] do
+    # handler code
+  end
+
   edited_message do
     # handler code
   end
@@ -198,10 +202,6 @@ defmodule Simple.Bot do
   end
 
   chosen_inline_result _query do
-    # handler code
-  end
-
-  callback_query do
     # handler code
   end
 

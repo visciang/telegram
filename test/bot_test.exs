@@ -169,6 +169,33 @@ defmodule Test.Telegram.Bot do
 
   describe "Telegram.Bot.Dsl.callback_query macros" do
     setup [:start_tesla_mock, :start_good_bot, :expect_get_me]
+
+    Test.Base.test_base(
+      "callback_query_test_9.1",
+      "callback_query",
+      "data",
+      "/callback_query_test_9"
+    )
+
+    Test.Base.test_base(
+      "callback_query_test_9_a_b",
+      "callback_query",
+      "data",
+      "/callback_query_test_9_a"
+    )
+
+    Test.Base.test_base(
+      "callback_query_test_9_a_b_args",
+      "callback_query",
+      "data",
+      "/callback_query_test_9_args a b"
+    )
+
+    Test.Base.test_base("test9 en", "callback_query", "data", "/set_language en")
+    Test.Base.test_base("test9 french", "callback_query", "data", "/set_language fr")
+    Test.Base.test_base("test9 unknown unknown a", "callback_query", "data", "/unknown a")
+
+    # Is retrocompatibility necessary?
     Test.Base.test_base("test9", "callback_query", "text", "test9")
   end
 
@@ -521,6 +548,20 @@ defmodule Test.Telegram.Bot do
     test "Bot with bad command list definition" do
       assert_raise ArgumentError, "expected list of commands as strings", fn ->
         Code.require_file("bad_bot.ex", __DIR__)
+      end
+    end
+
+    test "Bot with bad callback_query list definition" do
+      assert_raise ArgumentError, "expected list of callback_queries as strings", fn ->
+        defmodule BadBot.CallbackQuery do
+          use Telegram.Bot,
+            token: "token",
+            username: "username"
+
+          callback_query ["a", :not_a_string], _args do
+            :ok
+          end
+        end
       end
     end
   end
