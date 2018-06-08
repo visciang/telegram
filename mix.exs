@@ -21,7 +21,7 @@ defmodule Telegram.Mixfile do
 
   defp deps do
     [
-      {:tesla, "~> 0.10"},
+      {:tesla, "~> 1.0"},
       {:hackney, "~> 1.9"},
       {:poison, "~> 3.1"},
       {:excoveralls, "~> 0.8", only: :test},
