@@ -8,7 +8,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
@@ -19,7 +19,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => false, "description" => description}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:error, description} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
@@ -43,7 +43,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url(), body: ^request} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -68,7 +68,7 @@ defmodule Test.Telegram.Api do
                              ]
                            }
                          } ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -93,7 +93,7 @@ defmodule Test.Telegram.Api do
                              ]
                            }
                          } ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -107,7 +107,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url(), body: ^request} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
