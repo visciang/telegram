@@ -24,7 +24,7 @@ defmodule Test.Utils do
   end
 
   def tesla_env_json(data) do
-    %Tesla.Env{headers: %{"Content-Type" => "application/json"}, body: Poison.encode!(data)}
+    %Tesla.Env{headers: [{"content-type", "application/json"}], body: Jason.encode!(data)}
   end
 
   def tesla_mock_global_async(test_pid) do

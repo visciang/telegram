@@ -52,7 +52,7 @@ defmodule Test.Base do
                                           url: Utils.tg_url("getUpdates"),
                                           body: body
                                         } ->
-               request = Poison.decode!(body)
+               request = Jason.decode!(body)
                assert request["offset"] == 2
 
                result = [
@@ -77,7 +77,7 @@ defmodule Test.Base do
                                           url: Utils.tg_url("getUpdates"),
                                           body: body
                                         } ->
-               request = Poison.decode!(body)
+               request = Jason.decode!(body)
                assert request["timeout"] == 0
                result = []
                response = %{"ok" => true, "result" => result}
@@ -294,7 +294,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getUpdates"),
                                             body: body
                                           } ->
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == nil
 
                  result = [
@@ -314,7 +314,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getUpdates"),
                                             body: body
                                           } ->
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 2
 
                  result = [
@@ -388,7 +388,7 @@ defmodule Test.Telegram.Bot do
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
                  old = now - 1000
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == nil
 
                  result = [
@@ -423,7 +423,7 @@ defmodule Test.Telegram.Bot do
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
                  old = now - 1000
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 3
 
                  result = [
@@ -450,7 +450,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 4
 
                  result = [
@@ -477,7 +477,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["timeout"] != 0
 
                  result = [

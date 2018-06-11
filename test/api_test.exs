@@ -38,7 +38,7 @@ defmodule Test.Telegram.Api do
 
     test "request with parameters" do
       parameters = [par1: 1, par2: "aa", par3: %{"a" => 0}]
-      request = Poison.encode!(Map.new(parameters))
+      request = Jason.encode!(Map.new(parameters))
       result = %{"something" => [1, 2, 3]}
       response = %{"ok" => true, "result" => result}
 
@@ -102,7 +102,7 @@ defmodule Test.Telegram.Api do
 
     test "request with 'json_markup' parameter" do
       parameters = [par1: 1, par2: {:json, %{"x" => "y"}}]
-      request = Poison.encode!(Map.new(par1: 1, par2: ~s({"x":"y"})))
+      request = Jason.encode!(Map.new(par1: 1, par2: ~s({"x":"y"})))
       result = %{"something" => [1, 2, 3]}
       response = %{"ok" => true, "result" => result}
 
@@ -126,7 +126,7 @@ defmodule Test.Telegram.Api do
       Tesla.Mock.mock(fn %{method: ^method, url: ^url} ->
         %Tesla.Env{
           status: 200,
-          headers: %{"Content-Type" => "application/octet-stream"},
+          headers: [{"content-type", "application/octet-stream"}],
           body: file_content
         }
       end)
