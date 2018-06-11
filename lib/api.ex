@@ -232,6 +232,7 @@ defmodule Telegram.Api.Client do
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Retry
 
+  @doc false
   def do_request(token, method, body) do
     result = post("/bot#{token}/#{method}", body)
     do_response(result)
@@ -254,6 +255,7 @@ defmodule Telegram.Api.Client do
     {:error, reason}
   end
 
+  @doc false
   def do_file(token, file_path) do
     result = get("/file/bot#{token}/#{file_path}")
     do_file_response(result)
