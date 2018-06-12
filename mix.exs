@@ -7,6 +7,12 @@ defmodule Telegram.Mixfile do
       version: "0.4.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
       test_coverage: [tool: ExCoveralls],
       deps: deps(),
       docs: docs()

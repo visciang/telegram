@@ -36,6 +36,14 @@ defmodule Test.Telegram.Api do
                Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
     end
 
+    test "http adapter error" do
+      Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
+        {:error, :reason}
+      end)
+
+      assert {:error, :reason} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
+    end
+
     test "request with parameters" do
       parameters = [par1: 1, par2: "aa", par3: %{"a" => 0}]
       request = Jason.encode!(Map.new(parameters))
@@ -132,6 +140,19 @@ defmodule Test.Telegram.Api do
       end)
 
       assert {:ok, file_content} == Telegram.Api.file(token, file_path)
+    end
+
+    test "http adapter error" do
+      method = :get
+      token = "token_test"
+      file_path = "file_path_test"
+      url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
+
+      Tesla.Mock.mock(fn %{method: ^method, url: ^url} ->
+        {:error, :reason}
+      end)
+
+      assert {:error, :reason} == Telegram.Api.file(token, file_path)
     end
 
     test "http error" do
