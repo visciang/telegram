@@ -23,10 +23,6 @@ defmodule Test.Utils do
     quote do: unquote(@base_url) <> "/bot" <> unquote(@token) <> "/" <> unquote(tg_method)
   end
 
-  def tesla_env_json(data) do
-    %Tesla.Env{headers: [{"content-type", "application/json"}], body: Jason.encode!(data)}
-  end
-
   def tesla_mock_global_async(test_pid) do
     Tesla.Mock.mock_global(fn request_env ->
       send(test_pid, {:tesla_mock_request_env, self(), request_env})
