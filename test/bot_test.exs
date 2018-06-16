@@ -32,7 +32,7 @@ defmodule Test.Base do
                ]
 
                response = %{"ok" => true, "result" => result}
-               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               Tesla.Mock.json(response, status: 200)
              end)
 
     body = ~s({"result":"ok #{test_name}"})
@@ -52,7 +52,7 @@ defmodule Test.Base do
                                           url: Utils.tg_url("getUpdates"),
                                           body: body
                                         } ->
-               request = Poison.decode!(body)
+               request = Jason.decode!(body)
                assert request["offset"] == 2
 
                result = [
@@ -63,7 +63,7 @@ defmodule Test.Base do
                ]
 
                response = %{"ok" => true, "result" => result}
-               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               Tesla.Mock.json(response, status: 200)
              end)
 
     assert :ok == Test.Base.wait_exit(bot)
@@ -77,11 +77,11 @@ defmodule Test.Base do
                                           url: Utils.tg_url("getUpdates"),
                                           body: body
                                         } ->
-               request = Poison.decode!(body)
+               request = Jason.decode!(body)
                assert request["timeout"] == 0
                result = []
                response = %{"ok" => true, "result" => result}
-               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               Tesla.Mock.json(response, status: 200)
              end)
 
     ref = Process.monitor(proc)
@@ -133,7 +133,7 @@ defmodule Test.Telegram.Bot do
              Utils.tesla_mock_expect(fn %{method: Utils.http_method(), url: Utils.tg_url("getMe")} ->
                result = %{"username" => "test_bot"}
                response = %{"ok" => true, "result" => result}
-               Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+               Tesla.Mock.json(response, status: 200)
              end)
 
     :ok
@@ -208,7 +208,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  result = []
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok ==
@@ -224,7 +224,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -248,7 +248,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -265,7 +265,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getUpdates")
                                           } ->
                  response = %{"ok" => false, "description" => "AZZ"}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok ==
@@ -281,7 +281,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -294,7 +294,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getUpdates"),
                                             body: body
                                           } ->
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == nil
 
                  result = [
@@ -305,7 +305,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok ==
@@ -314,7 +314,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getUpdates"),
                                             body: body
                                           } ->
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 2
 
                  result = [
@@ -325,7 +325,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -342,7 +342,7 @@ defmodule Test.Telegram.Bot do
                                             url: Utils.tg_url("getMe")
                                           } ->
                  response = %{"ok" => false, "description" => "500"}
-                 Map.merge(%Tesla.Env{status: 500}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 500)
                end)
 
       assert :ok ==
@@ -352,7 +352,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  result = %{"username" => "test_bot"}
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok ==
@@ -368,7 +368,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -388,7 +388,7 @@ defmodule Test.Telegram.Bot do
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
                  old = now - 1000
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == nil
 
                  result = [
@@ -411,7 +411,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok ==
@@ -423,7 +423,7 @@ defmodule Test.Telegram.Bot do
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
                  old = now - 1000
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 3
 
                  result = [
@@ -438,7 +438,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       # first not purged update
@@ -450,7 +450,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["offset"] == 4
 
                  result = [
@@ -465,7 +465,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       # first not purged update asked again in the main loop
@@ -477,7 +477,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  now = DateTime.utc_now() |> DateTime.to_unix(:second)
 
-                 request = Poison.decode!(body)
+                 request = Jason.decode!(body)
                  assert request["timeout"] != 0
 
                  result = [
@@ -492,7 +492,7 @@ defmodule Test.Telegram.Bot do
                  ]
 
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit(context.bot)
@@ -510,7 +510,7 @@ defmodule Test.Telegram.Bot do
                                           } ->
                  result = %{"username" => "not_test_bot"}
                  response = %{"ok" => true, "result" => result}
-                 Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+                 Tesla.Mock.json(response, status: 200)
                end)
 
       assert :ok == Test.Base.wait_exit_with_ArgumentError(context.bot)

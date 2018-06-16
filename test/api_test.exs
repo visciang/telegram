@@ -8,7 +8,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
@@ -19,7 +19,7 @@ defmodule Test.Telegram.Api do
       response = %{"ok" => false, "description" => description}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:error, description} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
@@ -36,14 +36,22 @@ defmodule Test.Telegram.Api do
                Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
     end
 
+    test "http adapter error" do
+      Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url()} ->
+        {:error, :reason}
+      end)
+
+      assert {:error, :reason} == Telegram.Api.request(Utils.tg_token(), Utils.tg_method())
+    end
+
     test "request with parameters" do
       parameters = [par1: 1, par2: "aa", par3: %{"a" => 0}]
-      request = Poison.encode!(Map.new(parameters))
+      request = Jason.encode!(Map.new(parameters))
       result = %{"something" => [1, 2, 3]}
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url(), body: ^request} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -68,7 +76,7 @@ defmodule Test.Telegram.Api do
                              ]
                            }
                          } ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -93,7 +101,7 @@ defmodule Test.Telegram.Api do
                              ]
                            }
                          } ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -102,12 +110,12 @@ defmodule Test.Telegram.Api do
 
     test "request with 'json_markup' parameter" do
       parameters = [par1: 1, par2: {:json, %{"x" => "y"}}]
-      request = Poison.encode!(Map.new(par1: 1, par2: ~s({"x":"y"})))
+      request = Jason.encode!(Map.new(par1: 1, par2: ~s({"x":"y"})))
       result = %{"something" => [1, 2, 3]}
       response = %{"ok" => true, "result" => result}
 
       Tesla.Mock.mock(fn %{method: Utils.http_method(), url: Utils.tg_url(), body: ^request} ->
-        Map.merge(%Tesla.Env{status: 200}, Utils.tesla_env_json(response))
+        Tesla.Mock.json(response, status: 200)
       end)
 
       assert {:ok, result} ==
@@ -126,12 +134,25 @@ defmodule Test.Telegram.Api do
       Tesla.Mock.mock(fn %{method: ^method, url: ^url} ->
         %Tesla.Env{
           status: 200,
-          headers: %{"Content-Type" => "application/octet-stream"},
+          headers: [{"content-type", "application/octet-stream"}],
           body: file_content
         }
       end)
 
       assert {:ok, file_content} == Telegram.Api.file(token, file_path)
+    end
+
+    test "http adapter error" do
+      method = :get
+      token = "token_test"
+      file_path = "file_path_test"
+      url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
+
+      Tesla.Mock.mock(fn %{method: ^method, url: ^url} ->
+        {:error, :reason}
+      end)
+
+      assert {:error, :reason} == Telegram.Api.file(token, file_path)
     end
 
     test "http error" do

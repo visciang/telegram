@@ -83,7 +83,7 @@ defmodule Telegram.Api do
   If a API parameter has a InputFile type and you want to send a local file,
   for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
   value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
-  wrap it in {:file_content, data, "photo.jpg"} tuple.
+  wrap it in `{:file_content, data, "photo.jpg"}` tuple.
 
   ### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
@@ -132,31 +132,7 @@ defmodule Telegram.Api do
   ```
   """
 
-  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
-  # timeout configuration opts unit: seconds
-  @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
-  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
-
-  use Tesla, only: [:get, :post], docs: false
-
-  if Application.get_env(:telegram, :mock) == true do
-    adapter :mock
-  else
-    adapter :hackney
-  end
-
-  plug Tesla.Middleware.Tuples
-  plug Tesla.Middleware.BaseUrl, @api_base_url
-
-  plug Tesla.Middleware.Opts, [recv_timeout: @recv_timeout, connect_timeout: @connect_timeout]
-
-  plug Tesla.Middleware.JSON
-  plug Tesla.Middleware.Retry
-
-  @type token :: String.t()
-  @type method :: String.t()
   @type options :: Keyword.t()
-  @type file_path :: String.t()
   @type request_result :: {:ok, term} | {:error, term} | no_return()
 
   @doc """
@@ -164,22 +140,22 @@ defmodule Telegram.Api do
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
-  @spec request(token, method, options) :: request_result
+  @spec request(Telegram.Client.token(), Telegram.Client.method(), options) :: request_result
   def request(token, method, options \\ []) do
     options = do_json_markup(options)
 
     if request_with_file?(options) do
       # body encoded as "multipart/form-data"
-      do_request(token, method, do_multipart_body(options))
+      Telegram.Client.do_request(token, method, do_multipart_body(options))
     else
       # body encoded as "application/json"
-      do_request(token, method, Map.new(options))
+      Telegram.Client.do_request(token, method, Map.new(options))
     end
   end
 
   @doc """
   Download a file.
-  
+
   Reference: [BOT Api](https://core.telegram.org/bots/api#file)
 
   Example:
@@ -196,45 +172,9 @@ defmodule Telegram.Api do
   {:ok, file} = Telegram.Api.file(token, file_path)
   ```
   """
-  @spec file(token, file_path) :: request_result
+  @spec file(Telegram.Client.token(), Telegram.Client.file_path()) :: request_result
   def file(token, file_path) do
-    result = get("/file/bot#{token}/#{file_path}")
-    do_file(result)
-  end
-
-  defp do_file({:ok, env}) do
-    case env.status do
-      200 ->
-        {:ok, env.body}
-      status ->
-        {:error, {:http_error, status}}
-    end
-  end
-  
-  defp do_file({:error, reason}) do
-    {:error, reason}
-  end
-
-  defp do_request(token, method, body) do
-    result = post("/bot#{token}/#{method}", body)
-    do_response(result)
-  end
-
-  defp do_response({:ok, env}) do
-    case env.body do
-      %{"ok" => true, "result" => result} ->
-        {:ok, result}
-
-      %{"ok" => false, "description" => description} ->
-        {:error, description}
-
-      _ ->
-        {:error, {:http_error, env.status}}
-    end
-  end
-
-  defp do_response({:error, reason}) do
-    {:error, reason}
+    Telegram.Client.do_file(token, file_path)
   end
 
   defp request_with_file?(options) do
@@ -260,7 +200,7 @@ defmodule Telegram.Api do
   defp do_json_markup(options) do
     Enum.map(options, fn
       {name, {:json, value}} ->
-        {name, Poison.encode!(value)}
+        {name, Jason.encode!(value)}
 
       others ->
         others
