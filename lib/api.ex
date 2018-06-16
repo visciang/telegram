@@ -140,17 +140,17 @@ defmodule Telegram.Api do
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
-  @spec request(Telegram.Api.Client.token(), Telegram.Api.Client.method(), options) ::
+  @spec request(Telegram.Client.token(), Telegram.Client.method(), options) ::
           request_result
   def request(token, method, options \\ []) do
     options = do_json_markup(options)
 
     if request_with_file?(options) do
       # body encoded as "multipart/form-data"
-      Telegram.Api.Client.do_request(token, method, do_multipart_body(options))
+      Telegram.Client.do_request(token, method, do_multipart_body(options))
     else
       # body encoded as "application/json"
-      Telegram.Api.Client.do_request(token, method, Map.new(options))
+      Telegram.Client.do_request(token, method, Map.new(options))
     end
   end
 
@@ -173,9 +173,9 @@ defmodule Telegram.Api do
   {:ok, file} = Telegram.Api.file(token, file_path)
   ```
   """
-  @spec file(Telegram.Api.Client.token(), Telegram.Api.Client.file_path()) :: request_result
+  @spec file(Telegram.Client.token(), Telegram.Client.file_path()) :: request_result
   def file(token, file_path) do
-    Telegram.Api.Client.do_file(token, file_path)
+    Telegram.Client.do_file(token, file_path)
   end
 
   defp request_with_file?(options) do
@@ -206,72 +206,5 @@ defmodule Telegram.Api do
       others ->
         others
     end)
-  end
-end
-
-defmodule Telegram.Api.Client do
-  @type token :: String.t()
-  @type method :: String.t()
-  @type file_path :: String.t()
-
-  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
-  # timeout configuration opts unit: seconds
-  @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
-  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
-
-  use Tesla, only: [:get, :post], docs: false
-
-  if Application.get_env(:telegram, :mock) == true do
-    adapter Tesla.Mock
-  else
-    adapter Tesla.Adapter.Hackney
-  end
-
-  plug Tesla.Middleware.Opts, recv_timeout: @recv_timeout, connect_timeout: @connect_timeout
-  plug Tesla.Middleware.BaseUrl, @api_base_url
-  plug Tesla.Middleware.JSON
-  plug Tesla.Middleware.Retry
-
-  @doc false
-  def do_request(token, method, body) do
-    result = post("/bot#{token}/#{method}", body)
-    do_response(result)
-  end
-
-  defp do_response({:ok, env}) do
-    case env.body do
-      %{"ok" => true, "result" => result} ->
-        {:ok, result}
-
-      %{"ok" => false, "description" => description} ->
-        {:error, description}
-
-      _ ->
-        {:error, {:http_error, env.status}}
-    end
-  end
-
-  defp do_response({:error, reason}) do
-    {:error, reason}
-  end
-
-  @doc false
-  def do_file(token, file_path) do
-    result = get("/file/bot#{token}/#{file_path}")
-    do_file_response(result)
-  end
-
-  defp do_file_response({:ok, env}) do
-    case env.status do
-      200 ->
-        {:ok, env.body}
-
-      status ->
-        {:error, {:http_error, status}}
-    end
-  end
-
-  defp do_file_response({:error, reason}) do
-    {:error, reason}
   end
 end
