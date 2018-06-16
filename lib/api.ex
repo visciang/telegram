@@ -140,8 +140,7 @@ defmodule Telegram.Api do
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
-  @spec request(Telegram.Client.token(), Telegram.Client.method(), options) ::
-          request_result
+  @spec request(Telegram.Client.token(), Telegram.Client.method(), options) :: request_result
   def request(token, method, options \\ []) do
     options = do_json_markup(options)
 
