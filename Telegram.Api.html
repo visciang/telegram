@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.18.2">
-    <title>Telegram.Api – telegram v0.4.0</title>
-    <link rel="stylesheet" href="dist/app-81d381dea4.css" />
+    <meta name="generator" content="ExDoc v0.18.3">
+    <title>Telegram.Api – telegram v0.5.0</title>
+    <link rel="stylesheet" href="dist/app-480ffdc169.css" />
     
-    <script src="dist/sidebar_items-b392b9fe6a.js"></script>
+    <script src="dist/sidebar_items-6b1b03a7df.js"></script>
     
     
     
@@ -35,7 +35,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.4.0
+        v0.5.0
       </h2>
     </div>
     
@@ -69,7 +69,7 @@
 
 
       <h1>
-        <small class="visible-xs">telegram v0.4.0</small>
+        <small class="visible-xs">telegram v0.5.0</small>
         Telegram.Api
         
           <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L1" title="View Source" class="view-source" rel="help">
@@ -168,7 +168,7 @@ with new BOT API versions (as much as they remain backward compatible).</p>
 <p>If a API parameter has a InputFile type and you want to send a local file,
 for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
 value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>. If the file content is in memory
-wrap it in {:file_content, data, “photo.jpg”} tuple.</p>
+wrap it in <code class="inline">{:file_content, data, &quot;photo.jpg&quot;}</code> tuple.</p>
 <h3 id="module-sendphoto" class="section-heading">
   <a href="#module-sendphoto" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a>
@@ -235,18 +235,6 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:file_path/0">file_path()</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:method/0">method()</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#t:options/0">options()</a>
   </div>
   
@@ -254,12 +242,6 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:request_result/0">request_result()</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:token/0">token()</a>
   </div>
   
 </div>
@@ -309,63 +291,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
             Types
           </h1>
           <div class="types-list">
-            <div class="detail" id="t:file_path/0">
-  
-  
-  <div class="detail-header">
-    <a href="#t:file_path/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <span class="signature">file_path()</span>
-    
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L159" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>file_path() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="t:method/0">
-  
-  
-  <div class="detail-header">
-    <a href="#t:method/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <span class="signature">method()</span>
-    
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L157" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>method() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="t:options/0">
+            <div class="detail" id="t:options/0">
   
   
   <div class="detail-header">
@@ -375,7 +301,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">options()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L158" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L135" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -403,7 +329,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">request_result()</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L160" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L136" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -413,34 +339,6 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
       <div class="specs">
         
           <pre>request_result() :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()} | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="t:token/0">
-  
-  
-  <div class="detail-header">
-    <a href="#t:token/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <span class="signature">token()</span>
-    
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L156" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>token() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
         
       </div>
     
@@ -473,7 +371,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     </a>
     <span class="signature">file(token, file_path)</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L176" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -482,7 +380,7 @@ Telegram.Api.request(token, &quot;sendMessage&quot;, chat_id: 876532, text: &quo
     
       <div class="specs">
         
-          <pre>file(<a href="#t:token/0">token</a>(), <a href="#t:file_path/0">file_path</a>()) :: <a href="#t:request_result/0">request_result</a>()</pre>
+          <pre>file(<a href="Telegram.Client.html#t:token/0">Telegram.Client.token</a>(), <a href="Telegram.Client.html#t:file_path/0">Telegram.Client.file_path</a>()) :: <a href="#t:request_result/0">request_result</a>()</pre>
         
       </div>
     
@@ -516,7 +414,7 @@ file_id = file_obj[&quot;file_id&quot;]
     </a>
     <span class="signature">request(token, method, options \\ [])</span>
     
-      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L168" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/api.ex#L144" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -525,7 +423,8 @@ file_id = file_obj[&quot;file_id&quot;]
     
       <div class="specs">
         
-          <pre>request(<a href="#t:token/0">token</a>(), <a href="#t:method/0">method</a>(), <a href="#t:options/0">options</a>()) :: <a href="#t:request_result/0">request_result</a>()</pre>
+          <pre>request(<a href="Telegram.Client.html#t:token/0">Telegram.Client.token</a>(), <a href="Telegram.Client.html#t:method/0">Telegram.Client.method</a>(), <a href="#t:options/0">options</a>()) ::
+  <a href="#t:request_result/0">request_result</a>()</pre>
         
       </div>
     
@@ -545,7 +444,7 @@ file_id = file_obj[&quot;file_id&quot;]
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.2),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.3),
           </span>
           <span class="line">
             designed by
@@ -557,7 +456,7 @@ file_id = file_obj[&quot;file_id&quot;]
   </div>
 </section>
 </div>
-  <script src="dist/app-ad33bc0e7d.js"></script>
+  <script src="dist/app-9bd040e5e5.js"></script>
   
   
   

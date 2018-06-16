@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.18.2">
-    <title>Telegram – telegram v0.4.0</title>
-    <link rel="stylesheet" href="dist/app-81d381dea4.css" />
+    <meta name="generator" content="ExDoc v0.18.3">
+    <title>Telegram – telegram v0.5.0</title>
+    <link rel="stylesheet" href="dist/app-480ffdc169.css" />
     
-    <script src="dist/sidebar_items-b392b9fe6a.js"></script>
+    <script src="dist/sidebar_items-6b1b03a7df.js"></script>
     
     
     
@@ -35,7 +35,7 @@
         telegram
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.4.0
+        v0.5.0
       </h2>
     </div>
     
@@ -162,7 +162,7 @@ with new BOT API versions (as much as they remain backward compatible).</p>
 <p>If a API parameter has a InputFile type and you want to send a local file,
 for example a photo stored locally at “/tmp/photo.jpg”, just wrap the parameter
 value in a tuple <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code>. If the file content is in memory
-wrap it in {:file_content, data, “photo.jpg”} tuple.</p>
+wrap it in <code class="inline">{:file_content, data, &quot;photo.jpg&quot;}</code> tuple.</p>
 <h4><a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a></h4>
 <pre><code class="elixir">Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file, &quot;/tmp/photo.jpg&quot;})
 Telegram.Api.request(token, &quot;sendPhoto&quot;, chat_id: 876532, photo: {:file_content, photo, &quot;photo.jpg&quot;})</code></pre>
@@ -300,7 +300,7 @@ Supervisor.start_link(children, opts)</code></pre>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.2),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.3),
           </span>
           <span class="line">
             designed by
@@ -312,7 +312,7 @@ Supervisor.start_link(children, opts)</code></pre>
   </div>
 </section>
 </div>
-  <script src="dist/app-ad33bc0e7d.js"></script>
+  <script src="dist/app-9bd040e5e5.js"></script>
   
   
   
