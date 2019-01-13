@@ -142,15 +142,12 @@ defmodule Telegram.Api do
   """
   @spec request(Telegram.Client.token(), Telegram.Client.method(), options) :: request_result
   def request(token, method, options \\ []) do
-    options = do_json_markup(options)
+    body =
+      options
+      |> do_json_markup()
+      |> do_body()
 
-    if request_with_file?(options) do
-      # body encoded as "multipart/form-data"
-      Telegram.Client.do_request(token, method, do_multipart_body(options))
-    else
-      # body encoded as "application/json"
-      Telegram.Client.do_request(token, method, Map.new(options))
-    end
+    Telegram.Client.do_request(token, method, body)
   end
 
   @doc """
@@ -175,6 +172,16 @@ defmodule Telegram.Api do
   @spec file(Telegram.Client.token(), Telegram.Client.file_path()) :: request_result
   def file(token, file_path) do
     Telegram.Client.do_file(token, file_path)
+  end
+
+  defp do_body(options) do
+    if request_with_file?(options) do
+      # body encoded as "multipart/form-data"
+      do_multipart_body(options)
+    else
+      # body encoded as "application/json"
+      Map.new(options)
+    end
   end
 
   defp request_with_file?(options) do
