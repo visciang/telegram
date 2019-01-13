@@ -1,5 +1,6 @@
 defmodule Test.Base do
   import ExUnit.Assertions
+  require Logger
   require Test.Utils, as: Utils
 
   @after_timeout Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000 + 5000
@@ -103,6 +104,7 @@ defmodule Test.Base do
         :ok
     after
       @after_timeout ->
+        Logger.error("WAIT EXIT timeout")
         :error
     end
   end
