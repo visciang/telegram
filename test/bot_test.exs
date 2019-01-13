@@ -92,6 +92,7 @@ defmodule Test.Base do
         :ok
     after
       @after_timeout ->
+        Logger.error("WAIT EXIT timeout")
         :error
     end
   end
