@@ -2,7 +2,7 @@ defmodule Test.Base do
   import ExUnit.Assertions
   require Test.Utils, as: Utils
 
-  @after_timeout Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000 + 1000
+  @after_timeout Application.get_env(:telegram, :on_error_retry_quiet_period) * 1000 + 5000
 
   defmacro test_base(test_name, type, text_field, send_text) do
     quote do
