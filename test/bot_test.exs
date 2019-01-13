@@ -71,6 +71,8 @@ defmodule Test.Base do
   end
 
   def wait_exit(proc) do
+    ref = Process.monitor(proc)
+
     # confirm last message on halt
     assert :ok ==
              Utils.tesla_mock_expect(fn %{
@@ -84,8 +86,6 @@ defmodule Test.Base do
                response = %{"ok" => true, "result" => result}
                Tesla.Mock.json(response, status: 200)
              end)
-
-    ref = Process.monitor(proc)
 
     receive do
       {:DOWN, ^ref, :process, _object, :normal} ->
