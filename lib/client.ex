@@ -23,8 +23,9 @@ defmodule Telegram.Client do
 
   @doc false
   def do_request(token, method, body) do
-    result = post("/bot#{token}/#{method}", body)
-    do_response(result)
+    "/bot#{token}/#{method}"
+    |> post(body)
+    |> do_response()
   end
 
   defp do_response({:ok, env}) do
@@ -46,8 +47,9 @@ defmodule Telegram.Client do
 
   @doc false
   def do_file(token, file_path) do
-    result = get("/file/bot#{token}/#{file_path}")
-    do_file_response(result)
+    "/file/bot#{token}/#{file_path}"
+    |> get()
+    |> do_file_response()
   end
 
   defp do_file_response({:ok, env}) do
