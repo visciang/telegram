@@ -240,6 +240,9 @@ defmodule Telegram.Bot do
       {:ok, updates} ->
         updates
 
+      {:error, :timeout} ->
+        wait_updates(context)
+
       {:error, reason} ->
         cooldown(
           @on_error_retry_quiet_period,
