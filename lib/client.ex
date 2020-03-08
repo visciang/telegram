@@ -2,26 +2,27 @@ defmodule Telegram.Client do
   @type token :: String.t()
   @type method :: String.t()
   @type file_path :: String.t()
+  @type body :: map() | Tesla.Multipart.t()
 
-  @api_base_url Application.get_env(:telegram, :api_base_url, "https://api.telegram.org")
-  # timeout configuration opts unit: seconds
-  @recv_timeout Application.get_env(:telegram, :recv_timeout, 60) * 1000
-  @connect_timeout Application.get_env(:telegram, :connect_timeout, 5) * 1000
+  @api_base_url Application.compile_env(:telegram, :api_base_url, "https://api.telegram.org")
 
   use Tesla, only: [:get, :post], docs: false
 
-  if Application.get_env(:telegram, :mock) == true do
+  if Application.compile_env(:telegram, :mock) == true do
     adapter Tesla.Mock
   else
-    adapter Tesla.Adapter.Hackney
+    @recv_timeout Application.compile_env(:telegram, :recv_timeout, 60) * 1000
+    @connect_timeout Application.compile_env(:telegram, :connect_timeout, 5) * 1000
+
+    adapter Tesla.Adapter.Gun, timeout: @recv_timeout, connect_timeout: @connect_timeout
   end
 
-  plug Tesla.Middleware.Opts, recv_timeout: @recv_timeout, connect_timeout: @connect_timeout
   plug Tesla.Middleware.BaseUrl, @api_base_url
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Retry
 
   @doc false
+  @spec do_request(token, method, body) :: {:ok, term} | {:error, term}
   def do_request(token, method, body) do
     "/bot#{token}/#{method}"
     |> post(body)
@@ -46,6 +47,7 @@ defmodule Telegram.Client do
   end
 
   @doc false
+  @spec do_file(token, file_path) :: {:ok, Tesla.Env.body()} | {:error, term}
   def do_file(token, file_path) do
     "/file/bot#{token}/#{file_path}"
     |> get()
