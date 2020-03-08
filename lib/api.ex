@@ -132,7 +132,7 @@ defmodule Telegram.Api do
   ```
   """
 
-  @type options :: Keyword.t()
+  @type parameters :: Keyword.t()
   @type request_result :: {:ok, term} | {:error, term} | no_return()
 
   @doc """
@@ -140,10 +140,10 @@ defmodule Telegram.Api do
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
-  @spec request(Telegram.Client.token(), Telegram.Client.method(), options) :: request_result
-  def request(token, method, options \\ []) do
+  @spec request(Telegram.Client.token(), Telegram.Client.method(), parameters) :: request_result
+  def request(token, method, parameters \\ []) do
     body =
-      options
+      parameters
       |> do_json_markup()
       |> do_body()
 
@@ -174,25 +174,25 @@ defmodule Telegram.Api do
     Telegram.Client.do_file(token, file_path)
   end
 
-  defp do_body(options) do
-    if request_with_file?(options) do
+  defp do_body(parameters) do
+    if request_with_file?(parameters) do
       # body encoded as "multipart/form-data"
-      do_multipart_body(options)
+      do_multipart_body(parameters)
     else
       # body encoded as "application/json"
-      Map.new(options)
+      Map.new(parameters)
     end
   end
 
-  defp request_with_file?(options) do
+  defp request_with_file?(parameters) do
     Enum.any?(
-      options,
+      parameters,
       &(match?({_name, {:file, _}}, &1) or match?({_name, {:file_content, _, _}}, &1))
     )
   end
 
-  defp do_multipart_body(options) do
-    Enum.reduce(options, Tesla.Multipart.new(), fn
+  defp do_multipart_body(parameters) do
+    Enum.reduce(parameters, Tesla.Multipart.new(), fn
       {name, {:file, file}}, multipart ->
         Tesla.Multipart.add_file(multipart, file, name: to_string(name))
 
@@ -204,8 +204,8 @@ defmodule Telegram.Api do
     end)
   end
 
-  defp do_json_markup(options) do
-    Enum.map(options, fn
+  defp do_json_markup(parameters) do
+    Enum.map(parameters, fn
       {name, {:json, value}} ->
         {name, Jason.encode!(value)}
 

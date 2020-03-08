@@ -120,7 +120,7 @@ defmodule Telegram.Bot do
 
   # timeout configuration opts unit: seconds
   @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
-  @on_error_retry_quiet_period Application.get_env(:telegram, :on_error_retry_quiet_period, 5)
+  @on_error_retry_delay Application.get_env(:telegram, :on_error_retry_delay, 5)
   @purge_after @get_updates_poll_timeout * 2
 
   defmacro __using__(opts) do
@@ -207,7 +207,7 @@ defmodule Telegram.Bot do
 
       {:error, reason} ->
         cooldown(
-          @on_error_retry_quiet_period,
+          @on_error_retry_delay,
           "Telegram.Api.request 'getMe' error: #{inspect(reason)}"
         )
 
@@ -242,7 +242,7 @@ defmodule Telegram.Bot do
 
       {:error, reason} ->
         cooldown(
-          @on_error_retry_quiet_period,
+          @on_error_retry_delay,
           "Telegram.Api.request 'getUpdates' error: #{inspect(reason)}"
         )
 
