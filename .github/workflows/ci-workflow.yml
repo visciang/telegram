@@ -28,7 +28,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build / Test
-        uses: coverallsapp/github-action@master
         run: |
           mix format --check-formatted
           mix coveralls.github
