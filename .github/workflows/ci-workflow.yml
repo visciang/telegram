@@ -18,16 +18,12 @@ jobs:
         elixir: [1.10]
 
     steps:
-      - name: Setup Elixir environment
-        uses: actions/setup-elixir@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
-      
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Build / Test
-        run: |
-          mix format --check-formatted
-          mix coveralls.github
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix test
+      - run: mix coveralls.github
