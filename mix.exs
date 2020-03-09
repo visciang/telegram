@@ -32,7 +32,7 @@ defmodule Telegram.Mixfile do
       {:idna, "~> 6.0"},
       {:castore, "~> 0.1"},
       {:jason, "~> 1.0"},
-      {:excoveralls, "~> 0.8", only: :test},
+      {:excoveralls, "~> 0.12", only: :test},
       {:meck, "~> 0.8.9", only: :test},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
