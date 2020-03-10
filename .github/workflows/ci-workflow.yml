@@ -25,5 +25,4 @@ jobs:
           elixir-version: ${{matrix.elixir}}
       - run: mix deps.get
       - run: mix format --check-formatted
-      - run: mix test
       - run: mix coveralls.github
