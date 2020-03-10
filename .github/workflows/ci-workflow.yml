@@ -23,7 +23,6 @@ jobs:
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
-      - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix format --check-formatted
       - run: mix coveralls.github
