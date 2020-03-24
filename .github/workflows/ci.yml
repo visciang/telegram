@@ -1,0 +1,26 @@
+name: CI
+
+on: ["push", "pull_request"]
+
+env:
+  MIX_ENV: test
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.10.2
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: |
+        mix local.rebar --force
+        mix local.hex --force
+        mix deps.get
+    - name: Lint
+      run: mix format --check-formatted
+    - name: Test
+      run: mix coveralls.github
