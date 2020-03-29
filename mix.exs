@@ -36,7 +36,7 @@ defmodule Telegram.Mixfile do
       {:excoveralls, "~> 0.12", only: :test},
       {:meck, "~> 0.8.9", only: :test},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
