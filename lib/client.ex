@@ -22,7 +22,7 @@ defmodule Telegram.Client do
   plug Tesla.Middleware.Retry
 
   @doc false
-  @spec do_request(token, method, body) :: {:ok, term} | {:error, term}
+  @spec do_request(token(), method(), body()) :: {:ok, term()} | {:error, term()}
   def do_request(token, method, body) do
     "/bot#{token}/#{method}"
     |> post(body)
@@ -47,7 +47,7 @@ defmodule Telegram.Client do
   end
 
   @doc false
-  @spec do_file(token, file_path) :: {:ok, Tesla.Env.body()} | {:error, term}
+  @spec do_file(token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
   def do_file(token, file_path) do
     "/file/bot#{token}/#{file_path}"
     |> get()

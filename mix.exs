@@ -4,7 +4,7 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.6.1",
+      version: "0.7.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [

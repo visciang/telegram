@@ -133,14 +133,14 @@ defmodule Telegram.Api do
   """
 
   @type parameters :: Keyword.t()
-  @type request_result :: {:ok, term} | {:error, term} | no_return()
+  @type request_result :: {:ok, term()} | {:error, term()}
 
   @doc """
   Send a Telegram Bot API request.
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
-  @spec request(Telegram.Client.token(), Telegram.Client.method(), parameters) :: request_result
+  @spec request(Telegram.Client.token(), Telegram.Client.method(), parameters()) :: request_result()
   def request(token, method, parameters \\ []) do
     body =
       parameters
@@ -169,7 +169,7 @@ defmodule Telegram.Api do
   {:ok, file} = Telegram.Api.file(token, file_path)
   ```
   """
-  @spec file(Telegram.Client.token(), Telegram.Client.file_path()) :: request_result
+  @spec file(Telegram.Client.token(), Telegram.Client.file_path()) :: request_result()
   def file(token, file_path) do
     Telegram.Client.do_file(token, file_path)
   end

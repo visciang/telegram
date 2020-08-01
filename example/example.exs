@@ -1,115 +1,83 @@
-#
-# mix run example/example.exs
-#
-# Fill token, username, auth with yours.
+# TOKEN="..." USERNAME="..." mix run example/example.exs
 
-defmodule Example.Bot do
-  require Logger
+defmodule DummyBot do
+  @behaviour Telegram.Bot
 
-  use Telegram.Bot,
-    token: ,
-    username: ,
-    auth: ,
-    purge: true
-
-  command "ciao", args do
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "ciao! #{inspect(args)}"
-    )
+  @impl true
+  def handle_update(%{"message" => %{"text" => "/hello", "chat" => chat}}, token) do
+    Command.hello(token, chat)
   end
 
-  command ["arrivederci", "goodbye"], args do
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "arrivederci! #{inspect(args)}"
-    )
+  def handle_update(
+        %{"message" => %{"text" => "/sleep" <> seconds_arg, "chat" => chat, "message_id" => message_id}},
+        token
+      ) do
+    seconds = seconds_arg |> parse_seconds_arg()
+    Command.sleep(token, chat, message_id, seconds)
   end
 
-  command "echo", _args do
-    # update var is injected in every macro body
-    # and holds the received telegram Update object
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "received update: #{inspect(update)}"
-    )
+  def handle_update(update, token) do
+    Command.unknown(token, update)
   end
 
-  command "photo", _args do
-    request("sendPhoto", chat_id: update["chat"]["id"], photo: {:file, "./example/photo.jpg"})
-  end
-
-  command "photo2", _args do
-    filename = "./example/photo.jpg"
-    photo = File.read!(filename)
-    request("sendPhoto", chat_id: update["chat"]["id"], photo: {:file_content, photo, filename})
-  end
-
-  command "halt", _ do
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "bye"
-    )
-
-    halt("HALT!")
-  end
-
-  command unknown do
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "Unknow command `#{unknown}`"
-    )
-  end
-
-  message do
-    request(
-      "sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "Hey! You sent me a message: #{inspect(update)}"
-    )
-  end
-
-  edited_message do
-    Logger.debug("edited_message")
-  end
-
-  channel_post do
-    Logger.debug("channel_post")
-  end
-
-  edited_channel_post do
-    Logger.debug("edited_channel_post")
-  end
-
-  inline_query _query do
-    Logger.debug("inline_query")
-  end
-
-  chosen_inline_result _query do
-    Logger.debug("chosen_inline_result")
-  end
-
-  callback_query do
-    Logger.debug("callback_query")
-  end
-
-  shipping_query do
-    Logger.debug("shipping_query")
-  end
-
-  pre_checkout_query do
-    Logger.debug("pre_checkout_query")
-  end
-
-  any do
-    Logger.debug("any")
+  defp parse_seconds_arg(arg) do
+    default_arg = "1"
+    arg = if arg == "", do: default_arg, else: arg
+    {seconds, ""} = arg |> String.trim() |> Integer.parse()
+    seconds
   end
 end
 
-{:ok, _} = Example.Bot.start_link()
-Process.sleep(:infinity)
+defmodule Command do
+  def hello(token, chat) do
+    Telegram.Api.request(token, "sendMessage",
+      chat_id: chat["id"],
+      text: "Hello '#{chat["username"]}'"
+    )
+  end
+
+  def sleep(token, chat, message_id, seconds) do
+    Telegram.Api.request(token, "sendMessage",
+      chat_id: chat["id"],
+      reply_to_message_id: message_id,
+      text: "Sleeping '#{seconds}'s"
+    )
+
+    Process.sleep(seconds * 1000)
+
+    Telegram.Api.request(token, "sendMessage",
+      chat_id: chat["id"],
+      reply_to_message_id: message_id,
+      text: "Awake!"
+    )
+  end
+
+  def unknown(token, update) do
+    chat_id = update["message"]["chat"]["id"]
+    message_id = update["message"]["message_id"]
+
+    if chat_id do
+      Telegram.Api.request(token, "sendMessage",
+        chat_id: chat_id,
+        reply_to_message_id: message_id,
+        parse_mode: "MarkdownV2",
+        text: "Unknown message:\n\n```\n#{inspect(update, pretty: true)}\n```"
+      )
+    end
+  end
+end
+
+token = System.get_env("TOKEN")
+
+if token == nil do
+  IO.puts("Please provide a TOKEN environment variable")
+else
+  options = [
+    purge: true,
+    whitelist: nil,
+    max_bot_concurrency: 1_000
+  ]
+
+  Telegram.Bot.Supervisor.start_link({DummyBot, token, options})
+  Process.sleep(:infinity)
+end

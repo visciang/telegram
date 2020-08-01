@@ -18,8 +18,8 @@ mix docs
 
 # Example bot script
 
-Fill token, username, auth in `example/example.exs`
+Run `example/example.exs` with:
 
 ```bash
-mix run example/example.exs
+TOKEN="..." mix run example/example.exs
 ```

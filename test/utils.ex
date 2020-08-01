@@ -1,5 +1,5 @@
 defmodule Test.Utils do
-  import ExUnit.Assertions, only: [assert_receive: 2, flunk: 1]
+  import ExUnit.Assertions, only: [assert_receive: 2]
 
   @base_url Application.get_env(:telegram, :api_base_url)
   @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
@@ -24,28 +24,31 @@ defmodule Test.Utils do
   end
 
   def tesla_mock_global_async(test_pid) do
-    Tesla.Mock.mock_global(fn request_env ->
-      send(test_pid, {:tesla_mock_request_env, self(), request_env})
+    Tesla.Mock.mock_global(fn request ->
+      send(test_pid, {:tesla_mock_request, self(), request})
 
       receive do
-        {:tesla_mock_response_env, response_env} ->
-          response_env
+        {:tesla_mock_response, response} ->
+          response
       end
     end)
   end
 
-  def tesla_mock_expect(fun, timeout \\ @retry_wait_period) do
-    assert_receive {:tesla_mock_request_env, mock_pid, req_env}, timeout
+  defmacro tesla_mock_expect_request(request_pattern, fun, timeout \\ @retry_wait_period) do
+    quote do
+      assert_receive {:tesla_mock_request, mock_pid, request = unquote(request_pattern)},
+                     unquote(timeout)
 
-    try do
-      fun.(req_env)
-    rescue
-      FunctionClauseError ->
-        {:no_match, req_env}
-    else
-      res_env ->
-        send(mock_pid, {:tesla_mock_response_env, res_env})
-        :ok
+      try do
+        unquote(fun).(request)
+      rescue
+        FunctionClauseError ->
+          {:no_match, request}
+      else
+        response ->
+          send(mock_pid, {:tesla_mock_response, response})
+          :ok
+      end
     end
   end
 end
