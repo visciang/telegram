@@ -1,4 +1,4 @@
-# TOKEN="..." USERNAME="..." mix run example/example.exs
+# TOKEN="..." mix run example/example.exs
 
 defmodule DummyBot do
   @behaviour Telegram.Bot
