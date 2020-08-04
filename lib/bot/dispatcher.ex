@@ -38,7 +38,8 @@ defmodule Telegram.Bot.Dispatcher do
     ])
   end
 
-  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean(), Telegram.Bot.Dispatcher.whitelist()) :: no_return
+  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean(), Telegram.Bot.Dispatcher.whitelist()) ::
+          no_return
   @doc false
   def run(bot_worker_supervisor, bot_module, token, purge, whitelist) do
     Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
