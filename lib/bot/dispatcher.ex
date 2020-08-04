@@ -38,6 +38,7 @@ defmodule Telegram.Bot.Dispatcher do
     ])
   end
 
+  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean(), Telegram.Bot.Dispatcher.whitelist()) :: no_return
   @doc false
   def run(bot_worker_supervisor, bot_module, token, purge, whitelist) do
     Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
@@ -106,14 +107,12 @@ defmodule Telegram.Bot.Dispatcher do
   defp authorized?(username, whitelist), do: username in whitelist
 
   defp get_from_username(update) do
-    # https://core.telegram.org/bots/api#update
-    # should be always present, in any _type of Update object
     Enum.find_value(update, fn
       {_update_type, %{"from" => %{"username" => username}}} ->
         username
 
       _ ->
-        false
+        nil
     end)
   end
 
@@ -131,7 +130,7 @@ defmodule Telegram.Bot.Dispatcher do
     updates |> Enum.reduce(nil, &process_update(&1, &2, context))
   end
 
-  def process_update(update, _acc, context) do
+  defp process_update(update, _acc, context) do
     Logger.debug("process_update: #{inspect(update)}")
 
     username = get_from_username(update)
@@ -144,7 +143,7 @@ defmodule Telegram.Bot.Dispatcher do
         [update, context.token]
       )
     else
-      Logger.debug("Unauthorized user message (#{username})")
+      Logger.debug("Unauthorized user message (#{inspect(username)})")
     end
 
     update["update_id"] + 1
