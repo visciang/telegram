@@ -29,6 +29,8 @@ defmodule DummyBot do
 end
 
 defmodule Command do
+  require Logger
+
   def hello(token, chat) do
     Telegram.Api.request(token, "sendMessage",
       chat_id: chat["id"],
@@ -77,7 +79,6 @@ if token == nil do
 else
   options = [
     purge: true,
-    whitelist: nil,
     max_bot_concurrency: 1_000
   ]
 

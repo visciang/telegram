@@ -2,8 +2,6 @@ defmodule Test.Telegram.Bot do
   use ExUnit.Case, async: false
   require Test.Utils, as: Utils
 
-  @tester_username "tester"
-
   defp start_tesla_mock(_context) do
     Utils.tesla_mock_global_async(self())
     :ok
@@ -12,9 +10,8 @@ defmodule Test.Telegram.Bot do
   defp start_test_bot(_context) do
     token = Test.Utils.tg_token()
     purge = false
-    whitelist = [@tester_username]
 
-    start_supervised!({Telegram.Bot.Supervisor, {Test.TestBot, token, purge: purge, whitelist: whitelist}})
+    start_supervised!({Telegram.Bot.Supervisor, {Test.TestBot, token, purge: purge}})
 
     :ok
   end
@@ -22,9 +19,8 @@ defmodule Test.Telegram.Bot do
   defp start_purge_bot(_context) do
     token = Test.Utils.tg_token()
     purge = true
-    whitelist = [@tester_username]
 
-    start_supervised!({Telegram.Bot.Supervisor, {Test.TestBot, token, purge: purge, whitelist: whitelist}})
+    start_supervised!({Telegram.Bot.Supervisor, {Test.TestBot, token, purge: purge}})
 
     :ok
   end
@@ -74,7 +70,7 @@ defmodule Test.Telegram.Bot do
                    result = [
                      %{
                        "update_id" => 1,
-                       "message" => %{"text" => "/command", "from" => %{"username" => @tester_username}}
+                       "message" => %{"text" => "/command"}
                      }
                    ]
 
@@ -107,7 +103,8 @@ defmodule Test.Telegram.Bot do
 
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end
+                 end,
+                 true
                )
     end
 
@@ -138,49 +135,8 @@ defmodule Test.Telegram.Bot do
                    assert body["offset"] == nil
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end
-               )
-    end
-
-    test "unauthorized user" do
-      assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
-                 fn %{body: body} ->
-                   request = Jason.decode!(body)
-                   assert request["offset"] == nil
-
-                   result = [
-                     %{
-                       "update_id" => 1,
-                       "message" => %{
-                         "text" => "unauth",
-                         "from" => %{"username" => "unauth_user"}
-                       }
-                     }
-                   ]
-
-                   response = %{"ok" => true, "result" => result}
-                   Tesla.Mock.json(response, status: 200)
-                 end
-               )
-
-      assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
-                 fn %{body: body} ->
-                   request = Jason.decode!(body)
-                   assert request["offset"] == 2
-
-                   response = %{"ok" => true, "result" => []}
-                   Tesla.Mock.json(response, status: 200)
-                 end
+                 end,
+                 true
                )
     end
   end
@@ -226,13 +182,14 @@ defmodule Test.Telegram.Bot do
                    result = [
                      %{
                        "update_id" => 1,
-                       "message" => %{"text" => "/command", "from" => %{"username" => @tester_username}}
+                       "message" => %{"text" => "/command"}
                      }
                    ]
 
                    response = %{"ok" => true, "result" => result}
                    Tesla.Mock.json(response, status: 200)
-                 end
+                 end,
+                 true
                )
     end
   end
@@ -245,8 +202,7 @@ defmodule Test.Telegram.Bot do
                Utils.tesla_mock_expect_request(
                  %{
                    method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates"),
-                   body: body
+                   url: Utils.tg_url("getUpdates")
                  },
                  fn %{body: body} ->
                    now = DateTime.utc_now() |> DateTime.to_unix(:second)
@@ -260,16 +216,14 @@ defmodule Test.Telegram.Bot do
                        "update_id" => 1,
                        "message" => %{
                          "text" => "OLD",
-                         "date" => old,
-                         "from" => %{"username" => @tester_username}
+                         "date" => old
                        }
                      },
                      %{
                        "update_id" => 2,
                        "message" => %{
                          "text" => "OLD",
-                         "date" => old,
-                         "from" => %{"username" => @tester_username}
+                         "date" => old
                        }
                      }
                    ]
@@ -283,8 +237,7 @@ defmodule Test.Telegram.Bot do
                Utils.tesla_mock_expect_request(
                  %{
                    method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates"),
-                   body: body
+                   url: Utils.tg_url("getUpdates")
                  },
                  fn %{body: body} ->
                    now = DateTime.utc_now() |> DateTime.to_unix(:second)
@@ -298,8 +251,7 @@ defmodule Test.Telegram.Bot do
                        "update_id" => 3,
                        "message" => %{
                          "text" => "OLD",
-                         "date" => old,
-                         "from" => %{"username" => @tester_username}
+                         "date" => old
                        }
                      }
                    ]
@@ -322,7 +274,8 @@ defmodule Test.Telegram.Bot do
 
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end
+                 end,
+                 true
                )
     end
   end

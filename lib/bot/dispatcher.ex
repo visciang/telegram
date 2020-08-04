@@ -7,49 +7,45 @@ defmodule Telegram.Bot.Dispatcher do
   @on_error_retry_delay Application.get_env(:telegram, :on_error_retry_delay, 5)
   @purge_after @get_updates_poll_timeout * 2
 
-  @type whitelist :: [String.t()] | nil
-  @type options :: {:purge, boolean()} | {:whitelist, whitelist()}
+  @type options :: {:purge, boolean()}
 
   defmodule Context do
     @moduledoc false
-    defstruct [:bot_worker_supervisor, :bot_module, :token, :offset, :whitelist]
+    defstruct [:bot_worker_supervisor, :bot_module, :token, :offset]
 
     @type t :: %__MODULE__{
             bot_worker_supervisor: Supervisor.supervisor(),
             bot_module: module(),
             token: Telegram.Client.token(),
-            offset: integer(),
-            whitelist: Telegram.Bot.Dispatcher.whitelist()
+            offset: integer()
           }
   end
 
   @spec start_link({Supervisor.supervisor(), module(), Telegram.Client.token(), [options()]}) ::
           {:ok, pid()}
   def start_link({bot_worker_supervisor, bot_module, token, options}) do
-    default = [purge: true, whitelist: nil]
+    default = [purge: true]
     options = Keyword.merge(default, options)
 
     Task.start_link(__MODULE__, :run, [
       bot_worker_supervisor,
       bot_module,
       token,
-      options[:purge],
-      options[:whitelist]
+      options[:purge]
     ])
   end
 
-  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean(), Telegram.Bot.Dispatcher.whitelist()) ::
+  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean()) ::
           no_return
   @doc false
-  def run(bot_worker_supervisor, bot_module, token, purge, whitelist) do
+  def run(bot_worker_supervisor, bot_module, token, purge) do
     Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
 
     context = %Context{
       bot_worker_supervisor: bot_worker_supervisor,
       bot_module: bot_module,
       token: token,
-      offset: nil,
-      whitelist: whitelist
+      offset: nil
     }
 
     check_bot(token)
@@ -104,29 +100,6 @@ defmodule Telegram.Bot.Dispatcher do
     end
   end
 
-  defp authorized?(_username, nil), do: true
-  defp authorized?(username, whitelist), do: username in whitelist
-
-  defp get_from_username(update) do
-    Enum.find_value(update, fn
-      {_update_type, %{"from" => %{"username" => username}}} ->
-        username
-
-      _ ->
-        nil
-    end)
-  end
-
-  defp get_sent_date(update) do
-    Enum.find_value(update, fn
-      {_update_type, %{"date" => date}} ->
-        date
-
-      _ ->
-        nil
-    end)
-  end
-
   defp process_updates(updates, context) do
     updates |> Enum.reduce(nil, &process_update(&1, &2, context))
   end
@@ -134,18 +107,12 @@ defmodule Telegram.Bot.Dispatcher do
   defp process_update(update, _acc, context) do
     Logger.debug("process_update: #{inspect(update)}")
 
-    username = get_from_username(update)
-
-    if authorized?(username, context.whitelist) do
-      Task.Supervisor.start_child(
-        context.bot_worker_supervisor,
-        context.bot_module,
-        :handle_update,
-        [update, context.token]
-      )
-    else
-      Logger.debug("Unauthorized user message (#{inspect(username)})")
-    end
+    Task.Supervisor.start_child(
+      context.bot_worker_supervisor,
+      context.bot_module,
+      :handle_update,
+      [update, context.token]
+    )
 
     update["update_id"] + 1
   end
@@ -171,11 +138,10 @@ defmodule Telegram.Bot.Dispatcher do
   end
 
   defp old_message(update, _offset, delta) do
-    sent_unix_time = get_sent_date(update)
+    sent = Telegram.Bot.Utils.get_sent_date(update)
 
-    if sent_unix_time != nil do
+    if sent != nil do
       # sent date is UTC
-      sent = DateTime.from_unix!(sent_unix_time, :second)
       now = DateTime.utc_now()
 
       if DateTime.diff(now, sent, :second) > delta do

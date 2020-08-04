@@ -177,7 +177,6 @@ token_time_bot = "...."
 options = [
   max_bot_concurrency: 1_000,    # max concurrent worker processing updates for this bot
   purge: true,                   # [optional] purge old messages at startup
-  whitelist: ["user1", "user2"]  # [optional] list of authorized users
 ]
 
 # start 2 bot: HelloBot and TimeBot

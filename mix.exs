@@ -28,19 +28,18 @@ defmodule Telegram.Mixfile do
   defp deps do
     [
       {:tesla, "~> 1.0"},
-      # -- tesla gun adapter --
+      # tesla gun adapter + deps
       {:gun, "~> 1.3"},
-      #    note: gun adapter dependency
       {:ssl_verify_fun, "~> 1.1"},
-      #    note: gun adapter dependency
       {:castore, "~> 0.1"},
-      # -- tesla json encoder --
+      {:idna, "~> 6.0"},
+      # tesla json encoder
       {:jason, "~> 1.0"},
-      # -- coverage --
+      # coverage
       {:excoveralls, "~> 0.12", only: :test},
-      # -- documentation --
+      # documentation
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
-      # -- dialyzer --
+      # dialyzer
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end

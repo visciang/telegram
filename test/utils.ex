@@ -1,6 +1,4 @@
 defmodule Test.Utils do
-  import ExUnit.Assertions, only: [assert_receive: 2]
-
   @base_url Application.get_env(:telegram, :api_base_url)
   @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
   @method "getFoo"
@@ -20,7 +18,7 @@ defmodule Test.Utils do
   end
 
   defmacro tg_url(tg_method \\ @method) do
-    quote do: unquote(@base_url) <> "/bot" <> unquote(@token) <> "/" <> unquote(tg_method)
+    quote do: "#{unquote(@base_url)}/bot#{unquote(@token)}/#{unquote(tg_method)}"
   end
 
   def tesla_mock_global_async(test_pid) do
@@ -34,10 +32,9 @@ defmodule Test.Utils do
     end)
   end
 
-  defmacro tesla_mock_expect_request(request_pattern, fun, timeout \\ @retry_wait_period) do
+  defmacro tesla_mock_expect_request(request_pattern, fun, no_pending_requests \\ false) do
     quote do
-      assert_receive {:tesla_mock_request, mock_pid, request = unquote(request_pattern)},
-                     unquote(timeout)
+      assert_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
 
       try do
         unquote(fun).(request)
@@ -46,6 +43,10 @@ defmodule Test.Utils do
           {:no_match, request}
       else
         response ->
+          if unquote(no_pending_requests) do
+            refute_received(_)
+          end
+
           send(mock_pid, {:tesla_mock_response, response})
           :ok
       end
