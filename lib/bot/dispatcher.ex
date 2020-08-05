@@ -52,7 +52,7 @@ defmodule Telegram.Bot.Dispatcher do
 
     next_offset =
       if purge do
-        purge_old_messages(context, @purge_after)
+        purge_old_updates(context, @purge_after)
       else
         nil
       end
@@ -123,21 +123,21 @@ defmodule Telegram.Bot.Dispatcher do
     Process.sleep(seconds * 1000)
   end
 
-  defp purge_old_messages(context, delta) do
+  defp purge_old_updates(context, delta) do
     next =
       wait_updates(context)
-      |> Enum.reduce_while(nil, &old_message(&1, &2, delta))
+      |> Enum.reduce_while(nil, &is_old_update(&1, &2, delta))
 
     case next do
       {:purge, next_offset} ->
-        purge_old_messages(%Context{context | offset: next_offset}, delta)
+        purge_old_updates(%Context{context | offset: next_offset}, delta)
 
       offset ->
         offset
     end
   end
 
-  defp old_message(update, _offset, delta) do
+  defp is_old_update(update, _offset, delta) do
     sent = Telegram.Bot.Utils.get_sent_date(update)
 
     if sent != nil do

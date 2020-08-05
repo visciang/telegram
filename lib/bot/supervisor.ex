@@ -9,6 +9,7 @@ defmodule Telegram.Bot.Supervisor do
     Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: String.to_atom("#{__MODULE__}-#{bot_module}"))
   end
 
+  @doc false
   @impl true
   def init({bot_module, token, options}) do
     {max_bot_concurrency, options} = Keyword.pop(options, :max_bot_concurrency, :infinity)

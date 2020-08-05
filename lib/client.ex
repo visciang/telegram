@@ -1,4 +1,6 @@
 defmodule Telegram.Client do
+  @moduledoc false
+
   @type token :: String.t()
   @type method :: String.t()
   @type file_path :: String.t()
