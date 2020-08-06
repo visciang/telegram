@@ -1,7 +1,5 @@
-defmodule Test.TestBot do
+defmodule Test.Stateless.Bot do
   @behaviour Telegram.Bot
-
-  require Test.Utils
 
   def handle_update(_update, token) do
     Telegram.Api.request(token, "testResponse")

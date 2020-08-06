@@ -9,24 +9,23 @@ defmodule Telegram.Bot.Supervisor do
     Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: String.to_atom("#{__MODULE__}.#{bot_module}"))
   end
 
-  @doc false
   @impl true
   def init({bot_module, token, options}) do
     {max_bot_concurrency, options} = Keyword.pop(options, :max_bot_concurrency, :infinity)
-    bot_worker_supervisor_name = String.to_atom("Telegram.Bot.Workers.Supervisor.#{bot_module}")
+    workers_supervisor_name = String.to_atom("Telegram.Bot.Workers.Supervisor.#{bot_module}")
 
-    worker_supervisor = {Task.Supervisor, name: bot_worker_supervisor_name, max_children: max_bot_concurrency}
+    workers_supervisor = {Task.Supervisor, name: workers_supervisor_name, max_children: max_bot_concurrency}
 
     dispatcher =
       {Telegram.Bot.UpdatesPoller,
        {
-         bot_worker_supervisor_name,
+         workers_supervisor_name,
          bot_module,
          token,
          options
        }}
 
-    children = [worker_supervisor, dispatcher]
+    children = [workers_supervisor, dispatcher]
 
     Supervisor.init(children, strategy: :one_for_one)
   end

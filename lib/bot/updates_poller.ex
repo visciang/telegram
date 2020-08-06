@@ -11,10 +11,10 @@ defmodule Telegram.Bot.UpdatesPoller do
 
   defmodule Context do
     @moduledoc false
-    defstruct [:bot_worker_supervisor, :bot_module, :token, :offset]
+    defstruct [:bot_workers_supervisor, :bot_module, :token, :offset]
 
     @type t :: %__MODULE__{
-            bot_worker_supervisor: Supervisor.supervisor(),
+            bot_workers_supervisor: Supervisor.supervisor(),
             bot_module: module(),
             token: Telegram.Client.token(),
             offset: integer()
@@ -22,12 +22,12 @@ defmodule Telegram.Bot.UpdatesPoller do
   end
 
   @spec start_link({Supervisor.supervisor(), module(), Telegram.Client.token(), [options()]}) :: {:ok, pid()}
-  def start_link({bot_worker_supervisor, bot_module, token, options}) do
+  def start_link({bot_workers_supervisor, bot_module, token, options}) do
     default = [purge: true]
     options = Keyword.merge(default, options)
 
     Task.start_link(__MODULE__, :run, [
-      bot_worker_supervisor,
+      bot_workers_supervisor,
       bot_module,
       token,
       options[:purge]
@@ -36,11 +36,11 @@ defmodule Telegram.Bot.UpdatesPoller do
 
   @doc false
   @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean()) :: no_return
-  def run(bot_worker_supervisor, bot_module, token, purge) do
+  def run(bot_workers_supervisor, bot_module, token, purge) do
     Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
 
     context = %Context{
-      bot_worker_supervisor: bot_worker_supervisor,
+      bot_workers_supervisor: bot_workers_supervisor,
       bot_module: bot_module,
       token: token,
       offset: nil
@@ -106,7 +106,7 @@ defmodule Telegram.Bot.UpdatesPoller do
     Logger.debug("process_update: #{inspect(update)}")
 
     Task.Supervisor.start_child(
-      context.bot_worker_supervisor,
+      context.bot_workers_supervisor,
       context.bot_module,
       :handle_update,
       [update, context.token]
