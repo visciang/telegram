@@ -1,4 +1,4 @@
-defmodule Telegram.Bot.Dispatcher do
+defmodule Telegram.Bot.UpdatesPoller do
   use Task, restart: :permanent
   require Logger
 
@@ -21,8 +21,7 @@ defmodule Telegram.Bot.Dispatcher do
           }
   end
 
-  @spec start_link({Supervisor.supervisor(), module(), Telegram.Client.token(), [options()]}) ::
-          {:ok, pid()}
+  @spec start_link({Supervisor.supervisor(), module(), Telegram.Client.token(), [options()]}) :: {:ok, pid()}
   def start_link({bot_worker_supervisor, bot_module, token, options}) do
     default = [purge: true]
     options = Keyword.merge(default, options)
@@ -35,9 +34,8 @@ defmodule Telegram.Bot.Dispatcher do
     ])
   end
 
-  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean()) ::
-          no_return
   @doc false
+  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean()) :: no_return
   def run(bot_worker_supervisor, bot_module, token, purge) do
     Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
 
