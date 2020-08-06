@@ -1,4 +1,4 @@
-defmodule Test.Stateless.Bot do
+defmodule Test.Bot do
   @behaviour Telegram.Bot
 
   def handle_update(_update, token) do
