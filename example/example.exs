@@ -1,19 +1,15 @@
-# TOKEN="..." mix run example/example.exs
+# TOKEN="..." mix run example/example_stateless.exs
 
-defmodule DummyBot do
+defmodule SleepBot do
   @behaviour Telegram.Bot
 
   @impl true
-  def handle_update(%{"message" => %{"text" => "/hello", "chat" => chat}}, token) do
-    Command.hello(token, chat)
-  end
-
   def handle_update(
-        %{"message" => %{"text" => "/sleep" <> seconds_arg, "chat" => chat, "message_id" => message_id}},
+        %{"message" => %{"text" => "/sleep" <> seconds_arg, "chat" => %{"id" => chat_id}, "message_id" => message_id}},
         token
       ) do
     seconds = seconds_arg |> parse_seconds_arg()
-    Command.sleep(token, chat, message_id, seconds)
+    Command.sleep(token, chat_id, message_id, seconds)
   end
 
   def handle_update(update, token) do
@@ -31,16 +27,9 @@ end
 defmodule Command do
   require Logger
 
-  def hello(token, chat) do
+  def sleep(token, chat_id, message_id, seconds) do
     Telegram.Api.request(token, "sendMessage",
-      chat_id: chat["id"],
-      text: "Hello '#{chat["username"]}'"
-    )
-  end
-
-  def sleep(token, chat, message_id, seconds) do
-    Telegram.Api.request(token, "sendMessage",
-      chat_id: chat["id"],
+      chat_id: chat_id,
       reply_to_message_id: message_id,
       text: "Sleeping '#{seconds}'s"
     )
@@ -48,7 +37,7 @@ defmodule Command do
     Process.sleep(seconds * 1000)
 
     Telegram.Api.request(token, "sendMessage",
-      chat_id: chat["id"],
+      chat_id: chat_id,
       reply_to_message_id: message_id,
       text: "Awake!"
     )
@@ -82,6 +71,6 @@ else
     max_bot_concurrency: 1_000
   ]
 
-  Telegram.Bot.Supervisor.start_link({DummyBot, token, options})
+  Telegram.Bot.Supervisor.start_link({SleepBot, token, options})
   Process.sleep(:infinity)
 end
