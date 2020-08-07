@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.22.2">
     <meta name="project" content="telegram v0.7.0">
-    <title>Telegram.Bot — telegram v0.7.0</title>
+    <title>Telegram.Bot.Supervisor — telegram v0.7.0</title>
     <link rel="stylesheet" href="dist/elixir-d678dad126d82ddc061f.css" />
     <script src="dist/sidebar_items-493e1188e5.js"></script>
       <script src="docs_config.js"></script>
@@ -64,7 +64,7 @@ telegram      </a>
 
       <h1>
         <small class="app-vsn">telegram v0.7.0</small>
-Telegram.Bot <small>behaviour</small>          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
+Telegram.Bot.Supervisor          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/supervisor.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -80,34 +80,50 @@ Telegram.Bot <small>behaviour</small>          <a href="https://github.com/visci
             </a>
             Summary
           </h1>
-  <div class="summary-callbacks summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#callbacks">Callbacks</a>
+      <a href="#types">Types</a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#c:handle_update/2">handle_update(update, token)</a>
+    <a href="#t:option/0">option()</a>
+  </div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#child_spec/1">child_spec(init_arg)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/1">start_link(arg)</a>
   </div>
 </div>
   </div>
         </section>
 
-        <section id="callbacks" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#callbacks">
+            <a class="hover-link" href="#types">
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Callbacks          </h1>
-          <div class="callbacks-list">
-<section class="detail" id="c:handle_update/2">
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:option/0">
   <div class="detail-header">
-    <a href="#c:handle_update/2" class="detail-link" title="Link to this callback">
+    <a href="#t:option/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this callback</span>
+      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">handle_update(update, token)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L2" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">option()</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/supervisor.ex#L4" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -116,7 +132,58 @@ Callbacks          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>handle_update(update :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), token :: Telegram.Client.token()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+          <pre>option() ::
+  <a href="Telegram.Bot.UpdatesPoller.html#t:options/0">Telegram.Bot.UpdatesPoller.options</a>()
+  | {:max_bot_concurrency, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="child_spec/1">
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">child_spec(init_arg)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/supervisor.ex#L2" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>  </section>
+</section>
+<section class="detail" id="start_link/1">
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">start_link(arg)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/supervisor.ex#L8" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>start_link({<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), Telegram.Client.token(), [<a href="#t:option/0">option</a>()]}) ::
+  <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
       </div>
 
   </section>
