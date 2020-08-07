@@ -4,7 +4,6 @@ on: ["push", "pull_request"]
 
 env:
   MIX_ENV: test
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   ci:
@@ -14,13 +13,26 @@ jobs:
       image: elixir:1.10.2
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Dependencies
-      run: |
-        mix local.rebar --force
-        mix local.hex --force
-        mix deps.get
-    - name: Lint
-      run: mix format --check-formatted
-    - name: Test
-      run: mix coveralls.github
+      - uses: actions/checkout@v2
+      
+      - name: Install Dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Lint
+        run: mix format --check-formatted
+
+      - name: Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mix coveralls.github
+
+      - name: Build documentation
+        run: mix docs --formatter=html
+
+      # - name: Publish documentation
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
