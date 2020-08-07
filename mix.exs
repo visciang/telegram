@@ -9,9 +9,11 @@ defmodule Telegram.Mixfile do
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [
         coveralls: :test,
+        "coveralls.github": :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        docs: :dev
       ],
       test_coverage: [tool: ExCoveralls],
       deps: deps(),

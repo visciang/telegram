@@ -2,9 +2,6 @@ name: CI
 
 on: ["push", "pull_request"]
 
-env:
-  MIX_ENV: test
-
 jobs:
   ci:
     runs-on: ubuntu-latest
