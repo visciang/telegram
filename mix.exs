@@ -37,6 +37,8 @@ defmodule Telegram.Mixfile do
       {:idna, "~> 6.0"},
       # tesla json encoder
       {:jason, "~> 1.0"},
+      # retry
+      {:retry, "~> 0.14"},
       # coverage
       {:excoveralls, "~> 0.12", only: :test},
       # documentation

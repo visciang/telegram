@@ -1,10 +1,10 @@
-defmodule Telegram.Bot.UpdatesPoller do
+defmodule Telegram.Bot.Poller do
   use Task, restart: :permanent
+  use Retry
   require Logger
 
   # timeout configuration opts unit: seconds
   @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
-  @on_error_retry_delay Application.get_env(:telegram, :on_error_retry_delay, 5)
   @purge_after @get_updates_poll_timeout * 2
 
   @type options :: {:purge, boolean()}
@@ -46,8 +46,6 @@ defmodule Telegram.Bot.UpdatesPoller do
       offset: nil
     }
 
-    check_bot(token)
-
     next_offset =
       if purge do
         purge_old_updates(context, @purge_after)
@@ -56,21 +54,6 @@ defmodule Telegram.Bot.UpdatesPoller do
       end
 
     loop(%Context{context | offset: next_offset})
-  end
-
-  defp check_bot(token) do
-    case Telegram.Api.request(token, "getMe") do
-      {:ok, _} ->
-        :ok
-
-      {:error, reason} ->
-        cooldown(
-          @on_error_retry_delay,
-          "Telegram.Api.request 'getMe' error: #{inspect(reason)}"
-        )
-
-        check_bot(token)
-    end
   end
 
   defp loop(context) do
@@ -84,17 +67,16 @@ defmodule Telegram.Bot.UpdatesPoller do
     opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
     opts = [timeout: @get_updates_poll_timeout] ++ opts_offset
 
-    case Telegram.Api.request(context.token, "getUpdates", opts) do
+    retry with: exponential_backoff() |> expiry(@get_updates_poll_timeout * 1_000) do
+      Telegram.Api.request(context.token, "getUpdates", opts)
+    after
       {:ok, updates} ->
         updates
-
-      {:error, reason} ->
-        cooldown(
-          @on_error_retry_delay,
-          "Telegram.Api.request 'getUpdates' error: #{inspect(reason)}"
-        )
-
-        wait_updates(context)
+    else
+      error ->
+        # coveralls-ignore-start
+        raise "Telegram.Api.request 'getUpdates' error: #{inspect(error)}"
+        # coveralls-ignore-stop
     end
   end
 
@@ -113,12 +95,6 @@ defmodule Telegram.Bot.UpdatesPoller do
     )
 
     update["update_id"] + 1
-  end
-
-  defp cooldown(seconds, reason_str) do
-    Logger.warn(reason_str)
-    Logger.warn("Retry in #{seconds}s.")
-    Process.sleep(seconds * 1000)
   end
 
   defp purge_old_updates(context, delta) do

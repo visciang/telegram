@@ -1,7 +1,7 @@
 defmodule Telegram.Bot.Supervisor do
   use Supervisor
 
-  @type option :: Telegram.Bot.UpdatesPoller.options() | {:max_bot_concurrency, non_neg_integer()}
+  @type option :: Telegram.Bot.Poller.options() | {:max_bot_concurrency, non_neg_integer()}
 
   @spec start_link({module(), Telegram.Client.token(), [option()]}) ::
           Supervisor.on_start()
@@ -17,7 +17,7 @@ defmodule Telegram.Bot.Supervisor do
     workers_supervisor = {Task.Supervisor, name: workers_supervisor_name, max_children: max_bot_concurrency}
 
     dispatcher =
-      {Telegram.Bot.UpdatesPoller,
+      {Telegram.Bot.Poller,
        {
          workers_supervisor_name,
          bot_module,

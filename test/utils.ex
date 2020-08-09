@@ -3,7 +3,7 @@ defmodule Test.Utils do
   @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
   @method "getFoo"
 
-  @retry_wait_period Application.get_env(:telegram, :on_error_retry_delay) * 1000 + 500
+  @retry_wait_period Application.get_env(:telegram, :get_updates_poll_timeout) * 1000 + 500
 
   defmacro tg_token do
     quote do: unquote(@token)

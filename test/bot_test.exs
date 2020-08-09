@@ -25,21 +25,8 @@ defmodule Test.Telegram.Bot do
     :ok
   end
 
-  defp expect_get_me(_context) do
-    assert :ok ==
-             Utils.tesla_mock_expect_request(
-               %{method: Utils.http_method(), url: Utils.tg_url("getMe")},
-               fn _request ->
-                 response = %{"ok" => true, "result" => %{}}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
-
-    :ok
-  end
-
   describe "getUpdates" do
-    setup [:start_tesla_mock, :start_test_bot, :expect_get_me]
+    setup [:start_tesla_mock, :start_test_bot]
 
     test "no update" do
       assert :ok ==
@@ -141,61 +128,8 @@ defmodule Test.Telegram.Bot do
     end
   end
 
-  describe "bootstrap" do
-    setup [:start_tesla_mock, :start_test_bot]
-
-    test "Telegram.Bot bootstrap getMe retries" do
-      assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getMe")
-                 },
-                 fn _request ->
-                   response = %{"ok" => false, "description" => "500"}
-                   Tesla.Mock.json(response, status: 500)
-                 end
-               )
-
-      assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getMe")
-                 },
-                 fn _request ->
-                   response = %{"ok" => true, "result" => %{}}
-                   Tesla.Mock.json(response, status: 200)
-                 end
-               )
-
-      assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
-                 fn %{body: body} ->
-                   body = Jason.decode!(body)
-                   assert body["offset"] == nil
-
-                   result = [
-                     %{
-                       "update_id" => 1,
-                       "message" => %{"text" => "/command"}
-                     }
-                   ]
-
-                   response = %{"ok" => true, "result" => result}
-                   Tesla.Mock.json(response, status: 200)
-                 end,
-                 true
-               )
-    end
-  end
-
   describe "purge" do
-    setup [:start_tesla_mock, :start_purge_bot, :expect_get_me]
+    setup [:start_tesla_mock, :start_purge_bot]
 
     test "Telegram.Bot purge old messages" do
       assert :ok ==
