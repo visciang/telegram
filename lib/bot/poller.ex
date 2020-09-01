@@ -8,40 +8,38 @@ defmodule Telegram.Bot.Poller do
   @purge_after @get_updates_poll_timeout * 2
 
   @type options :: {:purge, boolean()}
+  @type handle_update :: (update :: map(), token :: Telegram.Client.token() -> nil)
 
   defmodule Context do
     @moduledoc false
-    defstruct [:bot_workers_supervisor, :bot_module, :token, :offset]
+    defstruct [:handle_update, :token, :offset]
 
     @type t :: %__MODULE__{
-            bot_workers_supervisor: Supervisor.supervisor(),
-            bot_module: module(),
+            handle_update: Telegram.Bot.Poller.handle_update(),
             token: Telegram.Client.token(),
             offset: integer()
           }
   end
 
-  @spec start_link({Supervisor.supervisor(), module(), Telegram.Client.token(), [options()]}) :: {:ok, pid()}
-  def start_link({bot_workers_supervisor, bot_module, token, options}) do
+  @spec start_link({handle_update(), Telegram.Client.token(), [options()]}) :: {:ok, pid()}
+  def start_link({handle_update, token, options}) do
     default = [purge: true]
     options = Keyword.merge(default, options)
 
     Task.start_link(__MODULE__, :run, [
-      bot_workers_supervisor,
-      bot_module,
+      handle_update,
       token,
       options[:purge]
     ])
   end
 
   @doc false
-  @spec run(Supervisor.supervisor(), module(), Telegram.Client.token(), boolean()) :: no_return
-  def run(bot_workers_supervisor, bot_module, token, purge) do
-    Logger.debug("#{__MODULE__} running Bot behaviour #{bot_module}")
+  @spec run(handle_update(), Telegram.Client.token(), boolean()) :: no_return
+  def run(handle_update, token, purge) do
+    Logger.debug("#{__MODULE__} running with token '#{token}'")
 
     context = %Context{
-      bot_workers_supervisor: bot_workers_supervisor,
-      bot_module: bot_module,
+      handle_update: handle_update,
       token: token,
       offset: nil
     }
@@ -85,14 +83,9 @@ defmodule Telegram.Bot.Poller do
   end
 
   defp process_update(update, _acc, context) do
-    Logger.debug("process_update: #{inspect(update)}")
+    Logger.debug("[#{context.token}] process_update: #{inspect(update)}")
 
-    Task.Supervisor.start_child(
-      context.bot_workers_supervisor,
-      context.bot_module,
-      :handle_update,
-      [update, context.token]
-    )
+    context.handle_update.(update, context.token)
 
     update["update_id"] + 1
   end

@@ -1,40 +1,40 @@
 defmodule Test.Telegram.Bot do
   use ExUnit.Case, async: false
-  require Test.Utils, as: Utils
+  import Test.Utils.{Const, Mock}
 
   defp start_tesla_mock(_context) do
-    Utils.tesla_mock_global_async(self())
+    tesla_mock_global_async(self())
     :ok
   end
 
-  defp start_test_bot(_context) do
-    token = Test.Utils.tg_token()
+  defp start_sync_test_bot(_context) do
+    token = tg_token()
     purge = false
 
-    start_supervised!({Telegram.Bot.Supervisor, {Test.Bot, token, purge: purge}})
+    start_supervised!({Telegram.Bot.Supervisor.Sync, {Test.Bot, token, purge: purge}})
 
     :ok
   end
 
   defp start_purge_bot(_context) do
-    token = Test.Utils.tg_token()
+    token = tg_token()
     purge = true
 
-    start_supervised!({Telegram.Bot.Supervisor, {Test.Bot, token, purge: purge}})
+    start_supervised!({Telegram.Bot.Supervisor.Sync, {Test.Bot, token, purge: purge}})
 
     :ok
   end
 
   describe "getUpdates" do
-    setup [:start_tesla_mock, :start_test_bot]
+    setup [:start_tesla_mock, :start_sync_test_bot]
 
-    test "no update" do
+    test "basic flow" do
+      url_getUpdates = tg_url(tg_token(), "getUpdates")
+      url_testResponse = tg_url(tg_token(), "testResponse")
+
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_getUpdates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -45,11 +45,8 @@ defmodule Test.Telegram.Bot do
                )
 
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_getUpdates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -67,11 +64,8 @@ defmodule Test.Telegram.Bot do
                )
 
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("testResponse")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_testResponse},
                  fn _request ->
                    response = %{"ok" => true, "result" => "ok"}
                    Tesla.Mock.json(response, status: 200)
@@ -79,29 +73,24 @@ defmodule Test.Telegram.Bot do
                )
 
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_getUpdates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == 2
 
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end,
-                 true
+                 end
                )
     end
 
     test "response error" do
+      url = tg_url(tg_token(), "getUpdates")
+
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -112,18 +101,14 @@ defmodule Test.Telegram.Bot do
                )
 
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end,
-                 true
+                 end
                )
     end
   end
@@ -132,15 +117,14 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_purge_bot]
 
     test "Telegram.Bot purge old messages" do
+      url = tg_url(tg_token(), "getUpdates")
+
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url},
                  fn %{body: body} ->
                    now = DateTime.utc_now() |> DateTime.to_unix(:second)
-                   old = now - 1000
+                   old = now - 1_000
 
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -168,14 +152,11 @@ defmodule Test.Telegram.Bot do
                )
 
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url},
                  fn %{body: body} ->
                    now = DateTime.utc_now() |> DateTime.to_unix(:second)
-                   old = now - 1000
+                   old = now - 1_000
 
                    body = Jason.decode!(body)
                    assert body["offset"] == 3
@@ -197,19 +178,15 @@ defmodule Test.Telegram.Bot do
 
       # first not purged update
       assert :ok ==
-               Utils.tesla_mock_expect_request(
-                 %{
-                   method: Utils.http_method(),
-                   url: Utils.tg_url("getUpdates")
-                 },
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == 4
 
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
-                 end,
-                 true
+                 end
                )
     end
   end

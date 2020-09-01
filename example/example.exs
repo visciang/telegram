@@ -34,7 +34,7 @@ defmodule Command do
       text: "Sleeping '#{seconds}'s"
     )
 
-    Process.sleep(seconds * 1000)
+    Process.sleep(seconds * 1_000)
 
     Telegram.Api.request(token, "sendMessage",
       chat_id: chat_id,
@@ -71,6 +71,6 @@ else
     max_bot_concurrency: 1_000
   ]
 
-  Telegram.Bot.Supervisor.start_link({SleepBot, token, options})
+  Telegram.Bot.Supervisor.Async.start_link({SleepBot, token, options})
   Process.sleep(:infinity)
 end

@@ -1,25 +1,13 @@
-defmodule Test.Utils do
-  @base_url Application.get_env(:telegram, :api_base_url)
-  @token "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-  @method "getFoo"
+defmodule Test.Utils.Const do
+  @base_url Application.compile_env(:telegram, :api_base_url)
 
-  @retry_wait_period Application.get_env(:telegram, :get_updates_poll_timeout) * 1000 + 500
+  def tg_token(), do: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+  def tg_method(), do: "getFoo"
+  def tg_url(token, method), do: "#{@base_url}/bot#{token}/#{method}"
+end
 
-  defmacro tg_token do
-    quote do: unquote(@token)
-  end
-
-  defmacro http_method do
-    quote do: unquote(:post)
-  end
-
-  defmacro tg_method() do
-    quote do: unquote(@method)
-  end
-
-  defmacro tg_url(tg_method \\ @method) do
-    quote do: "#{unquote(@base_url)}/bot#{unquote(@token)}/#{unquote(tg_method)}"
-  end
+defmodule Test.Utils.Mock do
+  @retry_wait_period Application.compile_env(:telegram, :get_updates_poll_timeout) * 1_000 + 500
 
   def tesla_mock_global_async(test_pid) do
     Tesla.Mock.mock_global(fn request ->
@@ -32,7 +20,7 @@ defmodule Test.Utils do
     end)
   end
 
-  defmacro tesla_mock_expect_request(request_pattern, fun, no_pending_requests \\ false) do
+  defmacro tesla_mock_expect_request(request_pattern, fun, no_pending_requests \\ true) do
     quote do
       assert_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
 
