@@ -41,6 +41,7 @@ defmodule Test.Telegram.Api do
 
     test "http adapter error" do
       url = tg_url(tg_token(), tg_method())
+
       Tesla.Mock.mock(fn %{method: :post, url: ^url} ->
         {:error, :reason}
       end)
