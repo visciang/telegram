@@ -13,8 +13,8 @@ defmodule Telegram.Client do
   if Application.compile_env(:telegram, :mock) == true do
     adapter Tesla.Mock
   else
-    @recv_timeout Application.compile_env(:telegram, :recv_timeout, 60) * 1000
-    @connect_timeout Application.compile_env(:telegram, :connect_timeout, 5) * 1000
+    @recv_timeout Application.compile_env(:telegram, :recv_timeout, 60) * 1_000
+    @connect_timeout Application.compile_env(:telegram, :connect_timeout, 5) * 1_000
 
     adapter Tesla.Adapter.Gun, timeout: @recv_timeout, connect_timeout: @connect_timeout
   end
