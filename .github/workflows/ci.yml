@@ -36,6 +36,9 @@ jobs:
       - name: Lint dialyzer
         run: mix dialyzer
 
+      - name: Lint credo
+        run: mix credo --all
+
       - name: Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
