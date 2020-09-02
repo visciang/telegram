@@ -8,7 +8,7 @@ defmodule Telegram.Bot.Supervisor.Async do
     Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: String.to_atom("#{__MODULE__}.#{bot_module}"))
   end
 
-  @impl true
+  @impl Supervisor
   def init({bot_module, token, options}) do
     {max_bot_concurrency, options} = Keyword.pop(options, :max_bot_concurrency, :infinity)
     workers_supervisor_name = String.to_atom("Telegram.Bot.Workers.Supervisor.#{bot_module}")

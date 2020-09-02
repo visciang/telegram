@@ -3,7 +3,7 @@
 defmodule SleepBot do
   @behaviour Telegram.Bot
 
-  @impl true
+  @impl Telegram.Bot
   def handle_update(
         %{"message" => %{"text" => "/sleep" <> seconds_arg, "chat" => %{"id" => chat_id}, "message_id" => message_id}},
         token

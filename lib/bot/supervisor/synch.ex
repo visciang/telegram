@@ -8,7 +8,7 @@ defmodule Telegram.Bot.Supervisor.Sync do
     Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: String.to_atom("#{__MODULE__}.#{bot_module}"))
   end
 
-  @impl true
+  @impl Supervisor
   def init({bot_module, token, options}) do
     handle_update = fn update, token ->
       bot_module.handle_update(update, token)
