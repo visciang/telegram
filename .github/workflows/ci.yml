@@ -14,9 +14,9 @@ jobs:
 
       - uses: actions/cache@v1
         with:
-          path: |
-            ~/.mix
-            _build
+          path:
+            - ~/.mix
+            - _build
           key: ${{ runner.os }}
 
       - name: Install Dependencies
