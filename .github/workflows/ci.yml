@@ -30,8 +30,10 @@ jobs:
           MIX_ENV: test
         run: mix compile --warnings-as-errors
 
-      - name: Lint
+      - name: Lint format
         run: mix format --check-formatted
+      
+      - name: Lint dialyzer
         run: mix dialyzer
 
       - name: Test
