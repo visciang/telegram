@@ -1,4 +1,8 @@
 defmodule Telegram.Bot.Utils do
+  @moduledoc """
+  Bot utilities
+  """
+
   @doc """
   Get the "from.user" field in an Update object, if any
   """

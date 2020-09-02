@@ -1,4 +1,11 @@
 defmodule Telegram.Bot.Supervisor.Sync do
+  @moduledoc """
+  Bot Supervisor - Synchronous update dispatching
+
+  Start the `Telegram.Bot.Poller` loop dispatching updates synchronously
+  It means the Bot `handle_update` function is called in the `Telegram.Bot.Poller` process sequentially.
+  """
+
   use Supervisor
 
   @type option :: Telegram.Bot.Poller.options()

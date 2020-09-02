@@ -29,12 +29,12 @@ defmodule Test.Telegram.Bot do
     setup [:start_tesla_mock, :start_sync_test_bot]
 
     test "basic flow" do
-      url_getUpdates = tg_url(tg_token(), "getUpdates")
-      url_testResponse = tg_url(tg_token(), "testResponse")
+      url_get_updates = tg_url(tg_token(), "getUpdates")
+      url_test_response = tg_url(tg_token(), "testResponse")
 
       assert :ok ==
                tesla_mock_expect_request(
-                 %{method: :post, url: ^url_getUpdates},
+                 %{method: :post, url: ^url_get_updates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -46,7 +46,7 @@ defmodule Test.Telegram.Bot do
 
       assert :ok ==
                tesla_mock_expect_request(
-                 %{method: :post, url: ^url_getUpdates},
+                 %{method: :post, url: ^url_get_updates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
@@ -65,7 +65,7 @@ defmodule Test.Telegram.Bot do
 
       assert :ok ==
                tesla_mock_expect_request(
-                 %{method: :post, url: ^url_testResponse},
+                 %{method: :post, url: ^url_test_response},
                  fn _request ->
                    response = %{"ok" => true, "result" => "ok"}
                    Tesla.Mock.json(response, status: 200)
@@ -74,7 +74,7 @@ defmodule Test.Telegram.Bot do
 
       assert :ok ==
                tesla_mock_expect_request(
-                 %{method: :post, url: ^url_getUpdates},
+                 %{method: :post, url: ^url_get_updates},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == 2

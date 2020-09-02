@@ -10,7 +10,6 @@ defmodule Telegram.Api do
   work with any version of the Bot API, hopefully without updates or incompatibily
   with new BOT API versions (as much as they remain backward compatible).
 
-
   References:
   - [API specification](https://core.telegram.org/bots/api)
   - [BOT intro for developers](https://core.telegram.org/bots)
