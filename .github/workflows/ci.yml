@@ -14,10 +14,15 @@ jobs:
 
       - uses: actions/cache@v2
         with:
+          path: deps
+          key: ${{ runner.os }}-deps-${{ hashFiles('mix.lock') }}
+
+      - uses: actions/cache@v2
+        with:
           path: |
             ~/.mix
             _build
-          key: ${{ runner.os }}
+          key: ${{ runner.os }}-build
 
       - name: Install Dependencies
         run: |
