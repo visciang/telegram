@@ -11,31 +11,39 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+
+      - uses: actions/cache@v1
+        with:
+          path: |
+            ~/.mix
+            _build
+          key: ${{ runner.os }}
+
       - name: Install Dependencies
         run: |
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
 
-      - name: Lint
-        run: mix format --check-formatted
-
       - name: Compile
         env:
           MIX_ENV: test
         run: mix compile --warnings-as-errors
+
+      - name: Lint
+        run: mix format --check-formatted
+        run: mix dialyzer
 
       - name: Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mix coveralls.github
 
-      - name: Build documentation
+      - name: Docs Build
         if: github.ref == 'refs/heads/master'
         run: mix docs --formatter=html
 
-      - name: Publish documentation
+      - name: Docs Publish
         if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
