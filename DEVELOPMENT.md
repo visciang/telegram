@@ -2,9 +2,12 @@
 
 # Build, Lint, Test
 
+Reference `.github/workflows/ci.yml`
+
 ```bash
 mix format
 mix dialyzer
+mix credo --all
 mix coveralls --trace
 ```
 
