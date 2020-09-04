@@ -1,4 +1,4 @@
-# TOKEN="..." mix run example/example_stateless.exs
+# TOKEN="..." mix run example/example_bot.exs
 
 defmodule SleepBot do
   @behaviour Telegram.Bot

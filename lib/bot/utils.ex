@@ -4,7 +4,7 @@ defmodule Telegram.Bot.Utils do
   """
 
   @doc """
-  Get the "from.user" field in an Update object, if any
+  Get the "from.user" field in an Update object, if present
   """
   @spec get_from_username(map()) :: String.t() | nil
   def get_from_username(update) do
@@ -18,7 +18,7 @@ defmodule Telegram.Bot.Utils do
   end
 
   @doc """
-  Get the sent "date" field in an Update object, if any
+  Get the sent "date" field in an Update object, if present
   """
   @spec get_sent_date(map()) :: DateTime.t() | nil
   def get_sent_date(update) do
@@ -26,6 +26,20 @@ defmodule Telegram.Bot.Utils do
       {_update_type, %{"date" => date}} ->
         # sent date is UTC
         DateTime.from_unix!(date, :second)
+
+      _ ->
+        nil
+    end)
+  end
+
+  @doc """
+  Get the "chat_id" field in an Update object, if present
+  """
+  @spec get_chat_id(map()) :: String.t() | nil
+  def get_chat_id(update) do
+    Enum.find_value(update, fn
+      {_update_type, %{"chat" => %{"id" => chat_id}}} ->
+        chat_id
 
       _ ->
         nil

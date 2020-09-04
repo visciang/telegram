@@ -1,6 +1,6 @@
 defmodule Telegram.Bot do
   @moduledoc """
-  Telegram Bot behaviour
+  Telegram Bot behaviour.
   """
 
   @doc """

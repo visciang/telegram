@@ -16,4 +16,11 @@ defmodule Test.Telegram.Bot.Utils do
     assert datetime ==
              Telegram.Bot.Utils.get_sent_date(%{"message" => %{"date" => DateTime.to_unix(datetime, :second)}})
   end
+
+  test "get_chat_id" do
+    assert nil == Telegram.Bot.Utils.get_chat_id(%{})
+
+    assert "123" ==
+             Telegram.Bot.Utils.get_chat_id(%{"message" => %{"chat" => %{"id" => "123"}}})
+  end
 end
