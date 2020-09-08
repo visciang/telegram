@@ -7,7 +7,7 @@ defmodule Test.Telegram.Bot do
     :ok
   end
 
-  defp start_sync_test_bot(_context) do
+  defp start_test_bot(_context) do
     token = tg_token()
     purge = false
 
@@ -26,7 +26,7 @@ defmodule Test.Telegram.Bot do
   end
 
   describe "getUpdates" do
-    setup [:start_tesla_mock, :start_sync_test_bot]
+    setup [:start_tesla_mock, :start_test_bot]
 
     test "basic flow" do
       url_get_updates = tg_url(tg_token(), "getUpdates")
