@@ -7,22 +7,25 @@ defmodule CountChatBot do
 
   @impl Telegram.ChatBot
   def init() do
-    {:ok, 0}
+    count_state = 0
+    {:ok, count_state}
   end
 
   @impl Telegram.ChatBot
-  def handle_update(%{"message" => %{"chat" => %{"id" => chat_id}}}, token, state) do
+  def handle_update(%{"message" => %{"chat" => %{"id" => chat_id}}}, token, count_state) do
+    count_state = count_state + 1
+
     Telegram.Api.request(token, "sendMessage",
       chat_id: chat_id,
-      text: "Hey! You sent me #{state} messages"
+      text: "Hey! You sent me #{count_state} messages"
     )
 
-    {:ok, state + 1}
+    {:ok, count_state}
   end
 
-  def handle_update(update, token, state) do
+  def handle_update(_update, _token, count_state) do
     # Unknown update
-    {:ok, state}
+    {:ok, count_state}
   end
 end
 
@@ -35,6 +38,6 @@ else
     purge: true
   ]
 
-  Telegram.Bot.Supervisor.ChatBot.start_link({CountChatBot, token, options})
+  Telegram.Bot.ChatBot.Supervisor.start_link({CountChatBot, token, options})
   Process.sleep(:infinity)
 end

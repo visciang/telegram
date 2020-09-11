@@ -105,20 +105,21 @@ defmodule Telegram.Bot.Poller do
   end
 
   defp is_old_update(update, _offset, delta) do
-    sent = Telegram.Bot.Utils.get_sent_date(update)
-
-    if sent != nil do
-      # sent date is UTC
-      now = DateTime.utc_now()
-
-      if DateTime.diff(now, sent, :second) > delta do
-        Logger.debug("Purge old message (sent: #{inspect(sent)}, now: #{inspect(now)})")
-        {:cont, {:purge, update["update_id"] + 1}}
-      else
+    Telegram.Bot.Utils.get_sent_date(update)
+    |> case do
+      nil ->
         {:halt, update["update_id"]}
-      end
-    else
-      {:halt, update["update_id"]}
+
+      {:ok, sent} ->
+        # sent date is UTC
+        now = DateTime.utc_now()
+
+        if DateTime.diff(now, sent, :second) > delta do
+          Logger.debug("Purge old message (sent: #{inspect(sent)}, now: #{inspect(now)})")
+          {:cont, {:purge, update["update_id"] + 1}}
+        else
+          {:halt, update["update_id"]}
+        end
     end
   end
 end

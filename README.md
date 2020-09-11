@@ -151,39 +151,26 @@ Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Here a keyboa
 
 # Telegram Bot
 
-A simple Bot behaviour.
+Available Bot behaviours:
 
-## Example
+* [Telegram.Bot](lib/bot.ex): compatible with the `Sync`/`Async` dispatch model
+* [Telegram.ChatBot](lib/chat_bot.ex): compatible with the `ChatBot` dispatch model
 
-See [example bot](example/example.exs).
+The library defines some general purpose Bot behaviours each implementing a specific telegram updates dispatch model.
+
+## Dispatch model
+
+Essentially we can define stateless / statefull bot.
+
+* A stateless Bot has no memory of previous conversations, it just receives updates, process them and so on.
+
+* A statefull Bot instead can remember what happened in the past.
+The state here refer to a specific chat, a conversation (chat_id) between a user and a bot "instance".
+
+Some executable examples are available under: `example/example_*.exs`.
 
 ## Telegram Bot Supervisor
 
-The `Telegram.Bot.Supervisor` is responsible to run `Telegram.Bot` behaviours.
-
-You can run multiple `Telegram.Bot` behaviours under your supervisor with different options.
-
-The  `Telegram.Bot.Supervisor` execution model (concurrently) dispatch every received update to a worker process
-(up to `max_bot_concurrency`) handling updates with the provider `Telegram.Bot` behaviour module.
-With this execution model every update processing is isolated.
-
-Currently no "chat statefull session" concept is implemented in the `Telegram.Bot.Supervisor`,
-but you can easely build one on top of this basic dispatch machinery.
-
-```elixir
-token_hello_bot = "your Bot authentication token"    # required
-token_time_bot = "...."
-
-options = [
-  max_bot_concurrency: 1_000,    # max concurrent worker processing updates for this bot
-  purge: true,                   # [optional] purge old messages at startup
-]
-
-# start 2 bot: HelloBot and TimeBot
-children = [
-  {Telegram.Bot.Supervisor, {HelloBot, token_hello_bot, options}},
-  {Telegram.Bot.Supervisor, {TimeBot, token_time_bot, options}}
-]
-opts = [strategy: :one_for_one, name: MyApplication.Supervisor]
-Supervisor.start_link(children, opts)
-```
+* [Telegram.Bot.Sync.Supervisor](lib/bot/sync/supervisor.ex): stateless synchronous.
+* [Telegram.Bot.Async.Supervisor](lib/bot/async/supervisor.ex): stateless asynchronous.
+* [Telegram.Bot.ChatBot.Supervisor](lib/bot/chat_bot/supervisor.ex): statefull (per chat).

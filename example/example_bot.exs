@@ -71,6 +71,6 @@ else
     max_bot_concurrency: 1_000
   ]
 
-  Telegram.Bot.Supervisor.Async.start_link({SleepBot, token, options})
+  Telegram.Bot.Async.Supervisor.start_link({SleepBot, token, options})
   Process.sleep(:infinity)
 end

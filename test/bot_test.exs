@@ -11,7 +11,7 @@ defmodule Test.Telegram.Bot do
     token = tg_token()
     purge = false
 
-    start_supervised!({Telegram.Bot.Supervisor.Sync, {Test.Bot, token, purge: purge}})
+    start_supervised!({Telegram.Bot.Sync.Supervisor, {Test.Bot, token, purge: purge}})
 
     :ok
   end
@@ -20,7 +20,7 @@ defmodule Test.Telegram.Bot do
     token = tg_token()
     purge = true
 
-    start_supervised!({Telegram.Bot.Supervisor.Sync, {Test.Bot, token, purge: purge}})
+    start_supervised!({Telegram.Bot.Sync.Supervisor, {Test.Bot, token, purge: purge}})
 
     :ok
   end

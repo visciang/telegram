@@ -1,4 +1,4 @@
-defmodule Telegram.Bot.Supervisor.Sync do
+defmodule Telegram.Bot.Sync.Supervisor do
   @moduledoc """
   Bot Supervisor - Synchronous update dispatching
 
@@ -12,7 +12,12 @@ defmodule Telegram.Bot.Supervisor.Sync do
 
   @spec start_link({module(), Telegram.Client.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_module, token, options}) do
-    Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: String.to_atom("#{__MODULE__}.#{bot_module}"))
+    Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: name(bot_module))
+  end
+
+  @spec name(module()) :: atom()
+  def name(bot_module) do
+    String.to_atom("#{__MODULE__}.#{bot_module}")
   end
 
   @impl Supervisor

@@ -1,4 +1,5 @@
 ExUnit.start(capture_log: true)
 
-Code.require_file("utils.ex", __DIR__)
-Code.require_file("test_bot.ex", __DIR__)
+"#{__DIR__}/**/*.ex"
+|> Path.wildcard()
+|> Enum.each(&Code.require_file/1)

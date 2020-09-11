@@ -4,7 +4,7 @@ defmodule Test.Telegram.Bot.Utils do
   test "get_from_username" do
     assert nil == Telegram.Bot.Utils.get_from_username(%{})
 
-    assert "test_username" ==
+    assert {:ok, "test_username"} ==
              Telegram.Bot.Utils.get_from_username(%{"message" => %{"from" => %{"username" => "test_username"}}})
   end
 
@@ -13,14 +13,14 @@ defmodule Test.Telegram.Bot.Utils do
 
     datetime = ~U[2015-05-25 13:26:08Z]
 
-    assert datetime ==
+    assert {:ok, datetime} ==
              Telegram.Bot.Utils.get_sent_date(%{"message" => %{"date" => DateTime.to_unix(datetime, :second)}})
   end
 
   test "get_chat_id" do
     assert nil == Telegram.Bot.Utils.get_chat_id(%{})
 
-    assert "123" ==
+    assert {:ok, "123"} ==
              Telegram.Bot.Utils.get_chat_id(%{"message" => %{"chat" => %{"id" => "123"}}})
   end
 end
