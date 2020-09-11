@@ -44,4 +44,11 @@ defmodule Test.Utils.Mock do
       end
     end
   end
+
+  defmacro tesla_mock_refute_request(request_pattern) do
+    quote do
+      refute_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
+      :ok
+    end
+  end
 end
