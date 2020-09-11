@@ -138,7 +138,7 @@ defmodule Test.Telegram.Api do
       token = "token_test"
       file_path = "file_path_test"
       url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
-      file_content = File.read!("./test/test.jpg")
+      file_content = File.read!("./test/assets/test.jpg")
 
       Tesla.Mock.mock(fn %{method: ^method, url: ^url} ->
         %Tesla.Env{
