@@ -10,12 +10,11 @@ defmodule Telegram.Bot.ChatBot.Supervisor do
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({chatbot_behaviour, token, options}) do
-    Supervisor.start_link(__MODULE__, {chatbot_behaviour, token, options}, name: name(chatbot_behaviour))
-  end
-
-  @spec name(module()) :: atom()
-  def name(chatbot_behaviour) do
-    String.to_atom("#{__MODULE__}.#{chatbot_behaviour}")
+    Supervisor.start_link(
+      __MODULE__,
+      {chatbot_behaviour, token, options},
+      name: Telegram.Bot.Utils.name(__MODULE__, chatbot_behaviour)
+    )
   end
 
   @impl Supervisor

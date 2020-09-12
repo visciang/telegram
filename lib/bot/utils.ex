@@ -4,6 +4,15 @@ defmodule Telegram.Bot.Utils do
   """
 
   @doc """
+  Process name atom maker.
+  Composed by Supervisor/GenServer/_ module name + bot behaviour module name
+  """
+  @spec name(module(), module()) :: atom()
+  def name(module, behaviour_module) do
+    String.to_atom("#{module}.#{behaviour_module}")
+  end
+
+  @doc """
   Get the "from.user" field in an Update object, if present
   """
   @spec get_from_username(Telegram.Types.update()) :: {:ok, String.t()} | nil

@@ -8,12 +8,11 @@ defmodule Telegram.Bot.ChatBot.Chat.Supervisor do
 
   @spec start_link({module(), Telegram.Types.token()}) :: Supervisor.on_start()
   def start_link({chatbot_behaviour, max_bot_concurrency}) do
-    Supervisor.start_link(__MODULE__, {chatbot_behaviour, max_bot_concurrency}, name: name(chatbot_behaviour))
-  end
-
-  @spec name(module()) :: atom()
-  def name(chatbot_behaviour) do
-    String.to_atom("#{__MODULE__}.#{chatbot_behaviour}")
+    Supervisor.start_link(
+      __MODULE__,
+      {chatbot_behaviour, max_bot_concurrency},
+      name: Telegram.Bot.Utils.name(__MODULE__, chatbot_behaviour)
+    )
   end
 
   @spec handle_update(module(), Telegram.Types.update(), Telegram.Types.token()) :: :ok

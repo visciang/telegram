@@ -11,7 +11,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     GenServer.start_link(
       __MODULE__,
       {chatbot_behaviour},
-      name: {:via, Registry, {ChatBot.Chat.Registry.name(chatbot_behaviour), chat_id}}
+      name: ChatBot.Chat.Registry.via(chatbot_behaviour, chat_id)
     )
   end
 

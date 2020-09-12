@@ -12,12 +12,11 @@ defmodule Telegram.Bot.Sync.Supervisor do
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_behaviour, token, options}) do
-    Supervisor.start_link(__MODULE__, {bot_behaviour, token, options}, name: name(bot_behaviour))
-  end
-
-  @spec name(module()) :: atom()
-  def name(bot_behaviour) do
-    String.to_atom("#{__MODULE__}.#{bot_behaviour}")
+    Supervisor.start_link(
+      __MODULE__,
+      {bot_behaviour, token, options},
+      name: Telegram.Bot.Utils.name(__MODULE__, bot_behaviour)
+    )
   end
 
   @impl Supervisor
