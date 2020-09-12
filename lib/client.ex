@@ -22,14 +22,22 @@ defmodule Telegram.Client do
   plug Tesla.Middleware.Retry
 
   @doc false
-  @spec do_request(Telegram.Types.token(), Telegram.Types.method(), body()) :: {:ok, term()} | {:error, term()}
-  def do_request(token, method, body) do
+  @spec request(Telegram.Types.token(), Telegram.Types.method(), body()) :: {:ok, term()} | {:error, term()}
+  def request(token, method, body) do
     "/bot#{token}/#{method}"
     |> post(body)
-    |> do_response()
+    |> process_response()
   end
 
-  defp do_response({:ok, env}) do
+  @doc false
+  @spec file(Telegram.Types.token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
+  def file(token, file_path) do
+    "/file/bot#{token}/#{file_path}"
+    |> get()
+    |> process_file_response()
+  end
+
+  defp process_response({:ok, env}) do
     case env.body do
       %{"ok" => true, "result" => result} ->
         {:ok, result}
@@ -42,19 +50,11 @@ defmodule Telegram.Client do
     end
   end
 
-  defp do_response({:error, reason}) do
+  defp process_response({:error, reason}) do
     {:error, reason}
   end
 
-  @doc false
-  @spec do_file(Telegram.Types.token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
-  def do_file(token, file_path) do
-    "/file/bot#{token}/#{file_path}"
-    |> get()
-    |> do_file_response()
-  end
-
-  defp do_file_response({:ok, env}) do
+  defp process_file_response({:ok, env}) do
     case env.status do
       200 ->
         {:ok, env.body}
@@ -64,7 +64,7 @@ defmodule Telegram.Client do
     end
   end
 
-  defp do_file_response({:error, reason}) do
+  defp process_file_response({:error, reason}) do
     {:error, reason}
   end
 end

@@ -146,7 +146,7 @@ defmodule Telegram.Api do
       |> do_json_markup()
       |> do_body()
 
-    Telegram.Client.do_request(token, method, body)
+    Telegram.Client.request(token, method, body)
   end
 
   @doc """
@@ -170,7 +170,7 @@ defmodule Telegram.Api do
   """
   @spec file(Telegram.Types.token(), Telegram.Client.file_path()) :: request_result()
   def file(token, file_path) do
-    Telegram.Client.do_file(token, file_path)
+    Telegram.Client.file(token, file_path)
   end
 
   defp do_body(parameters) do
