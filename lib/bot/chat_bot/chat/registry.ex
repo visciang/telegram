@@ -20,6 +20,11 @@ defmodule Telegram.Bot.ChatBot.Chat.Registry do
     end
   end
 
+  @spec unregister(module(), String.t()) :: :ok
+  def unregister(bot_behaviour, chat_id) do
+    Registry.unregister(Telegram.Bot.Utils.name(__MODULE__, bot_behaviour), chat_id)
+  end
+
   @spec via(module(), String.t()) :: {:via, Registry, {Registry.registry(), any()}}
   def via(bot_behaviour, chat_id) do
     {:via, Registry, {Telegram.Bot.Utils.name(__MODULE__, bot_behaviour), chat_id}}

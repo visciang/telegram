@@ -20,4 +20,14 @@ defmodule Test.ChatBot do
 
     {:ok, count_state}
   end
+
+  @impl Telegram.ChatBot
+  def handle_update(%{"message" => %{"text" => "/stop", "chat" => %{"id" => chat_id}}}, token, count_state) do
+    Telegram.Api.request(token, "testResponse",
+      chat_id: chat_id,
+      text: "Bye!"
+    )
+
+    {:stop, "done", count_state}
+  end
 end

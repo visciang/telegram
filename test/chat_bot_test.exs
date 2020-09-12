@@ -42,6 +42,36 @@ defmodule Test.Telegram.ChatBot do
                  false
                )
     end)
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_get_updates},
+               fn _ ->
+                 result = [
+                   %{
+                     "update_id" => 4,
+                     "message" => %{"text" => "/stop", "chat" => %{"id" => chat_id}}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_test_response},
+               fn %{body: body} ->
+                 body = Jason.decode!(body)
+                 assert body["chat_id"] == chat_id
+                 assert body["text"] == "Bye!"
+
+                 response = %{"ok" => true, "result" => []}
+                 Tesla.Mock.json(response, status: 200)
+               end,
+               false
+             )
   end
 
   test "max_bot_concurrency overflow" do

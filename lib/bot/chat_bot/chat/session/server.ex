@@ -4,7 +4,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   """
 
   use GenServer, restart: :transient
-  alias Telegram.Bot.ChatBot
+  alias Telegram.Bot.{ChatBot, Utils}
 
   @spec start_link({module(), String.t()}) :: GenServer.on_start()
   def start_link({chatbot_behaviour, chat_id}) do
@@ -28,7 +28,15 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @impl GenServer
   def handle_cast({:handle_update, update, token}, {chatbot_behaviour, bot_state}) do
-    {:ok, bot_state} = chatbot_behaviour.handle_update(update, token, bot_state)
-    {:noreply, {chatbot_behaviour, bot_state}}
+    chatbot_behaviour.handle_update(update, token, bot_state)
+    |> case do
+      {:ok, bot_state} ->
+        {:noreply, {chatbot_behaviour, bot_state}}
+
+      {:stop, _reason, _bot_state} = stop ->
+        {:ok, chat_id} = Utils.get_chat_id(update)
+        ChatBot.Chat.Registry.unregister(chatbot_behaviour, chat_id)
+        stop
+    end
   end
 end
