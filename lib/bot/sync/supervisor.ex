@@ -11,19 +11,19 @@ defmodule Telegram.Bot.Sync.Supervisor do
   @type option :: Telegram.Bot.Poller.options()
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
-  def start_link({bot_module, token, options}) do
-    Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: name(bot_module))
+  def start_link({bot_behaviour, token, options}) do
+    Supervisor.start_link(__MODULE__, {bot_behaviour, token, options}, name: name(bot_behaviour))
   end
 
   @spec name(module()) :: atom()
-  def name(bot_module) do
-    String.to_atom("#{__MODULE__}.#{bot_module}")
+  def name(bot_behaviour) do
+    String.to_atom("#{__MODULE__}.#{bot_behaviour}")
   end
 
   @impl Supervisor
-  def init({bot_module, token, options}) do
+  def init({bot_behaviour, token, options}) do
     handle_update = fn update, token ->
-      bot_module.handle_update(update, token)
+      bot_behaviour.handle_update(update, token)
     end
 
     Supervisor.init(

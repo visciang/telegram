@@ -7,11 +7,11 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   alias Telegram.Bot.ChatBot
 
   @spec start_link({module(), String.t()}) :: GenServer.on_start()
-  def start_link({bot_module, chat_id}) do
+  def start_link({chatbot_behaviour, chat_id}) do
     GenServer.start_link(
       __MODULE__,
-      {bot_module},
-      name: {:via, Registry, {ChatBot.Chat.Registry.name(bot_module), chat_id}}
+      {chatbot_behaviour},
+      name: {:via, Registry, {ChatBot.Chat.Registry.name(chatbot_behaviour), chat_id}}
     )
   end
 
@@ -21,14 +21,14 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @impl GenServer
-  def init({bot_module}) do
-    {:ok, bot_state} = bot_module.init()
-    {:ok, {bot_module, bot_state}}
+  def init({chatbot_behaviour}) do
+    {:ok, bot_state} = chatbot_behaviour.init()
+    {:ok, {chatbot_behaviour, bot_state}}
   end
 
   @impl GenServer
-  def handle_cast({:handle_update, update, token}, {bot_module, bot_state}) do
-    {:ok, bot_state} = bot_module.handle_update(update, token, bot_state)
-    {:noreply, {bot_module, bot_state}}
+  def handle_cast({:handle_update, update, token}, {chatbot_behaviour, bot_state}) do
+    {:ok, bot_state} = chatbot_behaviour.handle_update(update, token, bot_state)
+    {:noreply, {chatbot_behaviour, bot_state}}
   end
 end
