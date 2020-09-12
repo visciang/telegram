@@ -42,7 +42,7 @@ jobs:
         run: mix dialyzer
 
       - name: Lint credo
-        run: mix credo --all
+        run: mix credo --all --strict
 
       - name: Test
         env:
