@@ -6,5 +6,5 @@ defmodule Telegram.Bot do
   @doc """
   The function receives the telegram update event.
   """
-  @callback handle_update(update :: map(), token :: Telegram.Client.token()) :: any()
+  @callback handle_update(update :: Telegram.Types.update(), token :: Telegram.Types.token()) :: any()
 end

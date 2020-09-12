@@ -1,8 +1,6 @@
 defmodule Telegram.Client do
   @moduledoc false
 
-  @type token :: String.t()
-  @type method :: String.t()
   @type file_path :: String.t()
   @type body :: map() | Tesla.Multipart.t()
 
@@ -24,7 +22,7 @@ defmodule Telegram.Client do
   plug Tesla.Middleware.Retry
 
   @doc false
-  @spec do_request(token(), method(), body()) :: {:ok, term()} | {:error, term()}
+  @spec do_request(Telegram.Types.token(), Telegram.Types.method(), body()) :: {:ok, term()} | {:error, term()}
   def do_request(token, method, body) do
     "/bot#{token}/#{method}"
     |> post(body)
@@ -49,7 +47,7 @@ defmodule Telegram.Client do
   end
 
   @doc false
-  @spec do_file(token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
+  @spec do_file(Telegram.Types.token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
   def do_file(token, file_path) do
     "/file/bot#{token}/#{file_path}"
     |> get()

@@ -18,6 +18,9 @@ defmodule Telegram.ChatBot do
   Receives the telegram update event and the "current" chat_state.
   Return the "updated" chat_state.
   """
-  @callback handle_update(update :: map(), token :: Telegram.Client.token(), chat_state :: chat_state()) ::
-              {:ok, chat_state()}
+  @callback handle_update(
+              update :: Telegram.Types.update(),
+              token :: Telegram.Types.token(),
+              chat_state :: chat_state()
+            ) :: {:ok, chat_state()}
 end

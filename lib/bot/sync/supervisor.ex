@@ -10,7 +10,7 @@ defmodule Telegram.Bot.Sync.Supervisor do
 
   @type option :: Telegram.Bot.Poller.options()
 
-  @spec start_link({module(), Telegram.Client.token(), [option()]}) :: Supervisor.on_start()
+  @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_module, token, options}) do
     Supervisor.start_link(__MODULE__, {bot_module, token, options}, name: name(bot_module))
   end

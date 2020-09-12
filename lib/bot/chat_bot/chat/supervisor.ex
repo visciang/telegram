@@ -6,7 +6,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Supervisor do
   use Supervisor
   alias Telegram.Bot.ChatBot
 
-  @spec start_link({module(), Telegram.Client.token()}) :: Supervisor.on_start()
+  @spec start_link({module(), Telegram.Types.token()}) :: Supervisor.on_start()
   def start_link({bot_module, max_bot_concurrency}) do
     Supervisor.start_link(__MODULE__, {bot_module, max_bot_concurrency}, name: name(bot_module))
   end
@@ -16,7 +16,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Supervisor do
     String.to_atom("#{__MODULE__}.#{bot_module}")
   end
 
-  @spec handle_update(module(), map(), Telegram.Client.token()) :: :ok
+  @spec handle_update(module(), Telegram.Types.update(), Telegram.Types.token()) :: :ok
   def handle_update(bot_module, update, token) do
     {:ok, chat_id} = Telegram.Bot.Utils.get_chat_id(update)
 

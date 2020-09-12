@@ -8,7 +8,7 @@ defmodule Telegram.Bot.Poller do
   @purge_after @get_updates_poll_timeout * 2
 
   @type options :: {:purge, boolean()}
-  @type handle_update :: (update :: map(), token :: Telegram.Client.token() -> nil)
+  @type handle_update :: (update :: Telegram.Types.update(), token :: Telegram.Types.token() -> nil)
 
   defmodule Context do
     @moduledoc false
@@ -16,12 +16,12 @@ defmodule Telegram.Bot.Poller do
 
     @type t :: %__MODULE__{
             handle_update: Telegram.Bot.Poller.handle_update(),
-            token: Telegram.Client.token(),
+            token: Telegram.Types.token(),
             offset: integer()
           }
   end
 
-  @spec start_link({handle_update(), Telegram.Client.token(), [options()]}) :: {:ok, pid()}
+  @spec start_link({handle_update(), Telegram.Types.token(), [options()]}) :: {:ok, pid()}
   def start_link({handle_update, token, options}) do
     default = [purge: true]
     options = Keyword.merge(default, options)
@@ -34,7 +34,7 @@ defmodule Telegram.Bot.Poller do
   end
 
   @doc false
-  @spec run(handle_update(), Telegram.Client.token(), boolean()) :: no_return
+  @spec run(handle_update(), Telegram.Types.token(), boolean()) :: no_return
   def run(handle_update, token, purge) do
     Logger.debug("#{__MODULE__} running with token '#{token}'")
 

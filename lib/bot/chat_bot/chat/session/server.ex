@@ -15,7 +15,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     )
   end
 
-  @spec handle_update(GenServer.server(), map(), Telegram.Client.token()) :: :ok
+  @spec handle_update(GenServer.server(), Telegram.Types.update(), Telegram.Types.token()) :: :ok
   def handle_update(server, update, token) do
     GenServer.cast(server, {:handle_update, update, token})
   end
