@@ -76,6 +76,7 @@ defmodule Test.Telegram.Bot.Poller do
                  fn %{body: body} ->
                    body = Jason.decode!(body)
                    assert body["offset"] == nil
+
                    response = %{"ok" => true, "result" => []}
                    Tesla.Mock.json(response, status: 200)
                  end
