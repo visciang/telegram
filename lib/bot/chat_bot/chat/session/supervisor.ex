@@ -4,22 +4,22 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Supervisor do
   """
 
   use DynamicSupervisor
-  alias Telegram.Bot.ChatBot
+  alias Telegram.Bot.{ChatBot.Chat, Utils}
 
   @spec start_link({module(), non_neg_integer()}) :: Supervisor.on_start()
   def start_link({chatbot_behaviour, max_bot_concurrency}) do
     DynamicSupervisor.start_link(
       __MODULE__,
       {max_bot_concurrency},
-      name: Telegram.Bot.Utils.name(__MODULE__, chatbot_behaviour)
+      name: Utils.name(__MODULE__, chatbot_behaviour)
     )
   end
 
   @spec start_child(module(), String.t()) :: DynamicSupervisor.on_start_child()
   def start_child(chatbot_behaviour, chat_id) do
     DynamicSupervisor.start_child(
-      Telegram.Bot.Utils.name(__MODULE__, chatbot_behaviour),
-      {ChatBot.Chat.Session.Server, {chatbot_behaviour, chat_id}}
+      Utils.name(__MODULE__, chatbot_behaviour),
+      {Chat.Session.Server, {chatbot_behaviour, chat_id}}
     )
   end
 

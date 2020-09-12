@@ -4,7 +4,7 @@ defmodule Test.ChatBot do
   @behaviour Telegram.ChatBot
 
   @impl Telegram.ChatBot
-  def init() do
+  def init do
     count_state = 0
     {:ok, count_state}
   end

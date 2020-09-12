@@ -2,6 +2,7 @@ defmodule Telegram.Bot.Poller do
   use Task, restart: :permanent
   use Retry
   require Logger
+  alias Telegram.Bot.{Poller, Utils}
 
   # timeout configuration opts unit: seconds
   @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
@@ -15,7 +16,7 @@ defmodule Telegram.Bot.Poller do
     defstruct [:handle_update, :token, :offset]
 
     @type t :: %__MODULE__{
-            handle_update: Telegram.Bot.Poller.handle_update(),
+            handle_update: Poller.handle_update(),
             token: Telegram.Types.token(),
             offset: integer()
           }
@@ -86,7 +87,6 @@ defmodule Telegram.Bot.Poller do
     Logger.debug("[#{context.token}] process_update: #{inspect(update)}")
 
     context.handle_update.(update, context.token)
-
     update["update_id"] + 1
   end
 
@@ -105,7 +105,7 @@ defmodule Telegram.Bot.Poller do
   end
 
   defp is_old_update(update, _offset, delta) do
-    Telegram.Bot.Utils.get_sent_date(update)
+    Utils.get_sent_date(update)
     |> case do
       nil ->
         {:halt, update["update_id"]}

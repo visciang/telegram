@@ -9,15 +9,16 @@ defmodule Telegram.Bot.Async.Supervisor do
   """
 
   use Supervisor
+  alias Telegram.Bot.{Poller, Utils}
 
-  @type option :: Telegram.Bot.Poller.options() | {:max_bot_concurrency, non_neg_integer()}
+  @type option :: Poller.options() | {:max_bot_concurrency, non_neg_integer()}
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_behaviour, token, options}) do
     Supervisor.start_link(
       __MODULE__,
       {bot_behaviour, token, options},
-      name: Telegram.Bot.Utils.name(__MODULE__, bot_behaviour)
+      name: Utils.name(__MODULE__, bot_behaviour)
     )
   end
 
@@ -37,7 +38,7 @@ defmodule Telegram.Bot.Async.Supervisor do
       )
     end
 
-    poller = {Telegram.Bot.Poller, {handle_update, token, options}}
+    poller = {Poller, {handle_update, token, options}}
 
     children = [supervisor, poller]
     Supervisor.init(children, strategy: :one_for_one)
