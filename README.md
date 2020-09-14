@@ -16,7 +16,7 @@ def deps do
 end
 ```
 
-# Telegram API
+# Telegram Bot API
 
 Telegram Bot API request.
 
