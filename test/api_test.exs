@@ -135,7 +135,7 @@ defmodule Test.Telegram.Api do
   describe "Test Telegram.Api.file" do
     test "ok" do
       method = :get
-      token = "token_test"
+      token = tg_token()
       file_path = "file_path_test"
       url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
       file_content = File.read!("./test/assets/test.jpg")
@@ -153,7 +153,7 @@ defmodule Test.Telegram.Api do
 
     test "http adapter error" do
       method = :get
-      token = "token_test"
+      token = tg_token()
       file_path = "file_path_test"
       url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
 
@@ -166,7 +166,7 @@ defmodule Test.Telegram.Api do
 
     test "http error" do
       method = :get
-      token = "token_test"
+      token = tg_token()
       file_path = "file_path_test"
       url = "#{Application.get_env(:telegram, :api_base_url)}/file/bot#{token}/#{file_path}"
 
