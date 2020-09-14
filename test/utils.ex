@@ -3,18 +3,25 @@ defmodule Test.Utils.Const do
 
   @base_url Application.compile_env(:telegram, :api_base_url)
 
-  def tg_token, do: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+  def tg_token(test_pid \\ self()), do: pid_to_string(test_pid)
   def tg_method, do: "getFoo"
   def tg_url(token, method), do: "#{@base_url}/bot#{token}/#{method}"
+
+  def pid_to_string(pid), do: pid |> :erlang.pid_to_list() |> to_string()
+  def string_to_pid(pid_string), do: pid_string |> to_charlist() |> :erlang.list_to_pid()
 end
 
 defmodule Test.Utils.Mock do
   @moduledoc false
 
+  alias Test.Utils.Const
+
   @retry_wait_period Application.compile_env(:telegram, :get_updates_poll_timeout) * 1_000 + 500
 
-  def tesla_mock_global_async(test_pid) do
-    Tesla.Mock.mock_global(fn request ->
+  def tesla_mock_global_async do
+    Tesla.Mock.mock_global(fn %{url: url} = request ->
+      test_pid = get_test_pid_from_request_url(url)
+
       send(test_pid, {:tesla_mock_request, self(), request})
 
       receive do
@@ -50,5 +57,11 @@ defmodule Test.Utils.Mock do
       refute_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
       :ok
     end
+  end
+
+  defp get_test_pid_from_request_url(url) do
+    # ex:  url = "http://test:8000/bot<0.422.0>/testResponse"
+    %{"test_pid" => test_pid} = Regex.named_captures(~r"/bot(?<test_pid>[^/]+)/", url)
+    Const.string_to_pid(test_pid)
   end
 end

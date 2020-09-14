@@ -1,9 +1,9 @@
 defmodule Test.Telegram.ChatBot do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   import Test.Utils.{Const, Mock}
 
-  setup [:setup_tesla_mock, :setup_test_bot]
+  setup [:setup_test_bot]
 
   test "basic flow" do
     url_get_updates = tg_url(tg_token(), "getUpdates")
@@ -130,11 +130,6 @@ defmodule Test.Telegram.ChatBot do
 
     assert :ok ==
              tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
-  end
-
-  defp setup_tesla_mock(_context) do
-    tesla_mock_global_async(self())
-    :ok
   end
 
   defp setup_test_bot(_context) do

@@ -1,10 +1,9 @@
 defmodule Test.Telegram.Bot.Poller do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   import Test.Utils.{Const, Mock}
 
   describe "getUpdates" do
     setup _context do
-      setup_tesla_mock()
       setup_poller(false)
     end
 
@@ -86,7 +85,6 @@ defmodule Test.Telegram.Bot.Poller do
 
   describe "purge old updates" do
     setup _context do
-      setup_tesla_mock()
       setup_poller(true)
     end
 
@@ -165,21 +163,16 @@ defmodule Test.Telegram.Bot.Poller do
     end
   end
 
-  defp setup_tesla_mock do
-    tesla_mock_global_async(self())
-    :ok
-  end
-
   defp setup_poller(purge) do
-    token = tg_token()
+    t_token = tg_token()
     options = [purge: purge]
 
     handle_update = fn update, token ->
-      assert token == tg_token()
+      assert token == t_token
       assert %{"message" => %{"text" => "/test"}} = update
     end
 
-    start_supervised!({Telegram.Bot.Poller, {handle_update, token, options}})
+    start_supervised!({Telegram.Bot.Poller, {handle_update, t_token, options}})
 
     :ok
   end
