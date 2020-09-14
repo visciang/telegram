@@ -2,7 +2,7 @@ defmodule Test.Telegram.Bot.Async do
   use ExUnit.Case, async: false
   import Test.Utils.{Const, Mock}
 
-  setup [:start_tesla_mock, :start_test_bot]
+  setup [:setup_tesla_mock, :setup_test_bot]
 
   test "basic flow" do
     url_get_updates = tg_url(tg_token(), "getUpdates")
@@ -38,12 +38,12 @@ defmodule Test.Telegram.Bot.Async do
              )
   end
 
-  defp start_tesla_mock(_context) do
+  defp setup_tesla_mock(_context) do
     tesla_mock_global_async(self())
     :ok
   end
 
-  defp start_test_bot(_context) do
+  defp setup_test_bot(_context) do
     token = tg_token()
     options = [purge: false]
 

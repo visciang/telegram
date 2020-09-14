@@ -4,8 +4,8 @@ defmodule Test.Telegram.Bot.Poller do
 
   describe "getUpdates" do
     setup _context do
-      start_tesla_mock()
-      start_poller(false)
+      setup_tesla_mock()
+      setup_poller(false)
     end
 
     test "basic flow" do
@@ -86,8 +86,8 @@ defmodule Test.Telegram.Bot.Poller do
 
   describe "purge old updates" do
     setup _context do
-      start_tesla_mock()
-      start_poller(true)
+      setup_tesla_mock()
+      setup_poller(true)
     end
 
     test "Telegram.Bot purge old messages" do
@@ -165,12 +165,12 @@ defmodule Test.Telegram.Bot.Poller do
     end
   end
 
-  defp start_tesla_mock do
+  defp setup_tesla_mock do
     tesla_mock_global_async(self())
     :ok
   end
 
-  defp start_poller(purge) do
+  defp setup_poller(purge) do
     token = tg_token()
     options = [purge: purge]
 
