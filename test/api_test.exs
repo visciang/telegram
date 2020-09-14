@@ -1,5 +1,5 @@
 defmodule Test.Telegram.Api do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   import Test.Utils.Const
 
   describe "Test Telegram.Api.request" do
