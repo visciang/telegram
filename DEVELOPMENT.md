@@ -2,9 +2,12 @@
 
 # Build, Lint, Test
 
+Reference `.github/workflows/ci.yml`
+
 ```bash
 mix format
 mix dialyzer
+mix credo --all --strict
 mix coveralls --trace
 ```
 
@@ -18,8 +21,8 @@ mix docs
 
 # Example bot script
 
-Fill token, username, auth in `example/example.exs`
+Run `example/example.exs` with:
 
 ```bash
-mix run example/example.exs
+TOKEN="..." mix run example/example.exs
 ```

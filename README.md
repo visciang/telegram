@@ -1,6 +1,6 @@
 # Telegram
 
-![CI](https://github.com/visciang/telegram/workflows/CI/badge.svg) [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram/readme.html) [![Coverage Status](https://coveralls.io/repos/github/visciang/telegram/badge.svg?branch=master)](https://coveralls.io/github/visciang/telegram?branch=github-actions)
+![CI](https://github.com/visciang/telegram/workflows/CI/badge.svg) [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/telegram/readme.html) [![Coverage Status](https://coveralls.io/repos/github/visciang/telegram/badge.svg?branch=master)](https://coveralls.io/github/visciang/telegram?branch=master)
 
 Telegram library for the Elixir language.
 
@@ -16,7 +16,7 @@ def deps do
 end
 ```
 
-## Telegram API
+# Telegram Bot API
 
 Telegram Bot API request.
 
@@ -26,18 +26,18 @@ away only the boilerplate for building / sending / serializing the API requests.
 
 Compared to a full-binded interface it could result less elixir frendly but it will
 work with any version of the Bot API, hopefully without updates or incompatibily
-with new BOT API versions (as much as they remain backward compatible).
+with new Bot API versions (as much as they remain backward compatible).
 
 
 References:
 * [API specification](https://core.telegram.org/bots/api)
-* [BOT intro for developers](https://core.telegram.org/bots)
+* [Bot intro for developers](https://core.telegram.org/bots)
 
-Given the token of your BOT you can issue any request using:
+Given the token of your Bot you can issue any request using:
 * method: Telegram API method name (ex. "getMe", "sendMessage")
 * options: Telegram API method specific parameters (you can use elixir native types)
 
-### Examples:
+## Examples:
 
 Given the bot token (something like):
 
@@ -45,7 +45,7 @@ Given the bot token (something like):
 token = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
 ```
 
-#### [getMe](https://core.telegram.org/bots/api#getme)
+### [getMe](https://core.telegram.org/bots/api#getme)
 
 ```elixir
 Telegram.Api.request(token, "getMe")
@@ -53,7 +53,7 @@ Telegram.Api.request(token, "getMe")
 {:ok, %{"first_name" => "Abc", "id" => 1234567, "is_bot" => true, "username" => "ABC"}}
 ```
 
-#### [sendMessage](https://core.telegram.org/bots/api#sendmessage)
+### [sendMessage](https://core.telegram.org/bots/api#sendmessage)
 
 ```elixir
 Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Hello! .. silently", disable_notification: true)
@@ -73,7 +73,7 @@ Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Hello! .. sil
     "text" => "Hello! .. silently"}}
 ```
 
-#### [getUpdates](https://core.telegram.org/bots/api#getupdates)
+### [getUpdates](https://core.telegram.org/bots/api#getupdates)
 
 ```elixir
 Telegram.Api.request(token, "getUpdates", offset: -1, timeout: 30)
@@ -96,21 +96,21 @@ Telegram.Api.request(token, "getUpdates", offset: -1, timeout: 30)
     "update_id" => 129745295}]}
 ```
 
-### Sending files
+## Sending files
 
 If a API parameter has a InputFile type and you want to send a local file,
 for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
 value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
 wrap it in `{:file_content, data, "photo.jpg"}` tuple.
 
-#### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
+### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
 ```elixir
 Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file, "/tmp/photo.jpg"})
 Telegram.Api.request(token, "sendPhoto", chat_id: 876532, photo: {:file_content, photo, "photo.jpg"})
 ```
 
-### Downloading files
+## Downloading files
 
 To download a file from the telegram server you need a `file_path` pointer to the file.
 With that you can download the file via `Telegram.Api.file`.
@@ -123,14 +123,14 @@ With that you can download the file via `Telegram.Api.file`.
 file_id = file_obj["file_id"]
 ```
 
-#### [getFile](https://core.telegram.org/bots/api#getfile)
+### [getFile](https://core.telegram.org/bots/api#getfile)
 
 ```elixir
 {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
 {:ok, file} = Telegram.Api.file(token, file_path)
 ```
 
-### Reply Markup
+## Reply Markup
 
 If a API parameter has a "A JSON-serialized object" type (InlineKeyboardMarkup, ReplyKeyboardMarkup, etc),
 just wrap the parameter value in a tuple `{:json, value}`.
@@ -138,7 +138,7 @@ just wrap the parameter value in a tuple `{:json, value}`.
 Reference: [Keyboards](https://core.telegram.org/bots#keyboards),
 [Inline Keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)
 
-#### [sendMessage](https://core.telegram.org/bots/api#sendmessage) with keyboard
+### [sendMessage](https://core.telegram.org/bots/api#sendmessage) with keyboard
 
 ```elixir
 keyboard = [
@@ -149,105 +149,28 @@ keyboard_markup = %{one_time_keyboard: true, keyboard: keyboard}
 Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Here a keyboard!", reply_markup: {:json, keyboard_markup})
 ```
 
-## Telegram BOT
+# Telegram Bot
 
-A simple BOT behaviour and DSL.
+Available Bot behaviours:
 
-## Example
+* [Telegram.Bot](lib/bot.ex): compatible with the `Sync`/`Async` dispatch model
+* [Telegram.ChatBot](lib/chat_bot.ex): compatible with the `ChatBot` dispatch model
 
-```elixir
-defmodule Simple.Bot do
-  use Telegram.Bot,
-    token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
-    username: "simple_bot",
-    auth: ["user1", "user2"]
+The library defines some general purpose Bot behaviours each implementing a specific telegram updates dispatch model.
 
-  command ["ciao", "hello"], args do
-    # handle the commands: "/ciao" and "/hello"
+## Dispatch model
 
-    # reply with a text message
-    request("sendMessage",
-      chat_id: update["chat"]["id"],
-      text: "ciao! #{inspect args}")
-  end
+Essentially we can define stateless / statefull bot.
 
-  command unknown do
-    request("sendMessage", chat_id: update["chat"]["id"],
-      text: "Unknow command `#{unknown}`")
-  end
+* A stateless Bot has no memory of previous conversations, it just receives updates, process them and so on.
 
-  message do
-    request("sendMessage", chat_id: update["chat"]["id"],
-      text: "Hey! You sent me a message: #{inspect update}")
-  end
+* A statefull Bot instead can remember what happened in the past.
+The state here refer to a specific chat, a conversation (chat_id) between a user and a bot "instance".
 
-  edited_message do
-    # handler code
-  end
+Some executable examples are available under: `example/example_*.exs`.
 
-  channel_post do
-    # handler code
-  end
+## Telegram Bot Supervisor
 
-  edited_channel_post do
-    # handler code
-  end
-
-  inline_query _query do
-    # handler code
-  end
-
-  chosen_inline_result _query do
-    # handler code
-  end
-
-  callback_query do
-    # handler code
-  end
-
-  shipping_query do
-    # handler code
-  end
-
-  pre_checkout_query do
-    # handler code
-  end
-
-  any do
-    # handler code
-  end
-end
-```
-
-See `Telegram.Bot.Dsl` documentation for all available macros.
-
-## Options
-
-```elixir
-use Telegram.Bot,
-  token: "your bot auth token",   # required
-  username: "your bot username",  # required
-  auth: ["user1", "user2"],       # optional, list of authorized users
-                                  # or authorizing function (String.t -> boolean)
-  purge: boolean()                # purge old messages at startup, default: false
-  restart: policy                 # optional, default :permanent
-```
-
-## Execution model
-
-The bot defined using the `Telegram.Bot` behaviour is based on `Task`
-and will run in a single erlang process, processing updates sequentially.
-
-You can add the bot to you application supervisor tree, for example:
-
-```elixir
-children = [Simple.Bot, ...]
-opts = [strategy: :one_for_one, name: MyApplication.Supervisor]
-Supervisor.start_link(children, opts)
-```
-
-or directly start and link the bot with:
-
-```elixir
-{:ok, pid} = Simple.Bot.start_link()
-```
+* [Telegram.Bot.Sync.Supervisor](lib/bot/sync/supervisor.ex): stateless synchronous.
+* [Telegram.Bot.Async.Supervisor](lib/bot/async/supervisor.ex): stateless asynchronous.
+* [Telegram.Bot.ChatBot.Supervisor](lib/bot/chat_bot/supervisor.ex): statefull (per chat).

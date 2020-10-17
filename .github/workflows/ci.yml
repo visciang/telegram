@@ -2,25 +2,60 @@ name: CI
 
 on: ["push", "pull_request"]
 
-env:
-  MIX_ENV: test
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   ci:
     runs-on: ubuntu-latest
 
     container:
-      image: elixir:1.10.2
+      image: elixir:1.10.4
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Dependencies
-      run: |
-        mix local.rebar --force
-        mix local.hex --force
-        mix deps.get
-    - name: Lint
-      run: mix format --check-formatted
-    - name: Test
-      run: mix coveralls.github
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-deps-${{ hashFiles('mix.lock') }}
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.mix
+            _build
+          key: ${{ runner.os }}-build
+
+      - name: Install Dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Compile
+        env:
+          MIX_ENV: test
+        run: mix compile --warnings-as-errors
+
+      - name: Lint format
+        run: mix format --check-formatted
+      
+      - name: Lint dialyzer
+        run: mix dialyzer
+
+      - name: Lint credo
+        run: mix credo --all --strict
+
+      - name: Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mix coveralls.github
+
+      - name: Docs Build
+        if: github.ref == 'refs/heads/master'
+        run: mix docs --formatter=html
+
+      - name: Docs Publish
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: doc

@@ -4,16 +4,19 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.6.1",
+      version: "0.7.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [
         coveralls: :test,
+        "coveralls.github": :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        docs: :dev
       ],
       test_coverage: [tool: ExCoveralls],
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       docs: docs()
     ]
@@ -25,16 +28,27 @@ defmodule Telegram.Mixfile do
     ]
   end
 
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   defp deps do
     [
       {:tesla, "~> 1.0"},
+      # tesla gun adapter + deps
       {:gun, "~> 1.3"},
-      {:idna, "~> 6.0"},
+      {:ssl_verify_fun, "~> 1.1"},
       {:castore, "~> 0.1"},
+      {:idna, "~> 6.0"},
+      # tesla json encoder
       {:jason, "~> 1.0"},
+      # retry
+      {:retry, "~> 0.14"},
+      # coverage
       {:excoveralls, "~> 0.12", only: :test},
-      {:meck, "~> 0.9", only: :test},
+      # documentation
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      # dialyzer
+      {:credo, "~> 1.0", only: [:dev], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
