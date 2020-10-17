@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: elixir:1.10.2
+      image: elixir:1.10.4
 
     steps:
       - uses: actions/checkout@v2
