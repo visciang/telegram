@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="telegram v0.7.0">
-    <title>Telegram.Bot.Utils — telegram v0.7.0</title>
+    <title>Telegram.ChatBot — telegram v0.7.0</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-807e6937f4.js"></script>
       <script src="docs_config.js"></script>
@@ -63,8 +63,8 @@ telegram      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Telegram.Bot.Utils <small class="app-vsn">(telegram v0.7.0)</small>
-          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L1" title="View Source" class="view-source" rel="help">
+        Telegram.ChatBot <small>behaviour</small> <small class="app-vsn">(telegram v0.7.0)</small>
+          <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -72,7 +72,8 @@ telegram      </a>
 
 
         <section id="moduledoc">
-<p>Bot utilities</p>        </section>
+<p>Telegram Chat Bot behaviour.</p><p>The difference with <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> behaviour is that the <a href="#content"><code class="inline">Telegram.ChatBot</code></a> is &quot;statefull&quot; per chat_id,
+(see <code class="inline">chat_state</code> argument)</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -82,54 +83,53 @@ telegram      </a>
             </a>
             Summary
           </h1>
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_chat_id/1">get_chat_id(update)</a>
+    <a href="#t:chat_state/0">chat_state()</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;chat_id&quot; field in an Update object, if present</p></div>
+</div>
+  </div>
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:handle_update/3">handle_update(update, token, chat_state)</a>
+  </div>
+    <div class="summary-synopsis"><p>Receives the telegram update event and the &quot;current&quot; chat_state.
+Return the &quot;updated&quot; chat_state.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_from_username/1">get_from_username(update)</a>
+    <a href="#c:init/0">init()</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;from.user&quot; field in an Update object, if present</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_sent_date/1">get_sent_date(update)</a>
-  </div>
-    <div class="summary-synopsis"><p>Get the sent &quot;date&quot; field in an Update object, if present</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#name/2">name(module, behaviour_module)</a>
-  </div>
-    <div class="summary-synopsis"><p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></div>
+    <div class="summary-synopsis"><p>Invoked once when the chat starts.
+Return the initial chat_state.</p></div>
 </div>
   </div>
         </section>
 
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Functions          </h1>
-          <div class="functions-list">
-<section class="detail" id="get_chat_id/1">
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:chat_state/0">
   <div class="detail-header">
-    <a href="#get_chat_id/1" class="detail-link" title="Link to this function">
+    <a href="#t:chat_state/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
+      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">get_chat_id(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L48" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">chat_state()</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L9" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -138,19 +138,29 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_chat_id(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre>chat_state() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
       </div>
 
-<p>Get the &quot;chat_id&quot; field in an Update object, if present</p>  </section>
+  </section>
 </section>
-<section class="detail" id="get_from_username/1">
+          </div>
+        </section>
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Callbacks          </h1>
+          <div class="callbacks-list">
+<section class="detail" id="c:handle_update/3">
   <div class="detail-header">
-    <a href="#get_from_username/1" class="detail-link" title="Link to this function">
+    <a href="#c:handle_update/3" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">get_from_username(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L19" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">handle_update(update, token, chat_state)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L21" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -159,19 +169,26 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_from_username(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre>handle_update(
+  update :: <a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>(),
+  token :: <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>(),
+  chat_state :: <a href="#t:chat_state/0">chat_state</a>()
+) ::
+  {:ok, next_chat_state :: <a href="#t:chat_state/0">chat_state</a>()}
+  | {:stop, reason :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), next_chat_state :: <a href="#t:chat_state/0">chat_state</a>()}</pre>
       </div>
 
-<p>Get the &quot;from.user&quot; field in an Update object, if present</p>  </section>
+<p>Receives the telegram update event and the &quot;current&quot; chat_state.
+Return the &quot;updated&quot; chat_state.</p>  </section>
 </section>
-<section class="detail" id="get_sent_date/1">
+<section class="detail" id="c:init/0">
   <div class="detail-header">
-    <a href="#get_sent_date/1" class="detail-link" title="Link to this function">
+    <a href="#c:init/0" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">get_sent_date(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L33" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">init()</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L15" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -180,32 +197,11 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_sent_date(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()} | nil</pre>
+          <pre>init() :: {:ok, <a href="#t:chat_state/0">chat_state</a>()}</pre>
       </div>
 
-<p>Get the sent &quot;date&quot; field in an Update object, if present</p>  </section>
-</section>
-<section class="detail" id="name/2">
-  <div class="detail-header">
-    <a href="#name/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">name(module, behaviour_module)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L11" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>name(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
-      </div>
-
-<p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p>  </section>
+<p>Invoked once when the chat starts.
+Return the initial chat_state.</p>  </section>
 </section>
           </div>
         </section>

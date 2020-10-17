@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.22.2">
+    <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="telegram v0.7.0">
     <title>Telegram.Bot — telegram v0.7.0</title>
-    <link rel="stylesheet" href="dist/elixir-d678dad126d82ddc061f.css" />
-    <script src="dist/sidebar_items-493e1188e5.js"></script>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-807e6937f4.js"></script>
       <script src="docs_config.js"></script>
-    <script async src="dist/app-0103364119015b97e56c.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
   <body data-type="modules">
     <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
@@ -22,14 +22,14 @@
 
 <section class="sidebar">
   <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button">
-      <span class="icon-search" aria-hidden="true"></span>
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
     </button>
-    <button type="button" tabindex="-1" class="search-close-button">
-      <span class="icon-cross" title="Cancel search"></span>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
     </button>
     <label class="search-label">
-      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
 
@@ -42,9 +42,9 @@
     <div class="sidebar-projectDetails">
       <a href="api-reference.html" class="sidebar-projectName">
 telegram      </a>
-      <h2 class="sidebar-projectVersion">
+      <strong class="sidebar-projectVersion">
         v0.7.0
-      </h2>
+      </strong>
     </div>
   </div>
 
@@ -63,14 +63,16 @@ telegram      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        <small class="app-vsn">telegram v0.7.0</small>
-Telegram.Bot <small>behaviour</small>          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
+        Telegram.Bot <small>behaviour</small> <small class="app-vsn">(telegram v0.7.0)</small>
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
       </h1>
 
 
+        <section id="moduledoc">
+<p>Telegram Bot behaviour.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -88,6 +90,7 @@ Telegram.Bot <small>behaviour</small>          <a href="https://github.com/visci
   <div class="summary-signature">
     <a href="#c:handle_update/2">handle_update(update, token)</a>
   </div>
+    <div class="summary-synopsis"><p>The function receives the telegram update event.</p></div>
 </div>
   </div>
         </section>
@@ -107,7 +110,7 @@ Callbacks          </h1>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">handle_update(update, token)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L2" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot.ex#L9" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -116,10 +119,13 @@ Callbacks          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>handle_update(update :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), token :: Telegram.Client.token()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+          <pre>handle_update(
+  update :: <a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>(),
+  token :: <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
       </div>
 
-  </section>
+<p>The function receives the telegram update event.</p>  </section>
 </section>
           </div>
         </section>
@@ -127,14 +133,16 @@ Callbacks          </h1>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.22.2),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">
-            designed by
+            Designed by
             <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
           </span>
         </p>
         <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>

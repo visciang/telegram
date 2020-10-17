@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="telegram v0.7.0">
-    <title>Telegram.Bot.Utils — telegram v0.7.0</title>
+    <title>Telegram.Bot.Async.Supervisor — telegram v0.7.0</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-807e6937f4.js"></script>
       <script src="docs_config.js"></script>
@@ -63,8 +63,8 @@ telegram      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Telegram.Bot.Utils <small class="app-vsn">(telegram v0.7.0)</small>
-          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L1" title="View Source" class="view-source" rel="help">
+        Telegram.Bot.Async.Supervisor <small class="app-vsn">(telegram v0.7.0)</small>
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/async/supervisor.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -72,7 +72,10 @@ telegram      </a>
 
 
         <section id="moduledoc">
-<p>Bot utilities</p>        </section>
+<p>Bot Supervisor - Asynchronous update dispatching</p><p>Start the <a href="Telegram.Bot.Poller.html"><code class="inline">Telegram.Bot.Poller</code></a> loop dispatching updates asynchronously.
+It means the Bot <code class="inline">handle_update</code> function is called a Task dinamically spawned,
+so every update is handled in a isolated Task process.
+(this can be controlled/limited with the <code class="inline">max_bot_concurrency</code> option)</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -82,38 +85,66 @@ telegram      </a>
             </a>
             Summary
           </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:option/0">option()</a>
+  </div>
+</div>
+  </div>
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_chat_id/1">get_chat_id(update)</a>
+    <a href="#child_spec/1">child_spec(init_arg)</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;chat_id&quot; field in an Update object, if present</p></div>
+    <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_from_username/1">get_from_username(update)</a>
+    <a href="#start_link/1">start_link(arg)</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;from.user&quot; field in an Update object, if present</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_sent_date/1">get_sent_date(update)</a>
-  </div>
-    <div class="summary-synopsis"><p>Get the sent &quot;date&quot; field in an Update object, if present</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#name/2">name(module, behaviour_module)</a>
-  </div>
-    <div class="summary-synopsis"><p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></div>
 </div>
   </div>
         </section>
 
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:option/0">
+  <div class="detail-header">
+    <a href="#t:option/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">option()</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/async/supervisor.ex#L14" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>option() ::
+  <a href="Telegram.Bot.Poller.html#t:options/0">Telegram.Bot.Poller.options</a>() | {:max_bot_concurrency, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+          </div>
+        </section>
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
@@ -122,35 +153,31 @@ Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></
             </a>
 Functions          </h1>
           <div class="functions-list">
-<section class="detail" id="get_chat_id/1">
+<section class="detail" id="child_spec/1">
   <div class="detail-header">
-    <a href="#get_chat_id/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_chat_id(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L48" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">child_spec(init_arg)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/async/supervisor.ex#L11" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
   </div>
 
   <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>get_chat_id(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
-      </div>
 
-<p>Get the &quot;chat_id&quot; field in an Update object, if present</p>  </section>
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>  </section>
 </section>
-<section class="detail" id="get_from_username/1">
+<section class="detail" id="start_link/1">
   <div class="detail-header">
-    <a href="#get_from_username/1" class="detail-link" title="Link to this function">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_from_username(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L19" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">start_link(arg)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/async/supervisor.ex#L17" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -159,53 +186,11 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_from_username(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre>start_link({<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>(), [<a href="#t:option/0">option</a>()]}) ::
+  <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
       </div>
 
-<p>Get the &quot;from.user&quot; field in an Update object, if present</p>  </section>
-</section>
-<section class="detail" id="get_sent_date/1">
-  <div class="detail-header">
-    <a href="#get_sent_date/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">get_sent_date(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L33" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>get_sent_date(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()} | nil</pre>
-      </div>
-
-<p>Get the sent &quot;date&quot; field in an Update object, if present</p>  </section>
-</section>
-<section class="detail" id="name/2">
-  <div class="detail-header">
-    <a href="#name/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">name(module, behaviour_module)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L11" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>name(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
-      </div>
-
-<p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p>  </section>
+  </section>
 </section>
           </div>
         </section>

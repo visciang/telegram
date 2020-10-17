@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="telegram v0.7.0">
-    <title>Telegram.Bot.Utils — telegram v0.7.0</title>
+    <title>Telegram.Bot.ChatBot.Chat.Registry — telegram v0.7.0</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-807e6937f4.js"></script>
       <script src="docs_config.js"></script>
@@ -63,8 +63,8 @@ telegram      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Telegram.Bot.Utils <small class="app-vsn">(telegram v0.7.0)</small>
-          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L1" title="View Source" class="view-source" rel="help">
+        Telegram.Bot.ChatBot.Chat.Registry <small class="app-vsn">(telegram v0.7.0)</small>
+          <a href="https://github.com/visciang/telegram/blob/master/lib/bot/chat_bot/chat/registry.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -72,7 +72,7 @@ telegram      </a>
 
 
         <section id="moduledoc">
-<p>Bot utilities</p>        </section>
+<p>ChatBot chat registry.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -88,28 +88,23 @@ telegram      </a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_chat_id/1">get_chat_id(update)</a>
+    <a href="#child_spec/1">child_spec(arg)</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;chat_id&quot; field in an Update object, if present</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_from_username/1">get_from_username(update)</a>
+    <a href="#lookup/2">lookup(chatbot_behaviour, chat_id)</a>
   </div>
-    <div class="summary-synopsis"><p>Get the &quot;from.user&quot; field in an Update object, if present</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_sent_date/1">get_sent_date(update)</a>
+    <a href="#unregister/2">unregister(bot_behaviour, chat_id)</a>
   </div>
-    <div class="summary-synopsis"><p>Get the sent &quot;date&quot; field in an Update object, if present</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#name/2">name(module, behaviour_module)</a>
+    <a href="#via/2">via(bot_behaviour, chat_id)</a>
   </div>
-    <div class="summary-synopsis"><p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></div>
 </div>
   </div>
         </section>
@@ -122,14 +117,14 @@ Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></
             </a>
 Functions          </h1>
           <div class="functions-list">
-<section class="detail" id="get_chat_id/1">
+<section class="detail" id="child_spec/1">
   <div class="detail-header">
-    <a href="#get_chat_id/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_chat_id(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L48" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">child_spec(arg)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/chat_bot/chat/registry.ex#L9" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -138,19 +133,19 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_chat_id(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre>child_spec({<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()}) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:child_spec/0">Supervisor.child_spec</a>()</pre>
       </div>
 
-<p>Get the &quot;chat_id&quot; field in an Update object, if present</p>  </section>
+  </section>
 </section>
-<section class="detail" id="get_from_username/1">
+<section class="detail" id="lookup/2">
   <div class="detail-header">
-    <a href="#get_from_username/1" class="detail-link" title="Link to this function">
+    <a href="#lookup/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_from_username(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L19" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">lookup(chatbot_behaviour, chat_id)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/chat_bot/chat/registry.ex#L14" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -159,19 +154,19 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_from_username(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre>lookup(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:error, :not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
       </div>
 
-<p>Get the &quot;from.user&quot; field in an Update object, if present</p>  </section>
+  </section>
 </section>
-<section class="detail" id="get_sent_date/1">
+<section class="detail" id="unregister/2">
   <div class="detail-header">
-    <a href="#get_sent_date/1" class="detail-link" title="Link to this function">
+    <a href="#unregister/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_sent_date(update)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L33" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">unregister(bot_behaviour, chat_id)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/chat_bot/chat/registry.ex#L26" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -180,19 +175,19 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>get_sent_date(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()} | nil</pre>
+          <pre>unregister(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok</pre>
       </div>
 
-<p>Get the sent &quot;date&quot; field in an Update object, if present</p>  </section>
+  </section>
 </section>
-<section class="detail" id="name/2">
+<section class="detail" id="via/2">
   <div class="detail-header">
-    <a href="#name/2" class="detail-link" title="Link to this function">
+    <a href="#via/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">name(module, behaviour_module)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/utils.ex#L11" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">via(bot_behaviour, chat_id)</h1>
+      <a href="https://github.com/visciang/telegram/blob/master/lib/bot/chat_bot/chat/registry.ex#L31" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -201,11 +196,10 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>name(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+          <pre>via(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:via, Registry, {<a href="https://hexdocs.pm/elixir/Registry.html#t:registry/0">Registry.registry</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}}</pre>
       </div>
 
-<p>Process name atom maker.
-Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p>  </section>
+  </section>
 </section>
           </div>
         </section>
