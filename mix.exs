@@ -38,7 +38,7 @@ defmodule Telegram.Mixfile do
       {:gun, "~> 1.3"},
       {:ssl_verify_fun, "~> 1.1"},
       {:castore, "~> 0.1"},
-      {:idna, "~> 6.0"},
+      {:idna, "~> 6.1"},
       # tesla json encoder
       {:jason, "~> 1.0"},
       # retry

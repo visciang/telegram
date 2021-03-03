@@ -4,10 +4,6 @@ defmodule Telegram.Bot.Poller do
   require Logger
   alias Telegram.Bot.{Poller, Utils}
 
-  # timeout configuration opts unit: seconds
-  @get_updates_poll_timeout Application.get_env(:telegram, :get_updates_poll_timeout, 30)
-  @purge_after @get_updates_poll_timeout * 2
-
   @type options :: {:purge, boolean()}
   @type handle_update :: (update :: Telegram.Types.update(), token :: Telegram.Types.token() -> nil)
 
@@ -47,7 +43,7 @@ defmodule Telegram.Bot.Poller do
 
     next_offset =
       if purge do
-        purge_old_updates(context, @purge_after)
+        purge_old_updates(context, conf_purge_after())
       else
         nil
       end
@@ -64,9 +60,9 @@ defmodule Telegram.Bot.Poller do
 
   defp wait_updates(context) do
     opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
-    opts = [timeout: @get_updates_poll_timeout] ++ opts_offset
+    opts = [timeout: conf_get_updates_poll_timeout()] ++ opts_offset
 
-    retry with: exponential_backoff() |> expiry(@get_updates_poll_timeout * 1_000) do
+    retry with: exponential_backoff() |> expiry(conf_get_updates_poll_timeout() * 1_000) do
       Telegram.Api.request(context.token, "getUpdates", opts)
     after
       {:ok, updates} ->
@@ -121,5 +117,14 @@ defmodule Telegram.Bot.Poller do
           {:halt, update["update_id"]}
         end
     end
+  end
+
+  defp conf_get_updates_poll_timeout do
+    # timeout configuration opts unit: seconds
+    Application.get_env(:telegram, :get_updates_poll_timeout, 30)
+  end
+
+  defp conf_purge_after do
+    conf_get_updates_poll_timeout() * 2
   end
 end
