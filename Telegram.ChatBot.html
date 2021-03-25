@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="generator" content="ExDoc v0.24.1">
     <meta name="project" content="telegram v0.7.0">
     <title>Telegram.ChatBot — telegram v0.7.0</title>
-    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
     <script src="dist/sidebar_items-807e6937f4.js"></script>
       <script src="docs_config.js"></script>
-    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
   <body data-type="modules">
-    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+    <script>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -29,7 +35,7 @@
       <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
     </button>
     <label class="search-label">
-      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
 
@@ -49,9 +55,9 @@ telegram      </a>
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
   </ul>
   <div class="gradient"></div>
@@ -72,7 +78,7 @@ telegram      </a>
 
 
         <section id="moduledoc">
-<p>Telegram Chat Bot behaviour.</p><p>The difference with <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> behaviour is that the <a href="#content"><code class="inline">Telegram.ChatBot</code></a> is &quot;statefull&quot; per chat_id,
+<p>Telegram Chat Bot behaviour.</p><p>The difference with <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> behaviour is that the <a href="Telegram.ChatBot.html#content"><code class="inline">Telegram.ChatBot</code></a> is &quot;statefull&quot; per chat_id,
 (see <code class="inline">chat_state</code> argument)</p>        </section>
 
         <section id="summary" class="details-list">
@@ -160,7 +166,7 @@ Callbacks          </h1>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">handle_update(update, token, chat_state)</h1>
-      <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L21" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/master/lib/chat_bot.ex#L25" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -209,7 +215,7 @@ Return the initial chat_state.</p>  </section>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.1) for the
             <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">
