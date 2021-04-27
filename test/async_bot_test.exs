@@ -1,6 +1,11 @@
 defmodule Test.Telegram.Bot.Async do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   import Test.Utils.{Const, Mock}
+
+  setup_all do
+    Test.Utils.Mock.tesla_mock_global_async()
+    :ok
+  end
 
   setup [:setup_test_bot]
 

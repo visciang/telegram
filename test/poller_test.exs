@@ -1,6 +1,11 @@
 defmodule Test.Telegram.Bot.Poller do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   import Test.Utils.{Const, Mock}
+
+  setup_all do
+    Test.Utils.Mock.tesla_mock_global_async()
+    :ok
+  end
 
   describe "getUpdates" do
     setup _context do
