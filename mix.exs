@@ -49,7 +49,7 @@ defmodule Telegram.Mixfile do
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       # dialyzer
       {:credo, "~> 1.0", only: [:dev], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
