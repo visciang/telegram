@@ -18,7 +18,10 @@ defmodule Telegram.Mixfile do
       test_coverage: [tool: ExCoveralls],
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      dialyzer: [
+        plt_file: {:no_warn, "deps/dialyzer.plt"}
+      ]
     ]
   end
 
