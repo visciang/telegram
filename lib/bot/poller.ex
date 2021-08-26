@@ -5,7 +5,7 @@ defmodule Telegram.Bot.Poller do
   alias Telegram.Bot.{Poller, Utils}
 
   @type options :: {:purge, boolean()}
-  @type handle_update :: (update :: Telegram.Types.update(), token :: Telegram.Types.token() -> nil)
+  @type handle_update :: (update :: Telegram.Types.update(), token :: Telegram.Types.token() -> any())
 
   defmodule Context do
     @moduledoc false
