@@ -4,6 +4,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   """
 
   use GenServer, restart: :transient
+  require Logger
   alias Telegram.Bot.{ChatBot.Chat, Utils}
 
   @spec start_link({module(), String.t()}) :: GenServer.on_start()
@@ -15,7 +16,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     )
   end
 
-  @spec handle_update(module(), Telegram.Types.update(), Telegram.Types.token()) :: :ok
+  @spec handle_update(module(), Telegram.Types.update(), Telegram.Types.token()) :: any()
   def handle_update(chatbot_behaviour, update, token) do
     {:ok, chat_id} = Utils.get_chat_id(update)
 
@@ -25,7 +26,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
         GenServer.cast(server, {:handle_update, update, token})
 
       {:error, :max_children} ->
-        nil
+        Logger.info("Reached #{__MODULE__} max children, update dropped")
     end
   end
 
