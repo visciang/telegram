@@ -11,7 +11,7 @@ defmodule Telegram.Client do
   if Mix.env() == :test do
     adapter Tesla.Mock
   else
-    adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000
+    adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000, certificates_verification: true
   end
 
   plug Tesla.Middleware.BaseUrl, @api_base_url
