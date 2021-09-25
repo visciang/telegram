@@ -174,3 +174,7 @@ Some executable examples are available under: `example/example_*.exs`.
 * [Telegram.Bot.Sync.Supervisor](lib/bot/sync/supervisor.ex): stateless synchronous.
 * [Telegram.Bot.Async.Supervisor](lib/bot/async/supervisor.ex): stateless asynchronous.
 * [Telegram.Bot.ChatBot.Supervisor](lib/bot/chat_bot/supervisor.ex): statefull (per chat).
+
+# Sample app
+
+A chat_bot app: https://github.com/visciang/telegram_example
