@@ -137,6 +137,39 @@ defmodule Test.Telegram.ChatBot do
              tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
   end
 
+  test "received update out of a chat - ie: chat_id not present" do
+    url_get_updates = tg_url(tg_token(), "getUpdates")
+    url_test_response = tg_url(tg_token(), "testResponse")
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_get_updates},
+               fn _ ->
+                 result = [
+                   %{
+                     "update_id" => 1,
+                     "update_without_chat_if" => %{}
+                   }
+                 ]
+
+                 response = %{"ok" => true, "result" => result}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
+
+    assert :ok ==
+             tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_get_updates},
+               fn _ ->
+                 response = %{"ok" => true, "result" => []}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
+  end
+
   defp setup_test_bot(_context) do
     token = tg_token()
     options = [purge: false, max_bot_concurrency: 1]

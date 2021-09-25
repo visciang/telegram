@@ -18,14 +18,15 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @spec handle_update(module(), Telegram.Types.update(), Telegram.Types.token()) :: any()
   def handle_update(chatbot_behaviour, update, token) do
-    {:ok, chat_id} = Utils.get_chat_id(update)
+    with {:get_chat_id, {:ok, chat_id}} <- {:get_chat_id, Utils.get_chat_id(update)},
+         {:get_chat_session_server, {:ok, server}} <-
+           {:get_chat_session_server, get_chat_session_server(chatbot_behaviour, chat_id)} do
+      GenServer.cast(server, {:handle_update, update, token})
+    else
+      {:get_chat_id, nil} ->
+        Logger.info("Dropped update without chat_id #{inspect(update)}")
 
-    get_chat_session_server(chatbot_behaviour, chat_id)
-    |> case do
-      {:ok, server} ->
-        GenServer.cast(server, {:handle_update, update, token})
-
-      {:error, :max_children} ->
+      {:get_chat_session_server, {:error, :max_children}} ->
         Logger.info("Reached #{__MODULE__} max children, update dropped")
     end
   end
