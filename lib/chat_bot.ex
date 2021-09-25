@@ -22,5 +22,5 @@ defmodule Telegram.ChatBot do
               update :: Telegram.Types.update(),
               token :: Telegram.Types.token(),
               chat_state :: chat_state()
-            ) :: {:ok, next_chat_state :: chat_state()} | {:stop, reason :: term(), next_chat_state :: chat_state()}
+            ) :: {:ok, next_chat_state :: chat_state()} | {:stop, next_chat_state :: chat_state()}
 end

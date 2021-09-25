@@ -44,10 +44,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
       {:ok, bot_state} ->
         {:noreply, {chatbot_behaviour, bot_state}}
 
-      {:stop, _reason, _bot_state} = stop ->
+      {:stop, bot_state} ->
         {:ok, chat_id} = Utils.get_chat_id(update)
         Chat.Registry.unregister(chatbot_behaviour, chat_id)
-        stop
+        {:stop, :normal, bot_state}
     end
   end
 

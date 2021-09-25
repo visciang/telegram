@@ -28,6 +28,6 @@ defmodule Test.ChatBot do
       text: "Bye!"
     )
 
-    {:stop, "done", count_state}
+    {:stop, count_state}
   end
 end
