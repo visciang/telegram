@@ -7,6 +7,8 @@ Mix.install([
 defmodule CountChatBot do
   @moduledoc false
 
+  require Logger
+
   @behaviour Telegram.ChatBot
 
   @impl Telegram.ChatBot
@@ -27,8 +29,9 @@ defmodule CountChatBot do
     {:ok, count_state}
   end
 
-  def handle_update(_update, _token, count_state) do
-    # Unknown update
+  def handle_update(update, _token, count_state) do
+    Logger.info("Unknown update received: #{inspect(update)}")
+
     {:ok, count_state}
   end
 end
