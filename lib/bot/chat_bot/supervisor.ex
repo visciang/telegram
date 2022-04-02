@@ -6,8 +6,9 @@ defmodule Telegram.Bot.ChatBot.Supervisor do
   use Supervisor
   alias Telegram.Bot.{ChatBot.Chat, Poller, Utils}
   alias Telegram.Bot.ChatBot.Chat.Session
+  alias Telegram.Types
 
-  @type option :: Poller.options() | {:max_bot_concurrency, non_neg_integer()}
+  @type option :: Poller.options() | {:max_bot_concurrency, Types.max_bot_concurrency()}
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({chatbot_behaviour, token, options}) do

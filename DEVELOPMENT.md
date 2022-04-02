@@ -18,11 +18,3 @@ mix docs
 ```
 
 `doc/readme.html`
-
-# Example bot script
-
-Run `example/example.exs` with:
-
-```bash
-TOKEN="..." mix run example/example.exs
-```

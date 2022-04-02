@@ -1,4 +1,8 @@
-# TOKEN="..." mix run example/example_bot.exs
+#!/usr/bin/env elixir
+
+Mix.install([
+  {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"}
+])
 
 defmodule SleepBot do
   @behaviour Telegram.Bot
@@ -61,16 +65,17 @@ defmodule Command do
   end
 end
 
-token = System.get_env("TOKEN")
+token = System.get_env("BOT_TOKEN")
 
 if token == nil do
-  IO.puts("Please provide a TOKEN environment variable")
-else
-  options = [
-    purge: true,
-    max_bot_concurrency: 1_000
-  ]
-
-  Telegram.Bot.Async.Supervisor.start_link({SleepBot, token, options})
-  Process.sleep(:infinity)
+  IO.puts("Please provide a BOT_TOKEN environment variable")
+  System.halt(1)
 end
+
+options = [
+  purge: true,
+  max_bot_concurrency: 1_000
+]
+
+Telegram.Bot.Async.Supervisor.start_link({SleepBot, token, options})
+Process.sleep(:infinity)

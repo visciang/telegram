@@ -5,8 +5,9 @@ defmodule Telegram.Bot.ChatBot.Chat.Supervisor do
 
   use Supervisor
   alias Telegram.Bot.{ChatBot.Chat, Utils}
+  alias Telegram.Types
 
-  @spec start_link({module(), Telegram.Types.token()}) :: Supervisor.on_start()
+  @spec start_link({module(), Types.max_bot_concurrency()}) :: Supervisor.on_start()
   def start_link({chatbot_behaviour, max_bot_concurrency}) do
     Supervisor.start_link(
       __MODULE__,

@@ -158,16 +158,23 @@ Available Bot behaviours:
 
 The library defines some general purpose Bot behaviours each implementing a specific telegram updates dispatch model.
 
+## Quick start
+
+Check the examples under `example/example_*.exs`.
+You can run them as a `Mix` self-contained script.
+
+```shell
+BOT_TOKEN="..." example/example_chatbot.exs
+```
+
 ## Dispatch model
 
-Essentially we can define stateless / statefull bot.
+We can define stateless / statefull bot.
 
 * A stateless Bot has no memory of previous conversations, it just receives updates, process them and so on.
 
 * A statefull Bot instead can remember what happened in the past.
 The state here refer to a specific chat, a conversation (chat_id) between a user and a bot "instance".
-
-Some executable examples are available under: `example/example_*.exs`.
 
 ## Telegram Bot Supervisor
 

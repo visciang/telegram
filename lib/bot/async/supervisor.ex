@@ -10,8 +10,9 @@ defmodule Telegram.Bot.Async.Supervisor do
 
   use Supervisor
   alias Telegram.Bot.{Poller, Utils}
+  alias Telegram.Types
 
-  @type option :: Poller.options() | {:max_bot_concurrency, non_neg_integer()}
+  @type option :: Poller.options() | {:max_bot_concurrency, Types.max_bot_concurrency()}
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_behaviour, token, options}) do

@@ -1,4 +1,8 @@
-# TOKEN="..." mix run example/example_chatbot.exs
+#!/usr/bin/env elixir
+
+Mix.install([
+  {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"}
+])
 
 defmodule CountChatBot do
   @moduledoc false
@@ -29,15 +33,16 @@ defmodule CountChatBot do
   end
 end
 
-token = System.get_env("TOKEN")
+token = System.get_env("BOT_TOKEN")
 
 if token == nil do
-  IO.puts("Please provide a TOKEN environment variable")
-else
-  options = [
-    purge: true
-  ]
-
-  Telegram.Bot.ChatBot.Supervisor.start_link({CountChatBot, token, options})
-  Process.sleep(:infinity)
+  IO.puts("Please provide a BOT_TOKEN environment variable")
+  System.halt(1)
 end
+
+options = [
+  purge: true
+]
+
+{:ok, _} = Telegram.Bot.ChatBot.Supervisor.start_link({CountChatBot, token, options})
+Process.sleep(:infinity)
