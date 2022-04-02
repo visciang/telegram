@@ -1,6 +1,12 @@
 name: CI
 
-on: ["push", "pull_request"]
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+  pull_request:
 
 jobs:
   ci:
