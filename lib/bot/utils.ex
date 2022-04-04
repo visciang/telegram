@@ -42,13 +42,13 @@ defmodule Telegram.Bot.Utils do
   end
 
   @doc """
-  Get the "chat_id" field in an Update object, if present
+  Get the "chat" field in an Update object, if present
   """
-  @spec get_chat_id(Telegram.Types.update()) :: {:ok, String.t()} | nil
-  def get_chat_id(update) do
+  @spec get_chat(Telegram.Types.update()) :: {:ok, map()} | nil
+  def get_chat(update) do
     Enum.find_value(update, fn
-      {_update_type, %{"chat" => %{"id" => chat_id}}} ->
-        {:ok, chat_id}
+      {_update_type, %{"chat" => %{"id" => _} = chat}} ->
+        {:ok, chat}
 
       _ ->
         nil

@@ -34,6 +34,7 @@ jobs:
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
+          mix deps.unlock --check-unused
           mix deps.compile
           mix dialyzer --plt
 

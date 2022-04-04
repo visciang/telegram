@@ -12,7 +12,7 @@ defmodule CountChatBot do
   @behaviour Telegram.ChatBot
 
   @impl Telegram.ChatBot
-  def init() do
+  def init(_chat) do
     count_state = 0
     {:ok, count_state}
   end
