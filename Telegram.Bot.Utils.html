@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.3">
-    <meta name="project" content="telegram v0.7.0">
+    <meta name="project" content="telegram v0.9.0">
 
-    <title>Telegram.Bot.Utils — telegram v0.7.0</title>
+    <title>Telegram.Bot.Utils — telegram v0.9.0</title>
     <link rel="stylesheet" href="dist/elixir-d5ff82e6b0f5651c0ac0.css" />
 
-    <script src="dist/sidebar_items-1f47d9dcf9.js"></script>
+    <script src="dist/sidebar_items-a674ef50e9.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -66,7 +66,7 @@
 telegram
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.9.0
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -99,7 +99,7 @@ telegram
     </a>
 
   <span translate="no">Telegram.Bot.Utils</span> 
-  <small class="app-vsn" translate="no">(telegram v0.7.0)</small>
+  <small class="app-vsn" translate="no">(telegram v0.9.0)</small>
 
 </h1>
 
@@ -125,11 +125,11 @@ telegram
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#get_chat_id/1" translate="no">get_chat_id(update)</a>
+          <a href="#get_chat/1" translate="no">get_chat(update)</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Get the &quot;chat_id&quot; field in an Update object, if present</p></div>
+          <div class="summary-synopsis"><p>Get the &quot;chat&quot; field in an Update object, if present</p></div>
 
       </div>
 
@@ -178,14 +178,14 @@ Composed by Supervisor/GenServer/_ module name + bot behaviour module name</p></
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="get_chat_id/1">
+<section class="detail" id="get_chat/1">
 
   <div class="detail-header">
-    <a href="#get_chat_id/1" class="detail-link" title="Link to this function">
+    <a href="#get_chat/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_chat_id(update)</h1>
+    <h1 class="signature" translate="no">get_chat(update)</h1>
 
       <a href="https://github.com/visciang/telegram/blob/main/lib/bot/utils.ex#L48" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -199,11 +199,11 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> get_chat_id(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | nil</pre>
+          <pre translate="no"><span class="attribute">@spec</span> get_chat(<a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | nil</pre>
 
       </div>
 
-<p>Get the &quot;chat_id&quot; field in an Update object, if present</p>
+<p>Get the &quot;chat&quot; field in an Update object, if present</p>
   </section>
 </section>
 <section class="detail" id="get_from_username/1">
