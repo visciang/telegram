@@ -33,7 +33,7 @@ defmodule Telegram.Api do
   # get the 'file_id'
   file_id = file_obj["file_id"]
 
-  # obtain the 'file_path' to dowload the file identified by 'file_id'
+  # obtain the 'file_path' to download the file identified by 'file_id'
   {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
   {:ok, file} = Telegram.Api.file(token, file_path)
   ```
