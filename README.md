@@ -158,6 +158,17 @@ Available Bot behaviours:
 
 The library defines some general purpose Bot behaviours each implementing a specific telegram updates dispatch model.
 
+## Bot updates processing
+
+The Telegram platform supports two ways of processing bot updates, `getUpdates` and `setWebhook`.
+`getUpdates` is a pull mechanism, `setwebhook` is push. (ref: [bots webhook](https://core.telegram.org/bots/webhooks))
+
+This library currently implements the `getUpdates` mechanism.
+
+This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind an home internet router).
+
+The webhook mode is part the development plan but, being this project a personal playground, unless sponsored there isn't an estimated date.
+
 ## Quick start
 
 Check the examples under `example/example_*.exs`.
