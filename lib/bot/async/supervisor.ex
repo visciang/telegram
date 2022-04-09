@@ -12,7 +12,7 @@ defmodule Telegram.Bot.Async.Supervisor do
   alias Telegram.Bot.{Poller, Utils}
   alias Telegram.Types
 
-  @type option :: Poller.options() | {:max_bot_concurrency, Types.max_bot_concurrency()}
+  @type option :: {:max_bot_concurrency, Types.max_bot_concurrency()}
 
   @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
   def start_link({bot_behaviour, token, options}) do
@@ -25,10 +25,8 @@ defmodule Telegram.Bot.Async.Supervisor do
 
   @impl Supervisor
   def init({bot_behaviour, token, options}) do
-    {max_bot_concurrency, options} = Keyword.pop(options, :max_bot_concurrency, :infinity)
-
+    max_bot_concurrency = Keyword.get(options, :max_bot_concurrency, :infinity)
     supervisor_name = String.to_atom("#{__MODULE__}.Task.Supervisor.#{bot_behaviour}")
-    supervisor = {Task.Supervisor, name: supervisor_name, max_children: max_bot_concurrency}
 
     handle_update = fn update, token ->
       Task.Supervisor.start_child(
@@ -39,9 +37,11 @@ defmodule Telegram.Bot.Async.Supervisor do
       )
     end
 
-    poller = {Poller, {handle_update, token, options}}
+    children = [
+      {Task.Supervisor, name: supervisor_name, max_children: max_bot_concurrency},
+      {Poller, {handle_update, token}}
+    ]
 
-    children = [supervisor, poller]
     Supervisor.init(children, strategy: :one_for_one)
   end
 end

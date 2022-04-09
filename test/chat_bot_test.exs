@@ -172,7 +172,7 @@ defmodule Test.Telegram.ChatBot do
 
   defp setup_test_bot(_context) do
     token = tg_token()
-    options = [purge: false, max_bot_concurrency: 1]
+    options = [max_bot_concurrency: 1]
 
     start_supervised!({Telegram.Bot.ChatBot.Supervisor, {Test.ChatBot, token, options}})
 

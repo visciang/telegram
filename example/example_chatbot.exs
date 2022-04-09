@@ -43,9 +43,7 @@ if token == nil do
   System.halt(1)
 end
 
-options = [
-  purge: true
-]
-
+options = []
 {:ok, _} = Telegram.Bot.ChatBot.Supervisor.start_link({CountChatBot, token, options})
+
 Process.sleep(:infinity)
