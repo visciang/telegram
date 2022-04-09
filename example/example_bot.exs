@@ -72,10 +72,7 @@ if token == nil do
   System.halt(1)
 end
 
-options = [
-  purge: true,
-  max_bot_concurrency: 1_000
-]
-
+options = [max_bot_concurrency: 1_000]
 Telegram.Bot.Async.Supervisor.start_link({SleepBot, token, options})
+
 Process.sleep(:infinity)

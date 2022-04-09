@@ -43,10 +43,7 @@ defmodule Test.Telegram.Bot.Sync do
   end
 
   defp setup_test_bot(_context) do
-    token = tg_token()
-    options = [purge: false]
-
-    start_supervised!({Telegram.Bot.Sync.Supervisor, {Test.Bot, token, options}})
+    start_supervised!({Telegram.Bot.Sync.Supervisor, {Test.Bot, tg_token()}})
 
     :ok
   end

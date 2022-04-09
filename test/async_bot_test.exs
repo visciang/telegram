@@ -45,7 +45,7 @@ defmodule Test.Telegram.Bot.Async do
 
   defp setup_test_bot(_context) do
     token = tg_token()
-    options = [purge: false]
+    options = []
 
     start_supervised!({Telegram.Bot.Async.Supervisor, {Test.Bot, token, options}})
 
