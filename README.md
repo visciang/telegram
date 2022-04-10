@@ -151,12 +151,14 @@ Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Here a keyboa
 
 # Telegram Bot
 
-Available Bot behaviours:
+## Quick start
 
-* [Telegram.Bot](lib/bot.ex): compatible with the `Sync`/`Async` dispatch model
-* [Telegram.ChatBot](lib/chat_bot.ex): compatible with the `ChatBot` dispatch model
+Check the examples under `example/example_*.exs`.
+You can run them as a `Mix` self-contained script.
 
-The library defines some general purpose Bot behaviours each implementing a specific telegram updates dispatch model.
+```shell
+BOT_TOKEN="..." example/example_chatbot.exs
+```
 
 ## Bot updates processing
 
@@ -167,16 +169,7 @@ This library currently implements the `getUpdates` mechanism.
 
 This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind an home internet router).
 
-The webhook mode is part the development plan but, being this project a personal playground, unless sponsored there isn't an estimated date.
-
-## Quick start
-
-Check the examples under `example/example_*.exs`.
-You can run them as a `Mix` self-contained script.
-
-```shell
-BOT_TOKEN="..." example/example_chatbot.exs
-```
+The webhook mode is in the development plan but, being this project a personal playground, unless sponsored there isn't an estimated date.
 
 ## Dispatch model
 
@@ -187,11 +180,10 @@ We can define stateless / statefull bot.
 * A statefull Bot instead can remember what happened in the past.
 The state here refer to a specific chat, a conversation (chat_id) between a user and a bot "instance".
 
-## Telegram Bot Supervisor
+## Bot behaviours
 
-* [Telegram.Bot.Sync.Supervisor](lib/bot/sync/supervisor.ex): stateless synchronous.
-* [Telegram.Bot.Async.Supervisor](lib/bot/async/supervisor.ex): stateless asynchronous.
-* [Telegram.Bot.ChatBot.Supervisor](lib/bot/chat_bot/supervisor.ex): statefull (per chat).
+* `Telegram.Bot`: works with the **stateless sync / async** dispatch model
+* `Telegram.ChatBot`: works with the statefull chat dispatch model
 
 # Sample app
 

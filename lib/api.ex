@@ -1,5 +1,7 @@
 defmodule Telegram.Api do
-  @moduledoc File.read!("README.md")
+  @moduledoc """
+  Telegram Bot API - HTTP-based interface
+  """
 
   @type parameters :: Keyword.t()
   @type request_result :: {:ok, term()} | {:error, term()}
@@ -25,20 +27,19 @@ defmodule Telegram.Api do
   Reference: [BOT Api](https://core.telegram.org/bots/api#file)
 
   Example:
-  ```elixir
-  # send a photo
-  {:ok, res} = Telegram.Api.request(token, "sendPhoto", chat_id: 12345, photo: {:file, "example/photo.jpg"})
-  # pick the 'file_obj' with the desired resolution
-  [file_obj | _] = res["photo"]
-  # get the 'file_id'
-  file_id = file_obj["file_id"]
 
-  # obtain the 'file_path' to download the file identified by 'file_id'
-  {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
-  {:ok, file} = Telegram.Api.file(token, file_path)
-  ```
+    # send a photo
+    {:ok, res} = Telegram.Api.request(token, "sendPhoto", chat_id: 12345, photo: {:file, "example/photo.jpg"})
+    # pick the 'file_obj' with the desired resolution
+    [file_obj | _] = res["photo"]
+    # get the 'file_id'
+    file_id = file_obj["file_id"]
+
+    # obtain the 'file_path' to download the file identified by 'file_id'
+    {:ok, %{"file_path" => file_path}} = Telegram.Api.request(token, "getFile", file_id: file_id)
+    {:ok, file} = Telegram.Api.file(token, file_path)
   """
-  @spec file(Telegram.Types.token(), Telegram.Client.file_path()) :: request_result()
+  @spec file(Telegram.Types.token(), String.t()) :: request_result()
   def file(token, file_path) do
     Telegram.Client.file(token, file_path)
   end
