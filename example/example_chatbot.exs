@@ -9,7 +9,7 @@ defmodule CountChatBot do
 
   require Logger
 
-  @behaviour Telegram.ChatBot
+  use Telegram.ChatBot
 
   @impl Telegram.ChatBot
   def init(_chat) do
@@ -43,7 +43,10 @@ if token == nil do
   System.halt(1)
 end
 
-options = []
-{:ok, _} = Telegram.Bot.ChatBot.Supervisor.start_link({CountChatBot, token, options})
+{:ok, _} =
+  Supervisor.start_link(
+    [{CountChatBot, [token: token, max_bot_concurrency: 1_000]}],
+    strategy: :one_for_one
+  )
 
 Process.sleep(:infinity)

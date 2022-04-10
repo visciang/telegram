@@ -5,7 +5,7 @@ Mix.install([
 ])
 
 defmodule SleepBot do
-  @behaviour Telegram.Bot
+  use Telegram.Bot, async: true
 
   @impl Telegram.Bot
   def handle_update(
@@ -72,7 +72,10 @@ if token == nil do
   System.halt(1)
 end
 
-options = [max_bot_concurrency: 1_000]
-Telegram.Bot.Async.Supervisor.start_link({SleepBot, token, options})
+{:ok, _} =
+  Supervisor.start_link(
+    [{SleepBot, [token: token, max_bot_concurrency: 1_000]}],
+    strategy: :one_for_one
+  )
 
 Process.sleep(:infinity)
