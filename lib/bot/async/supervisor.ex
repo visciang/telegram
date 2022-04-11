@@ -2,9 +2,8 @@ defmodule Telegram.Bot.Async.Supervisor do
   @moduledoc """
   Bot Supervisor - Asynchronous update dispatching
 
-  Start the `Telegram.Bot.Poller` loop dispatching updates asynchronously.
-  It means the Bot `handle_update` function is called a Task dynamically spawned,
-  so every update is handled in a isolated Task process.
+  The Bot `c:Telegram.Bot.handle_update/2` function is called a dynamically spawned Task,
+  so every update is handled by an isolated Task process.
   (this can be controlled/limited with the `max_bot_concurrency` option)
   """
 
@@ -26,7 +25,7 @@ defmodule Telegram.Bot.Async.Supervisor do
   @impl Supervisor
   def init({bot_behaviour, token, options}) do
     max_bot_concurrency = Keyword.get(options, :max_bot_concurrency, :infinity)
-    supervisor_name = String.to_atom("#{__MODULE__}.Task.Supervisor.#{bot_behaviour}")
+    supervisor_name = Utils.name(__MODULE__.Task.Supervisor, bot_behaviour)
 
     handle_update = fn update, token ->
       Task.Supervisor.start_child(

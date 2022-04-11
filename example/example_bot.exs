@@ -5,7 +5,7 @@ Mix.install([
 ])
 
 defmodule SleepBot do
-  use Telegram.Bot, async: true
+  use Telegram.Bot
 
   @impl Telegram.Bot
   def handle_update(
