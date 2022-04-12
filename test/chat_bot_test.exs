@@ -171,10 +171,8 @@ defmodule Test.Telegram.ChatBot do
   end
 
   defp setup_test_bot(_context) do
-    token = tg_token()
-    options = [max_bot_concurrency: 1]
-
-    start_supervised!({Telegram.Bot.ChatBot.Supervisor, {Test.ChatBot, token, options}})
+    options = [token: tg_token(), max_bot_concurrency: 1]
+    start_supervised!({Test.ChatBot, options})
 
     :ok
   end

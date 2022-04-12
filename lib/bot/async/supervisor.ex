@@ -11,26 +11,29 @@ defmodule Telegram.Bot.Async.Supervisor do
   alias Telegram.Bot.{Poller, Utils}
   alias Telegram.Types
 
-  @type option :: {:max_bot_concurrency, Types.max_bot_concurrency()}
+  @type options :: [
+          bot_behaviour_mod: module(),
+          token: Types.token(),
+          max_bot_concurrency: Types.max_bot_concurrency()
+        ]
 
-  @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
-  def start_link({bot_behaviour, token, options}) do
-    Supervisor.start_link(
-      __MODULE__,
-      {bot_behaviour, token, options},
-      name: Utils.name(__MODULE__, bot_behaviour)
-    )
+  @spec start_link(options()) :: Supervisor.on_start()
+  def start_link(opts) do
+    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
+    Supervisor.start_link(__MODULE__, opts, name: Utils.name(__MODULE__, bot_behaviour_mod))
   end
 
   @impl Supervisor
-  def init({bot_behaviour, token, options}) do
-    max_bot_concurrency = Keyword.get(options, :max_bot_concurrency, :infinity)
-    supervisor_name = Utils.name(__MODULE__.Task.Supervisor, bot_behaviour)
+  def init(opts) do
+    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
+    token = Keyword.fetch!(opts, :token)
+    max_bot_concurrency = Keyword.get(opts, :max_bot_concurrency, :infinity)
+    supervisor_name = Utils.name(__MODULE__.Task.Supervisor, bot_behaviour_mod)
 
     handle_update = fn update, token ->
       Task.Supervisor.start_child(
         supervisor_name,
-        bot_behaviour,
+        bot_behaviour_mod,
         :handle_update,
         [update, token]
       )

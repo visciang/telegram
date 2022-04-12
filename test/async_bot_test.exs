@@ -44,10 +44,8 @@ defmodule Test.Telegram.Bot.Async do
   end
 
   defp setup_test_bot(_context) do
-    token = tg_token()
-    options = []
-
-    start_supervised!({Telegram.Bot.Async.Supervisor, {Test.Bot, token, options}})
+    options = [token: tg_token(), max_bot_concurrency: 1]
+    start_supervised!({Test.Bot, options})
 
     :ok
   end

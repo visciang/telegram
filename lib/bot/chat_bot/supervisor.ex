@@ -8,25 +8,28 @@ defmodule Telegram.Bot.ChatBot.Supervisor do
   alias Telegram.Bot.ChatBot.Chat.Session
   alias Telegram.Types
 
-  @type option :: {:max_bot_concurrency, Types.max_bot_concurrency()}
+  @type options :: [
+          bot_behaviour_mod: module(),
+          token: Types.token(),
+          max_bot_concurrency: Types.max_bot_concurrency()
+        ]
 
-  @spec start_link({module(), Telegram.Types.token(), [option()]}) :: Supervisor.on_start()
-  def start_link({chatbot_behaviour, token, options}) do
-    Supervisor.start_link(
-      __MODULE__,
-      {chatbot_behaviour, token, options},
-      name: Utils.name(__MODULE__, chatbot_behaviour)
-    )
+  @spec start_link(options()) :: Supervisor.on_start()
+  def start_link(opts) do
+    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
+    Supervisor.start_link(__MODULE__, opts, name: Utils.name(__MODULE__, bot_behaviour_mod))
   end
 
   @impl Supervisor
-  def init({chatbot_behaviour, token, options}) do
-    max_bot_concurrency = Keyword.get(options, :max_bot_concurrency, :infinity)
+  def init(opts) do
+    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
+    token = Keyword.fetch!(opts, :token)
+    max_bot_concurrency = Keyword.get(opts, :max_bot_concurrency, :infinity)
 
-    handle_update = &Session.Server.handle_update(chatbot_behaviour, &1, &2)
+    handle_update = &Session.Server.handle_update(bot_behaviour_mod, &1, &2)
 
     children = [
-      {Chat.Supervisor, {chatbot_behaviour, max_bot_concurrency}},
+      {Chat.Supervisor, {bot_behaviour_mod, max_bot_concurrency}},
       {Poller, {handle_update, token}}
     ]
 

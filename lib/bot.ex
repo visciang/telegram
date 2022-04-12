@@ -37,10 +37,14 @@ defmodule Telegram.Bot do
     quote location: :keep do
       @behaviour Telegram.Bot
 
-      def child_spec(init_arg) do
-        {token, init_arg} = Keyword.pop!(init_arg, :token)
+      def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
+        opts = [
+          bot_behaviour_mod: __MODULE__,
+          token: token,
+          max_bot_concurrency: max_bot_concurrency
+        ]
 
-        Supervisor.child_spec({Telegram.Bot.Async.Supervisor, {__MODULE__, token, init_arg}}, id: __MODULE__)
+        Supervisor.child_spec({Telegram.Bot.Async.Supervisor, opts}, id: __MODULE__)
       end
     end
   end
