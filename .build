@@ -7,7 +7,6 @@ Telegram.Bot.ChatBot.Chat.Session.Supervisor.html
 Telegram.Bot.ChatBot.Chat.Supervisor.html
 Telegram.Bot.ChatBot.Supervisor.html
 Telegram.Bot.Poller.html
-Telegram.Bot.Sync.Supervisor.html
 Telegram.Bot.Utils.html
 Telegram.Bot.html
 Telegram.ChatBot.html
@@ -20,8 +19,8 @@ dist/html/fonts/remixicon.svg
 dist/html/fonts/remixicon.ttf
 dist/html/fonts/remixicon.woff
 dist/html/fonts/remixicon.woff2
-dist/search_items-b1ac65d047.js
-dist/sidebar_items-1c89f74e30.js
+dist/search_items-0964002008.js
+dist/sidebar_items-cbba4efbd8.js
 index.html
 readme.html
 search.html
