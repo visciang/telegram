@@ -21,7 +21,17 @@ defmodule Test.Telegram.Bot.Poller do
   end
 
   test "basic flow" do
+    url_delete_webhook = tg_url(tg_token(), "deleteWebhook")
     url_get_updates = tg_url(tg_token(), "getUpdates")
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_delete_webhook},
+               fn _ ->
+                 response = %{"ok" => true, "result" => true}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
 
     assert :ok ==
              tesla_mock_expect_request(
@@ -68,7 +78,17 @@ defmodule Test.Telegram.Bot.Poller do
   end
 
   test "response error" do
+    url_delete_webhook = tg_url(tg_token(), "deleteWebhook")
     url = tg_url(tg_token(), "getUpdates")
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_delete_webhook},
+               fn _ ->
+                 response = %{"ok" => true, "result" => true}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
 
     assert :ok ==
              tesla_mock_expect_request(
