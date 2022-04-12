@@ -60,11 +60,11 @@ defmodule Telegram.ChatBot do
     quote location: :keep do
       @behaviour Telegram.ChatBot
 
-      def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
+      def child_spec(init_args) do
         opts = [
           bot_behaviour_mod: __MODULE__,
-          token: token,
-          max_bot_concurrency: max_bot_concurrency
+          token: Keyword.fetch!(init_args, :token),
+          max_bot_concurrency: Keyword.get(init_args, :max_bot_concurrency, :infinity)
         ]
 
         sup = {Telegram.Bot.ChatBot.Supervisor, opts}

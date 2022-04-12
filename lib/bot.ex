@@ -37,11 +37,11 @@ defmodule Telegram.Bot do
     quote location: :keep do
       @behaviour Telegram.Bot
 
-      def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
+      def child_spec(init_args) do
         opts = [
           bot_behaviour_mod: __MODULE__,
-          token: token,
-          max_bot_concurrency: max_bot_concurrency
+          token: Keyword.fetch!(init_args, :token),
+          max_bot_concurrency: Keyword.get(init_args, :max_bot_concurrency, :infinity)
         ]
 
         Supervisor.child_spec({Telegram.Bot.Async.Supervisor, opts}, id: __MODULE__)

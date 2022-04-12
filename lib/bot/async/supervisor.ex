@@ -24,19 +24,11 @@ defmodule Telegram.Bot.Async.Supervisor do
   end
 
   @impl Supervisor
-  def init(opts) do
-    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
-    token = Keyword.fetch!(opts, :token)
-    max_bot_concurrency = Keyword.get(opts, :max_bot_concurrency, :infinity)
+  def init(bot_behaviour_mod: bot_behaviour_mod, token: token, max_bot_concurrency: max_bot_concurrency) do
     supervisor_name = Utils.name(__MODULE__.Task.Supervisor, bot_behaviour_mod)
 
     handle_update = fn update, token ->
-      Task.Supervisor.start_child(
-        supervisor_name,
-        bot_behaviour_mod,
-        :handle_update,
-        [update, token]
-      )
+      Task.Supervisor.start_child(supervisor_name, bot_behaviour_mod, :handle_update, [update, token])
     end
 
     children = [

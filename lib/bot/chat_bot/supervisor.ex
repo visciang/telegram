@@ -21,12 +21,10 @@ defmodule Telegram.Bot.ChatBot.Supervisor do
   end
 
   @impl Supervisor
-  def init(opts) do
-    bot_behaviour_mod = Keyword.fetch!(opts, :bot_behaviour_mod)
-    token = Keyword.fetch!(opts, :token)
-    max_bot_concurrency = Keyword.get(opts, :max_bot_concurrency, :infinity)
-
-    handle_update = &Session.Server.handle_update(bot_behaviour_mod, &1, &2)
+  def init(bot_behaviour_mod: bot_behaviour_mod, token: token, max_bot_concurrency: max_bot_concurrency) do
+    handle_update = fn update, token ->
+      Session.Server.handle_update(bot_behaviour_mod, update, token)
+    end
 
     children = [
       {Chat.Supervisor, {bot_behaviour_mod, max_bot_concurrency}},
