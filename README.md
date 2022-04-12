@@ -182,8 +182,8 @@ The state here refer to a specific chat, a conversation (chat_id) between a user
 
 ## Bot behaviours
 
-* `Telegram.Bot`: works with the **stateless sync / async** dispatch model
-* `Telegram.ChatBot`: works with the statefull chat dispatch model
+* `Telegram.Bot`: works with the **stateless async** dispatch model
+* `Telegram.ChatBot`: works with the **statefull chat** dispatch model
 
 # Sample app
 

@@ -5,7 +5,7 @@ defmodule Telegram.Bot do
   ## Example
 
       defmodule HelloBot do
-        use Telegram.Bot, async: true
+        use Telegram.Bot
 
         @impl Telegram.Bot
         def handle_update(
@@ -33,22 +33,18 @@ defmodule Telegram.Bot do
   @callback handle_update(update :: Telegram.Types.update(), token :: Telegram.Types.token()) :: any()
 
   @doc false
-  defmacro __using__(use_opts) do
+  defmacro __using__(_use_opts) do
     quote location: :keep do
       @behaviour Telegram.Bot
 
-      def child_spec(init_arg) do
-        async = Keyword.get(unquote(use_opts), :async, false)
-        {token, init_arg} = Keyword.pop!(init_arg, :token)
+      def child_spec(init_args) do
+        opts = [
+          bot_behaviour_mod: __MODULE__,
+          token: Keyword.fetch!(init_args, :token),
+          max_bot_concurrency: Keyword.get(init_args, :max_bot_concurrency, :infinity)
+        ]
 
-        sup =
-          if async do
-            {Telegram.Bot.Async.Supervisor, {__MODULE__, token, init_arg}}
-          else
-            {Telegram.Bot.Sync.Supervisor, {__MODULE__, token}}
-          end
-
-        Supervisor.child_spec(sup, id: __MODULE__)
+        Supervisor.child_spec({Telegram.Bot.Async.Supervisor, opts}, id: __MODULE__)
       end
     end
   end

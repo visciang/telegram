@@ -1,7 +1,7 @@
 defmodule Test.ChatBot do
   @moduledoc false
 
-  @behaviour Telegram.ChatBot
+  use Telegram.ChatBot
 
   @impl Telegram.ChatBot
   def init(_chat) do
