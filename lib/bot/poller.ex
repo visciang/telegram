@@ -26,7 +26,9 @@ defmodule Telegram.Bot.Poller do
   @doc false
   @spec run(handle_update(), Types.token()) :: no_return
   def run(handle_update, token) do
-    Logger.debug("#{__MODULE__} running with token '#{token}'")
+    Logger.debug("#{__MODULE__} running with token '#{token}' in polling mode")
+
+    {:ok, true} = Telegram.Api.request(token, "deleteWebhook")
 
     context = %Context{
       handle_update: handle_update,
