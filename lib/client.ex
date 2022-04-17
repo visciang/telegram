@@ -5,13 +5,14 @@ defmodule Telegram.Client do
   @type body :: map() | Tesla.Multipart.t()
 
   @api_base_url Application.compile_env(:telegram, :api_base_url, "https://api.telegram.org")
+  @ssl_options Application.compile_env(:telegram, :ssl_options, [])
 
   use Tesla, only: [:get, :post], docs: false
 
   if Mix.env() == :test do
     adapter Tesla.Mock
   else
-    adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000, certificates_verification: true
+    adapter Tesla.Adapter.Hackney, recv_timeout: 60_000, ssl_options: @ssl_options
   end
 
   plug Tesla.Middleware.BaseUrl, @api_base_url
