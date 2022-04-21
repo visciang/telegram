@@ -39,13 +39,13 @@ end
 token = System.get_env("BOT_TOKEN")
 
 if token == nil do
-  IO.puts("Please provide a BOT_TOKEN environment variable")
+  IO.puts(:stderr, "Please provide a BOT_TOKEN environment variable")
   System.halt(1)
 end
 
 {:ok, _} =
   Supervisor.start_link(
-    [{CountChatBot, [token: token, max_bot_concurrency: 1_000]}],
+    [{Telegram.Poller, bots: [{CountChatBot, token: token, max_bot_concurrency: 1_000}]}],
     strategy: :one_for_one
   )
 

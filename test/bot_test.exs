@@ -1,6 +1,6 @@
-defmodule Test.Telegram.Bot.Async do
+defmodule Test.Telegram.Bot do
   use ExUnit.Case, async: false
-  import Test.Utils.{Const, Mock}
+  import Test.Utils.{Const, Mock, Poller}
 
   setup_all do
     Test.Utils.Mock.tesla_mock_global_async()
@@ -10,18 +10,10 @@ defmodule Test.Telegram.Bot.Async do
   setup [:setup_test_bot]
 
   test "basic flow" do
-    url_delete_webhook = tg_url(tg_token(), "deleteWebhook")
     url_get_updates = tg_url(tg_token(), "getUpdates")
     url_test_response = tg_url(tg_token(), "testResponse")
 
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_delete_webhook},
-               fn _ ->
-                 response = %{"ok" => true, "result" => true}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert_webhook_setup(tg_token())
 
     assert :ok ==
              tesla_mock_expect_request(
@@ -54,8 +46,8 @@ defmodule Test.Telegram.Bot.Async do
   end
 
   defp setup_test_bot(_context) do
-    options = [token: tg_token(), max_bot_concurrency: 1]
-    start_supervised!({Test.Bot, options})
+    bots = [{Test.Bot, [token: tg_token(), max_bot_concurrency: 1]}]
+    start_supervised!({Telegram.Poller, bots: bots})
 
     :ok
   end

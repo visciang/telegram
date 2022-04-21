@@ -65,3 +65,32 @@ defmodule Test.Utils.Mock do
     Const.string_to_pid(test_pid)
   end
 end
+
+defmodule Test.Utils.Poller do
+  defmacro assert_webhook_setup(token) do
+    quote do
+      require Test.Utils.Const
+
+      url_get_webhook_info = tg_url(unquote(token), "getWebhookInfo")
+      url_delete_webhook = tg_url(unquote(token), "deleteWebhook")
+
+      assert :ok ==
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_get_webhook_info},
+                 fn _ ->
+                   response = %{"ok" => true, "result" => %{"url" => "url"}}
+                   Tesla.Mock.json(response, status: 200)
+                 end
+               )
+
+      assert :ok ==
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_delete_webhook},
+                 fn _ ->
+                   response = %{"ok" => true, "result" => true}
+                   Tesla.Mock.json(response, status: 200)
+                 end
+               )
+    end
+  end
+end

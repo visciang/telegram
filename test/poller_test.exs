@@ -1,6 +1,14 @@
-defmodule Test.Telegram.Bot.Poller do
+defmodule Test.Telegram.Poller do
   use ExUnit.Case, async: false
-  import Test.Utils.{Const, Mock}
+  import Test.Utils.{Const, Mock, Poller}
+
+  defmodule TestBotBehaviour do
+    use Telegram.Bot
+
+    def handle_update(update, _token) do
+      assert %{"message" => %{"text" => "/test"}} = update
+    end
+  end
 
   setup_all do
     Test.Utils.Mock.tesla_mock_global_async()
@@ -8,30 +16,16 @@ defmodule Test.Telegram.Bot.Poller do
   end
 
   setup _context do
-    t_token = tg_token()
-
-    handle_update = fn update, token ->
-      assert token == t_token
-      assert %{"message" => %{"text" => "/test"}} = update
-    end
-
-    start_supervised!({Telegram.Bot.Poller, {handle_update, t_token}})
+    bots = [{TestBotBehaviour, [token: tg_token(), max_bot_concurrency: 1]}]
+    start_supervised!({Telegram.Poller, bots: bots})
 
     :ok
   end
 
   test "basic flow" do
-    url_delete_webhook = tg_url(tg_token(), "deleteWebhook")
     url_get_updates = tg_url(tg_token(), "getUpdates")
 
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_delete_webhook},
-               fn _ ->
-                 response = %{"ok" => true, "result" => true}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert_webhook_setup(tg_token())
 
     assert :ok ==
              tesla_mock_expect_request(
@@ -78,17 +72,9 @@ defmodule Test.Telegram.Bot.Poller do
   end
 
   test "response error" do
-    url_delete_webhook = tg_url(tg_token(), "deleteWebhook")
     url = tg_url(tg_token(), "getUpdates")
 
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_delete_webhook},
-               fn _ ->
-                 response = %{"ok" => true, "result" => true}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert_webhook_setup(tg_token())
 
     assert :ok ==
              tesla_mock_expect_request(

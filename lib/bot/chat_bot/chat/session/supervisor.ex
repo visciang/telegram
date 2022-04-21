@@ -7,20 +7,20 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Supervisor do
   alias Telegram.Bot.{ChatBot.Chat, Utils}
   alias Telegram.{ChatBot, Types}
 
-  @spec start_link({module(), Types.max_bot_concurrency()}) :: Supervisor.on_start()
-  def start_link({chatbot_behaviour, max_bot_concurrency}) do
+  @spec start_link({Types.token(), Types.max_bot_concurrency()}) :: Supervisor.on_start()
+  def start_link({token, max_bot_concurrency}) do
     DynamicSupervisor.start_link(
       __MODULE__,
       {max_bot_concurrency},
-      name: Utils.name(__MODULE__, chatbot_behaviour)
+      name: Utils.name(__MODULE__, token)
     )
   end
 
-  @spec start_child(module(), ChatBot.chat()) :: DynamicSupervisor.on_start_child()
-  def start_child(chatbot_behaviour, chat) do
+  @spec start_child(module(), Types.token(), ChatBot.chat()) :: DynamicSupervisor.on_start_child()
+  def start_child(chatbot_behaviour, token, chat) do
     DynamicSupervisor.start_child(
-      Utils.name(__MODULE__, chatbot_behaviour),
-      {Chat.Session.Server, {chatbot_behaviour, chat}}
+      Utils.name(__MODULE__, token),
+      {Chat.Session.Server, {chatbot_behaviour, token, chat}}
     )
   end
 

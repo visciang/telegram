@@ -36,6 +36,10 @@ defmodule Telegram.ChatBot do
       end
   """
 
+  alias Telegram.Bot.ChatBot.Chat
+  alias Telegram.Bot.ChatBot.Chat.Session
+  alias Telegram.Types
+
   @type chat :: map()
   @type chat_state :: any()
 
@@ -49,26 +53,24 @@ defmodule Telegram.ChatBot do
   Receives the telegram update event and the "current" chat_state.
   Return the "updated" chat_state.
   """
-  @callback handle_update(
-              update :: Telegram.Types.update(),
-              token :: Telegram.Types.token(),
-              chat_state :: chat_state()
-            ) :: {:ok, next_chat_state :: chat_state()} | {:stop, next_chat_state :: chat_state()}
+  @callback handle_update(update :: Types.update(), token :: Types.token(), chat_state :: chat_state()) ::
+              {:ok, next_chat_state :: chat_state()} | {:stop, next_chat_state :: chat_state()}
 
   @doc false
   defmacro __using__(_use_opts) do
     quote location: :keep do
       @behaviour Telegram.ChatBot
 
-      def child_spec(init_args) do
-        opts = [
-          bot_behaviour_mod: __MODULE__,
-          token: Keyword.fetch!(init_args, :token),
-          max_bot_concurrency: Keyword.get(init_args, :max_bot_concurrency, :infinity)
-        ]
+      @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
+      def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
+        Supervisor.child_spec({Chat.Supervisor, {token, max_bot_concurrency}}, [])
+      end
 
-        sup = {Telegram.Bot.ChatBot.Supervisor, opts}
-        Supervisor.child_spec(sup, id: __MODULE__)
+      @spec dispatch_update(Types.update(), Types.token()) :: :ok
+      def dispatch_update(update, token) do
+        Session.Server.handle_update(__MODULE__, token, update)
+
+        :ok
       end
     end
   end
