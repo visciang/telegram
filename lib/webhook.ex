@@ -106,7 +106,7 @@ defmodule Telegram.Webhook do
          scheme: :http,
          plug: {Telegram.Webhook.Router, [bot_routing_map: bot_routing_map]},
          options: [
-           port: local_port,
+           port: local_port
          ]
        ]}
 
