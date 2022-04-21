@@ -10,9 +10,10 @@ defmodule Telegram.Webhook do
   cert_dir = Application.app_dir(:my_app, "priv/cert")
 
   webhook_config = [
-    set_webhook: false,
-    certfile: Path.join(cert_dir, "myapp.pem"),
-    keyfile: Path.join(cert_dir, "myapp_key.pem")
+    host: "myapp.public-domain.com",
+    port: 443,
+    local_port: 4_000,
+    max_connections: 10_000
   ]
 
   bot_config = [
@@ -42,30 +43,23 @@ defmodule Telegram.Webhook do
   @typedoc """
   Webhook configuration.
 
-  - `host`: hostname of the HTTPS webhook url (optional, default: "localhost")
-  - `port`: port of the HTTPS webhook url (optional, default: 8443)
+  - `host`: (reverse proxy) hostname of the HTTPS webhook url (required)
+  - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: 443)
+  - `local_port`: (backend) application HTTP web server port (optional, default: 4000)
   - `max_connections`: maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery (optional, defaults 40)
-  - `certfile`: absolute path to your public key certificate (required)
-  - `keyfile`: absolute path to your private key (required)
-
-  NOTE:
-
-  Self-signed certificate can be used.
-  Uou can generate a selfsigned certificate with the x509 hex package
-  (`mix x509.gen.selfsigned HOSTNAME`).
   """
   @type config :: [
           host: String.t(),
           port: :inet.port_number(),
+          local_port: :inet.port_number(),
           max_connections: 1..100,
-          certfile: String.t(),
-          keyfile: String.t(),
           set_webhook: boolean()
         ]
 
   @default_config [
     host: "localhost",
-    port: 8443,
+    port: 443,
+    local_port: 4000,
     max_connections: 40,
     set_webhook: true
   ]
@@ -80,9 +74,8 @@ defmodule Telegram.Webhook do
     config = Keyword.merge(@default_config, config)
     host = Keyword.fetch!(config, :host)
     port = Keyword.fetch!(config, :port)
+    local_port = Keyword.fetch!(config, :local_port)
     max_connections = Keyword.fetch!(config, :max_connections)
-    certfile = Keyword.fetch!(config, :certfile)
-    keyfile = Keyword.fetch!(config, :keyfile)
     set_webhook? = Keyword.fetch!(config, :set_webhook)
 
     bot_routing_map =
@@ -100,7 +93,7 @@ defmodule Telegram.Webhook do
 
       if set_webhook? do
         # coveralls-ignore-start
-        set_webhook(token, url, max_connections, certfile)
+        set_webhook(token, url, max_connections)
         # coveralls-ignore-end
       else
         Logger.info("Skipped setWebhook as requested via config.set_webhook", bot: bot_behaviour_mod, token: token)
@@ -110,12 +103,10 @@ defmodule Telegram.Webhook do
     plug_cowboy_spec =
       {Plug.Cowboy,
        [
-         scheme: :https,
+         scheme: :http,
          plug: {Telegram.Webhook.Router, [bot_routing_map: bot_routing_map]},
          options: [
-           port: port,
-           certfile: certfile,
-           keyfile: keyfile
+           port: local_port,
          ]
        ]}
 
@@ -126,8 +117,8 @@ defmodule Telegram.Webhook do
 
   # coveralls-ignore-start
 
-  defp set_webhook(token, url, max_connections, certfile) do
-    opts = [url: url, max_connections: max_connections, certificate: {:file, certfile}]
+  defp set_webhook(token, url, max_connections) do
+    opts = [url: url, max_connections: max_connections]
     {:ok, _} = Telegram.Api.request(token, "setWebhook", opts)
   end
 

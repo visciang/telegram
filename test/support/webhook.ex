@@ -1,11 +1,11 @@
 defmodule Test.Webhook do
   @moduledoc false
 
-  @webhook_base_url "https://localhost:8443"
+  @webhook_base_url "http://localhost:4000"
 
   use Tesla, only: [:post], docs: false
 
-  adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000, certificates_verification: false
+  adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000
 
   plug Tesla.Middleware.BaseUrl, @webhook_base_url
   plug Tesla.Middleware.JSON

@@ -175,6 +175,7 @@ Refer to the `Telegram.Poller` module docs fo more info.
 ### Webhook
 
 This mode interface with the telegram servers via a webhook, best for production use.
+The app is meant to be served over HTTP, a reverse proxy should be plance in front of it, facing the public network over HTTPS.
 Refer to the `Telegram.Webhook` module docs for more info.
 
 ## Dispatch model

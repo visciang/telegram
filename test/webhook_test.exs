@@ -46,8 +46,7 @@ defmodule Test.Telegram.Webhook do
   defp setup_test_bot(_context) do
     config = [
       set_webhook: false,
-      certfile: Path.absname("./test/assets/cert/selfsigned.pem"),
-      keyfile: Path.absname("./test/assets/cert/selfsigned_key.pem")
+      host: "host.com"
     ]
 
     bots = [{Test.Bot, [token: tg_token(), max_bot_concurrency: 1]}]
