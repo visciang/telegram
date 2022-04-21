@@ -12,8 +12,7 @@ defmodule Telegram.Webhook do
   webhook_config = [
     host: "myapp.public-domain.com",
     port: 443,
-    local_port: 4_000,
-    max_connections: 10_000
+    local_port: 4_000
   ]
 
   bot_config = [
