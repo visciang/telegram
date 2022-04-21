@@ -125,6 +125,7 @@ defmodule Telegram.Webhook do
   end
 
   # coveralls-ignore-start
+
   defp set_webhook(token, url, max_connections, certfile) do
     opts = [url: url, max_connections: max_connections, certificate: {:file, certfile}]
     {:ok, _} = Telegram.Api.request(token, "setWebhook", opts)
