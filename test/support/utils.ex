@@ -67,6 +67,8 @@ defmodule Test.Utils.Mock do
 end
 
 defmodule Test.Utils.Poller do
+  @moduledoc false
+
   defmacro assert_webhook_setup(token) do
     quote do
       require Test.Utils.Const

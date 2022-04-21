@@ -165,7 +165,7 @@ BOT_TOKEN="..." example/example_chatbot.exs
 The Telegram platform supports two ways of processing bot updates, `getUpdates` and `setWebhook`.
 `getUpdates` is a pull mechanism, `setwebhook` is push. (ref: [bots webhook](https://core.telegram.org/bots/webhooks))
 
-This library currently implements both model via two supervisors.
+This library currently implements both models via two supervisors.
 
 ### Poller
 
