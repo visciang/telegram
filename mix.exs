@@ -38,7 +38,6 @@ defmodule Telegram.Mixfile do
     [
       # plug cowboy
       {:plug_cowboy, "~> 2.5"},
-      {:x509, "~> 0.8.4", only: :dev, runtime: false},
       # tesla gun adapter + deps
       {:tesla, "~> 1.0"},
       {:gun, "~> 1.3"},
