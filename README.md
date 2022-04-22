@@ -192,6 +192,12 @@ The state here refer to a specific chat, a conversation (chat_id) between a user
 * `Telegram.Bot`: works with the **stateless async** dispatch model
 * `Telegram.ChatBot`: works with the **statefull chat** dispatch model
 
+## Logging
+
+The library attach two metadata fields to the internal logs: [:bot, :token].
+If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
+to clearly identify and "trace" every BOT message flow.
+
 # Sample app
 
 A chat_bot app: https://github.com/visciang/telegram_example
