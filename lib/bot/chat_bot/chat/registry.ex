@@ -4,15 +4,16 @@ defmodule Telegram.Bot.ChatBot.Chat.Registry do
   """
 
   alias Telegram.Bot.Utils
+  alias Telegram.Types
 
-  @spec child_spec({module()}) :: Supervisor.child_spec()
-  def child_spec({chatbot_behaviour}) do
-    Registry.child_spec(keys: :unique, name: Utils.name(__MODULE__, chatbot_behaviour))
+  @spec child_spec({Types.token()}) :: Supervisor.child_spec()
+  def child_spec({token}) do
+    Registry.child_spec(keys: :unique, name: Utils.name(__MODULE__, token))
   end
 
-  @spec lookup(module(), String.t()) :: {:error, :not_found} | {:ok, pid}
-  def lookup(chatbot_behaviour, chat_id) do
-    Registry.lookup(Utils.name(__MODULE__, chatbot_behaviour), chat_id)
+  @spec lookup(Types.token(), String.t()) :: {:error, :not_found} | {:ok, pid}
+  def lookup(token, chat_id) do
+    Registry.lookup(Utils.name(__MODULE__, token), chat_id)
     |> case do
       [{pid, _}] ->
         {:ok, pid}
@@ -22,13 +23,13 @@ defmodule Telegram.Bot.ChatBot.Chat.Registry do
     end
   end
 
-  @spec unregister(module(), String.t()) :: :ok
-  def unregister(bot_behaviour, chat_id) do
-    Registry.unregister(Utils.name(__MODULE__, bot_behaviour), chat_id)
+  @spec unregister(Types.token(), String.t()) :: :ok
+  def unregister(token, chat_id) do
+    Registry.unregister(Utils.name(__MODULE__, token), chat_id)
   end
 
-  @spec via(module(), String.t()) :: {:via, Registry, {Registry.registry(), any()}}
-  def via(bot_behaviour, chat_id) do
-    {:via, Registry, {Utils.name(__MODULE__, bot_behaviour), chat_id}}
+  @spec via(Types.token(), String.t()) :: {:via, Registry, {Registry.registry(), any()}}
+  def via(token, chat_id) do
+    {:via, Registry, {Utils.name(__MODULE__, token), chat_id}}
   end
 end

@@ -165,11 +165,18 @@ BOT_TOKEN="..." example/example_chatbot.exs
 The Telegram platform supports two ways of processing bot updates, `getUpdates` and `setWebhook`.
 `getUpdates` is a pull mechanism, `setwebhook` is push. (ref: [bots webhook](https://core.telegram.org/bots/webhooks))
 
-This library currently implements the `getUpdates` mechanism.
+This library currently implements both models via two supervisors.
+
+### Poller
 
 This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind an home internet router).
+Refer to the `Telegram.Poller` module docs fo more info.
 
-The webhook mode is in the development plan but, being this project a personal playground, unless sponsored there isn't an estimated date.
+### Webhook
+
+This mode interface with the telegram servers via a webhook, best for production use.
+The app is meant to be served over HTTP, a reverse proxy should be plance in front of it, facing the public network over HTTPS.
+Refer to the `Telegram.Webhook` module docs for more info.
 
 ## Dispatch model
 
@@ -184,6 +191,12 @@ The state here refer to a specific chat, a conversation (chat_id) between a user
 
 * `Telegram.Bot`: works with the **stateless async** dispatch model
 * `Telegram.ChatBot`: works with the **statefull chat** dispatch model
+
+## Logging
+
+The library attach two metadata fields to the internal logs: [:bot, :token].
+If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
+to clearly identify and "trace" every BOT message flow.
 
 # Sample app
 
