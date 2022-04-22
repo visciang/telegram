@@ -1,6 +1,6 @@
 defmodule Test.Telegram.Poller do
   use ExUnit.Case, async: false
-  import Test.Utils.{Const, Mock, Poller}
+  import Test.Utils.{Const, Mock}
 
   defmodule TestBotBehaviour do
     use Telegram.Bot
@@ -96,6 +96,29 @@ defmodule Test.Telegram.Poller do
                  assert body["offset"] == nil
 
                  response = %{"ok" => true, "result" => []}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
+  end
+
+  defp assert_webhook_setup(token) do
+    url_get_webhook_info = tg_url(token, "getWebhookInfo")
+    url_delete_webhook = tg_url(token, "deleteWebhook")
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_get_webhook_info},
+               fn _ ->
+                 response = %{"ok" => true, "result" => %{"url" => "url"}}
+                 Tesla.Mock.json(response, status: 200)
+               end
+             )
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_delete_webhook},
+               fn _ ->
+                 response = %{"ok" => true, "result" => true}
                  Tesla.Mock.json(response, status: 200)
                end
              )

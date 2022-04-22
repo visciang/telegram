@@ -7,8 +7,6 @@ defmodule Telegram.Webhook do
   In you app supervisor tree:
 
   ```elixir
-  cert_dir = Application.app_dir(:my_app, "priv/cert")
-
   webhook_config = [
     host: "myapp.public-domain.com",
     port: 443,

@@ -8,7 +8,7 @@ defmodule Telegram.ChatBot do
   Given that every "conversation" is associated with a long running process is up to you to consider
   a session timeout in your bot state machine design. If you don't you will saturate the max_bot_concurrency
   capacity and then your bot won't accept any new conversation.
-  For this you can leverage the undelying gen_server timeout including the timeout in the return value
+  For this you can leverage the underlying gen_server timeout including the timeout in the return value
   of the `c:init/1` or `c:handle_update/3` callbacks or, if you need a more complex behaviour, via explicit
   timers in you bot.
 
