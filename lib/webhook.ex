@@ -135,12 +135,13 @@ defmodule Telegram.Webhook.Router do
 
   plug :match
   plug Plug.Parsers, parsers: [:json], pass: ["*/*"], json_decoder: Jason
-  plug :logger
   plug :dispatch, builder_opts()
 
   post "/:token" do
     update = conn.body_params
     bot_behaviour_mod = Map.get(opts[:bot_routing_map], token)
+
+    Logger.debug("received update: #{inspect(update)}", bot: bot_behaviour_mod, token: token)
 
     if bot_behaviour_mod == nil do
       Plug.Conn.send_resp(conn, :not_found, "")
@@ -157,13 +158,4 @@ defmodule Telegram.Webhook.Router do
   end
 
   # coveralls-ignore-end
-
-  def logger(conn, _opts) do
-    token = conn.path_params["token"]
-    update = conn.body_params
-
-    Logger.debug("received update: #{inspect(update)}", token: token)
-
-    conn
-  end
 end
