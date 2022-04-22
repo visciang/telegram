@@ -11,10 +11,12 @@ defmodule CountChatBot do
 
   use Telegram.ChatBot
 
+  @session_ttl 60 * 1_000
+
   @impl Telegram.ChatBot
   def init(_chat) do
     count_state = 0
-    {:ok, count_state}
+    {:ok, count_state, @session_ttl}
   end
 
   @impl Telegram.ChatBot
@@ -26,13 +28,13 @@ defmodule CountChatBot do
       text: "Hey! You sent me #{count_state} messages"
     )
 
-    {:ok, count_state}
+    {:ok, count_state, @session_ttl}
   end
 
   def handle_update(update, _token, count_state) do
     Logger.info("Unknown update received: #{inspect(update)}")
 
-    {:ok, count_state}
+    {:ok, count_state, @session_ttl}
   end
 end
 

@@ -93,7 +93,7 @@ defmodule Telegram.Webhook do
       if set_webhook? do
         # coveralls-ignore-start
         set_webhook(token, url, max_connections)
-        # coveralls-ignore-end
+        # coveralls-ignore-stop
       else
         Logger.info("Skipped setWebhook as requested via config.set_webhook", bot: bot_behaviour_mod, token: token)
       end
@@ -121,7 +121,7 @@ defmodule Telegram.Webhook do
     {:ok, _} = Telegram.Api.request(token, "setWebhook", opts)
   end
 
-  # coveralls-ignore-end
+  # coveralls-ignore-stop
 end
 
 defmodule Telegram.Webhook.Router do
@@ -157,5 +157,5 @@ defmodule Telegram.Webhook.Router do
     Plug.Conn.send_resp(conn, :not_found, "")
   end
 
-  # coveralls-ignore-end
+  # coveralls-ignore-stop
 end

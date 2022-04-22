@@ -36,8 +36,14 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   def init({chatbot_behaviour, token, chat}) do
     Logger.metadata(bot: chatbot_behaviour, token: token)
 
-    {:ok, bot_state} = chatbot_behaviour.init(chat)
-    {:ok, {chatbot_behaviour, bot_state}}
+    chatbot_behaviour.init(chat)
+    |> case do
+      {:ok, bot_state} ->
+        {:ok, {chatbot_behaviour, bot_state}}
+
+      {:ok, bot_state, timeout} ->
+        {:ok, {chatbot_behaviour, bot_state}, timeout}
+    end
   end
 
   @impl GenServer
@@ -47,11 +53,22 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
       {:ok, bot_state} ->
         {:noreply, {chatbot_behaviour, bot_state}}
 
+      {:ok, bot_state, timeout} ->
+        {:noreply, {chatbot_behaviour, bot_state}, timeout}
+
       {:stop, bot_state} ->
         {:ok, %{"id" => chat_id}} = Utils.get_chat(update)
         Chat.Registry.unregister(token, chat_id)
-        {:stop, :normal, bot_state}
+
+        {:stop, :normal, {chatbot_behaviour, bot_state}}
     end
+  end
+
+  @impl GenServer
+  def handle_info(:timeout, state) do
+    Logger.debug("Stop bot, reached timeout")
+
+    {:stop, :normal, state}
   end
 
   defp get_chat_session_server(chatbot_behaviour, token, %{"id" => chat_id} = chat) do
