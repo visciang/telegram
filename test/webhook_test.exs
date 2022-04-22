@@ -44,11 +44,7 @@ defmodule Test.Telegram.Webhook do
   end
 
   defp setup_test_bot(_context) do
-    config = [
-      set_webhook: false,
-      host: "host.com"
-    ]
-
+    config = [set_webhook: false, host: "host.com"]
     bots = [{Test.Bot, [token: tg_token(), max_bot_concurrency: 1]}]
     start_supervised!({Telegram.Webhook, config: config, bots: bots})
 

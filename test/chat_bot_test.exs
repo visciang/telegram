@@ -1,7 +1,8 @@
 defmodule Test.Telegram.ChatBot do
   use ExUnit.Case, async: false
 
-  import Test.Utils.{Const, Mock, Poller}
+  alias Test.Webhook
+  import Test.Utils.{Const, Mock}
 
   setup_all do
     Test.Utils.Mock.tesla_mock_global_async()
@@ -11,29 +12,16 @@ defmodule Test.Telegram.ChatBot do
   setup [:setup_test_bot]
 
   test "basic flow" do
-    url_get_updates = tg_url(tg_token(), "getUpdates")
     url_test_response = tg_url(tg_token(), "testResponse")
     chat_id = "chat_id_1234"
 
-    assert_webhook_setup(tg_token())
-
     1..3
     |> Enum.each(fn idx ->
-      assert :ok ==
-               tesla_mock_expect_request(
-                 %{method: :post, url: ^url_get_updates},
-                 fn _ ->
-                   result = [
-                     %{
-                       "update_id" => idx,
-                       "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
-                     }
-                   ]
-
-                   response = %{"ok" => true, "result" => result}
-                   Tesla.Mock.json(response, status: 200)
-                 end
-               )
+      assert {:ok, _} =
+               Webhook.update(tg_token(), %{
+                 "update_id" => idx,
+                 "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
+               })
 
       assert :ok ==
                tesla_mock_expect_request(
@@ -50,21 +38,11 @@ defmodule Test.Telegram.ChatBot do
                )
     end)
 
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_get_updates},
-               fn _ ->
-                 result = [
-                   %{
-                     "update_id" => 4,
-                     "message" => %{"text" => "/stop", "chat" => %{"id" => chat_id}}
-                   }
-                 ]
-
-                 response = %{"ok" => true, "result" => result}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 4,
+               "message" => %{"text" => "/stop", "chat" => %{"id" => chat_id}}
+             })
 
     assert :ok ==
              tesla_mock_expect_request(
@@ -82,28 +60,15 @@ defmodule Test.Telegram.ChatBot do
   end
 
   test "max_bot_concurrency overflow" do
-    url_get_updates = tg_url(tg_token(), "getUpdates")
     url_test_response = tg_url(tg_token(), "testResponse")
 
     chat_id = "ONE"
 
-    assert_webhook_setup(tg_token())
-
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_get_updates},
-               fn _ ->
-                 result = [
-                   %{
-                     "update_id" => 1,
-                     "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
-                   }
-                 ]
-
-                 response = %{"ok" => true, "result" => result}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 1,
+               "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
+             })
 
     assert :ok ==
              tesla_mock_expect_request(
@@ -121,64 +86,33 @@ defmodule Test.Telegram.ChatBot do
 
     chat_id = "TWO"
 
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_get_updates},
-               fn _ ->
-                 result = [
-                   %{
-                     "update_id" => 2,
-                     "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
-                   }
-                 ]
-
-                 response = %{"ok" => true, "result" => result}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 2,
+               "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
+             })
 
     assert :ok ==
              tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
   end
 
   test "received update out of a chat - ie: chat_id not present" do
-    url_get_updates = tg_url(tg_token(), "getUpdates")
     url_test_response = tg_url(tg_token(), "testResponse")
 
-    assert_webhook_setup(tg_token())
-
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_get_updates},
-               fn _ ->
-                 result = [
-                   %{
-                     "update_id" => 1,
-                     "update_without_chat_if" => %{}
-                   }
-                 ]
-
-                 response = %{"ok" => true, "result" => result}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 1,
+               "update_without_chat_if" => %{}
+             })
 
     assert :ok ==
              tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
-
-    assert :ok ==
-             tesla_mock_expect_request(
-               %{method: :post, url: ^url_get_updates},
-               fn _ ->
-                 response = %{"ok" => true, "result" => []}
-                 Tesla.Mock.json(response, status: 200)
-               end
-             )
   end
 
   defp setup_test_bot(_context) do
+    config = [set_webhook: false, host: "host.com"]
     bots = [{Test.ChatBot, [token: tg_token(), max_bot_concurrency: 1]}]
-    start_supervised!({Telegram.Poller, bots: bots})
+    start_supervised!({Telegram.Webhook, config: config, bots: bots})
 
     :ok
   end
