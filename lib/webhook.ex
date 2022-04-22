@@ -44,8 +44,8 @@ defmodule Telegram.Webhook do
 
   - `host`: (reverse proxy) hostname of the HTTPS webhook url (required)
   - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: 443)
-  - `local_port`: (backend) application HTTP web server port (optional, default: 4000)
-  - `max_connections`: maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery (optional, defaults 40)
+  - `local_port`: (backend) port of the application HTTP web server (optional, default: 4000)
+  - `max_connections`: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults 40)
   """
   @type config :: [
           host: String.t(),

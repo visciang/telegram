@@ -35,12 +35,13 @@ defmodule Test.Telegram.Webhook do
     url_test_response = tg_url(tg_token(), "testResponse")
 
     assert {:error, {:http_error, 404}} =
-             Webhook.update("aaaaa", %{
+             Webhook.update("unknown_bot_token", %{
                "update_id" => 1,
                "message" => %{"text" => "/command"}
              })
 
-    assert :ok == tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
+    assert :ok ==
+             tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
   end
 
   defp setup_test_bot(_context) do
