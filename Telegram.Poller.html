@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.3">
-    <meta name="project" content="telegram v0.13.0">
+    <meta name="project" content="telegram v0.20.0">
 
-    <title>Telegram.Bot.Poller — telegram v0.13.0</title>
+    <title>Telegram.Poller — telegram v0.20.0</title>
     <link rel="stylesheet" href="dist/elixir-d5ff82e6b0f5651c0ac0.css" />
 
-    <script src="dist/sidebar_items-cbba4efbd8.js"></script>
+    <script src="dist/sidebar_items-667ed906ef.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -66,7 +66,7 @@
 telegram
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.13.0
+        v0.20.0
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -93,16 +93,37 @@ telegram
 </button>
 
 
-    <a href="https://github.com/visciang/telegram/blob/main/lib/bot/poller.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Telegram.Bot.Poller</span> 
-  <small class="app-vsn" translate="no">(telegram v0.13.0)</small>
+  <span translate="no">Telegram.Poller</span> 
+  <small class="app-vsn" translate="no">(telegram v0.20.0)</small>
 
 </h1>
 
+
+  <section id="moduledoc">
+<p>Telegram poller supervisor.</p><h2 id="module-usage" class="section-heading">
+  <a href="#module-usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">usage</p>
+  </a>
+  Usage:
+</h2>
+<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8568048284-1">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8568048284-2">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="8568048284-2">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8568048284-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="8568048284-3">)</span><span class="w">
+</span><span class="p" data-group-id="8568048284-1">]</span><span class="w">
+
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8568048284-4">[</span><span class="w">
+  </span><span class="p" data-group-id="8568048284-5">{</span><span class="nc">Telegram.Poller</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8568048284-6">[</span><span class="p" data-group-id="8568048284-7">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="8568048284-7">}</span><span class="p" data-group-id="8568048284-6">]</span><span class="p" data-group-id="8568048284-5">}</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+</span><span class="p" data-group-id="8568048284-4">]</span><span class="w">
+
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8568048284-8">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="8568048284-8">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="8568048284-9">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8568048284-9">)</span></code></pre>
+  </section>
 
 
   <section id="summary" class="details-list">
@@ -114,21 +135,6 @@ telegram
       Summary
     </h1>
 
-  <div class="summary-types summary">
-    <h2>
-      <a href="#types">Types</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:handle_update/0" translate="no">handle_update()</a>
-
-        </div>
-
-      </div>
-
-  </div>
-
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
@@ -136,7 +142,7 @@ telegram
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#child_spec/1" translate="no">child_spec(arg)</a>
+          <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
         </div>
 
@@ -146,7 +152,7 @@ telegram
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#start_link/1" translate="no">start_link(arg)</a>
+          <a href="#start_link/1" translate="no">start_link(list)</a>
 
         </div>
 
@@ -156,48 +162,6 @@ telegram
 
   </section>
 
-
-  <section id="types" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#types">
-        <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
-      </a>
-Types
-    </h1>
-    <div class="types-list">
-<section class="detail" id="t:handle_update/0">
-
-  <div class="detail-header">
-    <a href="#t:handle_update/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">handle_update()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/bot/poller.ex#L8" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> handle_update() ::
-  (update :: <a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>(), token :: <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())</pre>
-
-      </div>
-
-
-  </section>
-</section>
-
-    </div>
-  </section>
 
   <section id="functions" class="details-list">
     <h1 class="section-heading">
@@ -215,9 +179,9 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(arg)</h1>
+    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/bot/poller.ex#L2" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L28" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -227,9 +191,7 @@ Functions
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p><code class="inline">arg</code> is passed as the argument to <a href="https://hexdocs.pm/elixir/Task.html#start_link/1"><code class="inline">Task.start_link/1</code></a> in the <code class="inline">:start</code> field
-of the spec.</p><p>For more information, see the <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> module,
-the <a href="https://hexdocs.pm/elixir/Supervisor.html#child_spec/2"><code class="inline">Supervisor.child_spec/2</code></a> function and the <a href="https://hexdocs.pm/elixir/Supervisor.html#t:child_spec/0"><code class="inline">Supervisor.child_spec/0</code></a> type.</p>
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -239,9 +201,9 @@ the <a href="https://hexdocs.pm/elixir/Supervisor.html#child_spec/2"><code class
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(arg)</h1>
+    <h1 class="signature" translate="no">start_link(list)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/bot/poller.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L31" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -253,7 +215,7 @@ the <a href="https://hexdocs.pm/elixir/Supervisor.html#child_spec/2"><code class
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_link({<a href="#t:handle_update/0">handle_update</a>(), <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>()}) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_link([{:bots, [<a href="Telegram.Types.html#t:bot_spec/0">Telegram.Types.bot_spec</a>()]}]) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
 
       </div>
 
