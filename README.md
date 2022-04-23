@@ -4,6 +4,11 @@
 
 Telegram library for the Elixir language.
 
+It provides:
+- an inteface to the Telegram Bot HTTP-based APIs (`Telegram.Api`) 
+- a couple of bot behaviours to define you bots (`Telegram.Bot`, `Telegram.ChatBot`)
+- two bot runners (`Telegram.Poller`, `Telegram.Webhook`)
+
 ## Installation
 
 The package can be installed by adding `telegram` to your list of dependencies in `mix.exs`:
@@ -18,13 +23,11 @@ end
 
 # Telegram Bot API
 
-Telegram Bot API request.
-
-The module expose a light layer over the Telegram Bot API HTTP-based interface,
+This module expose a light layer over the Telegram Bot API HTTP-based interface,
 it does not expose any "(data)binding" over the HTTP interface and tries to abstract
 away only the boilerplate for building / sending / serializing the API requests.
 
-Compared to a full-binded interface it could result less elixir frendly but it will
+Compared to a full data-binded interface it could result less "typed frendly" but it will
 work with any version of the Bot API, hopefully without updates or incompatibily
 with new Bot API versions (as much as they remain backward compatible).
 
