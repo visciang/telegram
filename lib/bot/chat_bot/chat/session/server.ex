@@ -32,10 +32,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
       GenServer.cast(server, {:handle_update, update})
     else
       {:get_chat, nil} ->
-        Logger.info("Dropped update without chat #{inspect(update)}")
+        Logger.info("Dropped update without chat #{inspect(update)}", bot: chatbot_behaviour, token: token)
 
       {:get_chat_session_server, {:error, :max_children}} ->
-        Logger.info("Reached max children, update dropped")
+        Logger.info("Reached max children, update dropped", bot: chatbot_behaviour, token: token)
     end
   end
 
