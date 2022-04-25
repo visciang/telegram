@@ -8,6 +8,11 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   alias Telegram.Bot.{ChatBot.Chat, Utils}
   alias Telegram.{ChatBot, Types}
 
+  defmodule State do
+    @enforce_keys [:chatbot_behaviour, :token, :chat_id, :bot_state]
+    defstruct @enforce_keys
+  end
+
   @spec start_link({module(), Types.token(), ChatBot.chat()}) :: GenServer.on_start()
   def start_link({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
     GenServer.start_link(
@@ -22,53 +27,70 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     with {:get_chat, {:ok, chat}} <- {:get_chat, Utils.get_chat(update)},
          {:get_chat_session_server, {:ok, server}} <-
            {:get_chat_session_server, get_chat_session_server(chatbot_behaviour, token, chat)} do
-      GenServer.cast(server, {:handle_update, update, token})
+      GenServer.cast(server, {:handle_update, update})
     else
       {:get_chat, nil} ->
-        Logger.info("Dropped update without chat #{inspect(update)}", bot: chatbot_behaviour, token: token)
+        Logger.info("Dropped update without chat #{inspect(update)}")
 
       {:get_chat_session_server, {:error, :max_children}} ->
-        Logger.info("Reached max children, update dropped", bot: chatbot_behaviour, token: token)
+        Logger.info("Reached max children, update dropped")
     end
   end
 
   @impl GenServer
-  def init({chatbot_behaviour, token, chat}) do
-    Logger.metadata(bot: chatbot_behaviour, token: token)
+  def init({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
+    Logger.metadata(bot: chatbot_behaviour, token: token, chat_id: chat_id)
+
+    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat_id, bot_state: nil}
 
     chatbot_behaviour.init(chat)
     |> case do
       {:ok, bot_state} ->
-        {:ok, {chatbot_behaviour, bot_state}}
+        {:ok, put_in(state.bot_state, bot_state)}
 
       {:ok, bot_state, timeout} ->
-        {:ok, {chatbot_behaviour, bot_state}, timeout}
+        {:ok, put_in(state.bot_state, bot_state), timeout}
     end
   end
 
   @impl GenServer
-  def handle_cast({:handle_update, update, token}, {chatbot_behaviour, bot_state}) do
-    chatbot_behaviour.handle_update(update, token, bot_state)
+  def handle_cast({:handle_update, update}, %State{} = state) do
+    state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
     |> case do
       {:ok, bot_state} ->
-        {:noreply, {chatbot_behaviour, bot_state}}
+        {:noreply, put_in(state.bot_state, bot_state)}
 
       {:ok, bot_state, timeout} ->
-        {:noreply, {chatbot_behaviour, bot_state}, timeout}
+        {:noreply, put_in(state.bot_state, bot_state), timeout}
 
       {:stop, bot_state} ->
-        {:ok, %{"id" => chat_id}} = Utils.get_chat(update)
-        Chat.Registry.unregister(token, chat_id)
+        Chat.Registry.unregister(state.token, state.chat_id)
 
-        {:stop, :normal, {chatbot_behaviour, bot_state}}
+        {:stop, :normal, put_in(state.bot_state, bot_state)}
     end
   end
 
   @impl GenServer
-  def handle_info(:timeout, state) do
-    Logger.debug("Stop bot, reached timeout")
+  def handle_info(:timeout, %State{} = state) do
+    Logger.debug("Reached timeout")
 
-    {:stop, :normal, state}
+    state.chatbot_behaviour.handle_timeout(state.token, state.bot_state)
+    |> case do
+      # coveralls-ignore-start
+
+      {:ok, bot_state} ->
+        {:noreply, put_in(state.bot_state, bot_state)}
+
+      {:ok, bot_state, timeout} ->
+        {:noreply, put_in(state.bot_state, bot_state), timeout}
+
+      # coveralls-ignore-end
+
+      {:stop, bot_state} ->
+        Chat.Registry.unregister(state.token, state.chat_id)
+
+        {:stop, :normal, put_in(state.bot_state, bot_state)}
+    end
   end
 
   defp get_chat_session_server(chatbot_behaviour, token, %{"id" => chat_id} = chat) do

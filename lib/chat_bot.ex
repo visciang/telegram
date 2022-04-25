@@ -42,6 +42,16 @@ defmodule Telegram.ChatBot do
 
           {:ok, count_state, @session_ttl}
         end
+
+        @impl Telegram.ChatBot
+        def handle_timeout(token, count_state) do
+          Telegram.Api.request(token, "sendMessage",
+            chat_id: chat_id,
+            text: "See you!"
+          )
+
+          super(token, count_state)
+        end
       end
   """
 
@@ -68,11 +78,26 @@ defmodule Telegram.ChatBot do
               {:ok, next_chat_state :: chat_state()}
               | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
               | {:stop, next_chat_state :: chat_state()}
+  @doc """
+  On timeout callback.
+  A default implementation is injected with "use Telegram.ChatBot", it just stops the bot.
+  """
+  @callback handle_timeout(token :: Types.token(), chat_state :: chat_state()) ::
+              {:ok, next_chat_state :: chat_state()}
+              | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
+              | {:stop, next_chat_state :: chat_state()}
 
   @doc false
   defmacro __using__(_use_opts) do
     quote location: :keep do
       @behaviour Telegram.ChatBot
+
+      @impl Telegram.ChatBot
+      def handle_timeout(token, chat_state) do
+        {:stop, chat_state}
+      end
+
+      defoverridable handle_timeout: 2
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
