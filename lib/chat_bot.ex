@@ -44,13 +44,13 @@ defmodule Telegram.ChatBot do
         end
 
         @impl Telegram.ChatBot
-        def handle_timeout(token, count_state) do
+        def handle_timeout(token, chat_id, count_state) do
           Telegram.Api.request(token, "sendMessage",
             chat_id: chat_id,
             text: "See you!"
           )
 
-          super(token, count_state)
+          super(token, chat_id, count_state)
         end
       end
   """
@@ -82,7 +82,7 @@ defmodule Telegram.ChatBot do
   On timeout callback.
   A default implementation is injected with "use Telegram.ChatBot", it just stops the bot.
   """
-  @callback handle_timeout(token :: Types.token(), chat_state :: chat_state()) ::
+  @callback handle_timeout(token :: Types.token(), chat_id :: String.t(), chat_state :: chat_state()) ::
               {:ok, next_chat_state :: chat_state()}
               | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
               | {:stop, next_chat_state :: chat_state()}
@@ -93,11 +93,11 @@ defmodule Telegram.ChatBot do
       @behaviour Telegram.ChatBot
 
       @impl Telegram.ChatBot
-      def handle_timeout(token, chat_state) do
+      def handle_timeout(token, chat_id, chat_state) do
         {:stop, chat_state}
       end
 
-      defoverridable handle_timeout: 2
+      defoverridable handle_timeout: 3
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do

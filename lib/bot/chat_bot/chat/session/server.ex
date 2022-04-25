@@ -76,7 +76,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   def handle_info(:timeout, %State{} = state) do
     Logger.debug("Reached timeout")
 
-    state.chatbot_behaviour.handle_timeout(state.token, state.bot_state)
+    state.chatbot_behaviour.handle_timeout(state.token, state.chat_id, state.bot_state)
     |> case do
       # coveralls-ignore-start
 
