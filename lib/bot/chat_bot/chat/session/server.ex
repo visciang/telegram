@@ -9,6 +9,8 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   alias Telegram.{ChatBot, Types}
 
   defmodule State do
+    @moduledoc false
+
     @enforce_keys [:chatbot_behaviour, :token, :chat_id, :bot_state]
     defstruct @enforce_keys
   end
