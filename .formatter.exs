@@ -2,10 +2,8 @@
 [
   line_length: 120,
   inputs: [
-    "example/**/*.{ex,exs}",
-    "lib/**/*.{ex,exs}",
-    "test/**/*.{ex,exs}",
-    "mix.exs"
+    "{mix,.formatter}.exs",
+    "{config,example,lib,priv,test}/**/*.{ex,exs}"
   ],
-  import_deps: [:tesla],
+  import_deps: [:tesla]
 ]
