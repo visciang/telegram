@@ -79,7 +79,7 @@ defmodule Telegram.Poller.Task do
   @doc false
   @spec run(module(), Types.token()) :: no_return()
   def run(bot_behaviour_module, token) do
-    Logger.metadata(bot: bot_behaviour_module, token: token)
+    Logger.metadata(bot: bot_behaviour_module)
     Logger.info("Running in polling mode")
 
     set_polling(token)

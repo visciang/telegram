@@ -197,7 +197,7 @@ The state here refer to a specific chat, a conversation (chat_id) between a user
 
 ## Logging
 
-The library attach two metadata fields to the internal logs: [:bot, :token, :chat_id].
+The library attach two metadata fields to the internal logs: [:bot, :chat_id].
 If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
 to clearly identify and "trace" every BOT message flow.
 

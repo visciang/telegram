@@ -41,7 +41,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @impl GenServer
   def init({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
-    Logger.metadata(bot: chatbot_behaviour, token: token, chat_id: chat_id)
+    Logger.metadata(bot: chatbot_behaviour, chat_id: chat_id)
 
     state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat_id, bot_state: nil}
 
