@@ -1,6 +1,6 @@
 import Config
 
-config :logger, :console, metadata: [:bot, :token]
+config :logger, :console, metadata: [:bot, :chat_id]
 
 if config_env() == :test do
   config :telegram,
