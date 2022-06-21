@@ -201,6 +201,18 @@ The library attach two metadata fields to the internal logs: [:bot, :chat_id].
 If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
 to clearly identify and "trace" every BOT message flow.
 
+# Telegram Client Config
+
+The `Telegram.Client` is based on `Tesla` + `Gun` adapter.
+It's possible to change the adapter options (at compile time) via the `[:telegram, :gun_config]` application environment key.
+
+```elixir
+config :telegram,
+  gun_config: [
+    ...
+  ]
+```
+
 # Sample app
 
 A chat_bot app: https://github.com/visciang/telegram_example
