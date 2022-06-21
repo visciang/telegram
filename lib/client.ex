@@ -5,15 +5,18 @@ defmodule Telegram.Client do
   @type body :: map() | Tesla.Multipart.t()
 
   @api_base_url Application.compile_env(:telegram, :api_base_url, "https://api.telegram.org")
-  @gun_config Application.compile_env(:telegram, :gun_config, [
-    timeout: 60_000, connect_timeout: 5_000, certificates_verification: true
-  ])
 
   use Tesla, only: [:get, :post], docs: false
 
   if Mix.env() == :test do
     adapter Tesla.Mock
   else
+    @gun_config Application.compile_env(:telegram, :gun_config,
+                  timeout: 60_000,
+                  connect_timeout: 5_000,
+                  certificates_verification: true
+                )
+
     adapter Tesla.Adapter.Gun, @gun_config
   end
 
