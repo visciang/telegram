@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.3">
-    <meta name="project" content="telegram v0.20.2">
+    <meta name="project" content="telegram v0.20.3">
 
-    <title>Telegram.Webhook — telegram v0.20.2</title>
+    <title>Telegram.Webhook — telegram v0.20.3</title>
     <link rel="stylesheet" href="dist/elixir-d5ff82e6b0f5651c0ac0.css" />
 
     <script src="dist/sidebar_items-62aec9aee6.js"></script>
@@ -66,7 +66,7 @@
 telegram
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.20.2
+        v0.20.3
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -99,7 +99,7 @@ telegram
     </a>
 
   <span translate="no">Telegram.Webhook</span> 
-  <small class="app-vsn" translate="no">(telegram v0.20.2)</small>
+  <small class="app-vsn" translate="no">(telegram v0.20.3)</small>
 
 </h1>
 
@@ -111,24 +111,24 @@ telegram
   </a>
   Usage:
 </h2>
-<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1436068628-1">[</span><span class="w">
+<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3206676105-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
   </span><span class="ss">local_port</span><span class="p">:</span><span class="w"> </span><span class="mi">4_000</span><span class="w">
-</span><span class="p" data-group-id="1436068628-1">]</span><span class="w">
+</span><span class="p" data-group-id="3206676105-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1436068628-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1436068628-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="1436068628-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1436068628-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="1436068628-4">)</span><span class="w">
-</span><span class="p" data-group-id="1436068628-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3206676105-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3206676105-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="3206676105-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3206676105-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="3206676105-4">)</span><span class="w">
+</span><span class="p" data-group-id="3206676105-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1436068628-5">[</span><span class="w">
-  </span><span class="p" data-group-id="1436068628-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1436068628-7">[</span><span class="p" data-group-id="1436068628-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="1436068628-8">}</span><span class="p" data-group-id="1436068628-7">]</span><span class="p" data-group-id="1436068628-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3206676105-5">[</span><span class="w">
+  </span><span class="p" data-group-id="3206676105-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3206676105-7">[</span><span class="p" data-group-id="3206676105-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="3206676105-8">}</span><span class="p" data-group-id="3206676105-7">]</span><span class="p" data-group-id="3206676105-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="1436068628-5">]</span><span class="w">
+</span><span class="p" data-group-id="3206676105-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1436068628-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="1436068628-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="1436068628-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="1436068628-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3206676105-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="3206676105-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="3206676105-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="3206676105-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
   <a href="#module-ref" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">ref</p>
   </a>
