@@ -107,7 +107,9 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   defp start_chat_session_server(chatbot_behaviour, token, chat) do
-    Chat.Session.Supervisor.start_child(chatbot_behaviour, token, chat)
+    child_spec = {__MODULE__, {chatbot_behaviour, token, chat}}
+
+    Chat.Session.Supervisor.start_child(child_spec, token)
     |> case do
       {:ok, _server} = ok ->
         ok
