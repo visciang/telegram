@@ -20,7 +20,7 @@ defmodule Telegram.Mixfile do
       deps: deps(),
       docs: docs(),
       dialyzer: [
-        plt_file: {:no_warn, "deps/dialyzer.plt"}
+        plt_local_path: "_build/plts"
       ]
     ]
   end

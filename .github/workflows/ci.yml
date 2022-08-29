@@ -45,7 +45,20 @@ jobs:
 
       - name: Lint format
         run: mix format --check-formatted
-      
+
+      - name: Lint xref
+        run: |
+          XREF_EXIT_CODE=0
+          CYCLES=$(mix xref graph --format=cycles --fail-above 0 2>/dev/null) || XREF_EXIT_CODE=$?
+
+          if [ $XREF_EXIT_CODE -ne 0 ]; then
+            echo "Found module dependency cycle:"
+            echo "$CYCLES"
+            exit 1
+          else
+            echo "No cycle found"
+          fi
+
       - name: Lint dialyzer
         run: mix dialyzer --no-check
 
