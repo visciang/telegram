@@ -10,7 +10,7 @@
     <title>Telegram.Bot.ChatBot.Chat.Session.Supervisor — telegram v0.20.3</title>
     <link rel="stylesheet" href="dist/elixir-d5ff82e6b0f5651c0ac0.css" />
 
-    <script src="dist/sidebar_items-62aec9aee6.js"></script>
+    <script src="dist/sidebar_items-44fe5c227b.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -135,7 +135,7 @@ telegram
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#start_child/3" translate="no">start_child(chatbot_behaviour, token, chat)</a>
+          <a href="#start_child/2" translate="no">start_child(child_spec, token)</a>
 
         </div>
 
@@ -185,14 +185,14 @@ Functions
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="start_child/3">
+<section class="detail" id="start_child/2">
 
   <div class="detail-header">
-    <a href="#start_child/3" class="detail-link" title="Link to this function">
+    <a href="#start_child/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_child(chatbot_behaviour, token, chat)</h1>
+    <h1 class="signature" translate="no">start_child(child_spec, token)</h1>
 
       <a href="https://github.com/visciang/telegram/blob/main/lib/bot/chat_bot/chat/session/supervisor.ex#L20" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -206,8 +206,10 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_child(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>(), <a href="Telegram.ChatBot.html#t:chat/0">Telegram.ChatBot.chat</a>()) ::
-  <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_child(
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()},
+  <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>()
+) :: <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
 
       </div>
 
