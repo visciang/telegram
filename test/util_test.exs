@@ -14,10 +14,18 @@ defmodule Test.Telegram.Bot.Utils do
 
     datetime = ~U[2015-05-25 13:26:08Z]
     assert {:ok, datetime} == Utils.get_sent_date(%{"message" => %{"date" => DateTime.to_unix(datetime, :second)}})
+
+    datetime = ~U[2015-05-25 13:26:08Z]
+
+    assert {:ok, datetime} ==
+             Utils.get_sent_date(%{"callback_query" => %{"message" => %{"date" => DateTime.to_unix(datetime, :second)}}})
   end
 
   test "get_chat" do
     assert nil == Utils.get_chat(%{})
     assert {:ok, %{"id" => "123"}} == Utils.get_chat(%{"message" => %{"chat" => %{"id" => "123"}}})
+
+    assert {:ok, %{"id" => "123"}} ==
+             Utils.get_chat(%{"callback_query" => %{"message" => %{"chat" => %{"id" => "123"}}}})
   end
 end
