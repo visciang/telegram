@@ -4,27 +4,29 @@ defmodule Telegram.Bot do
 
   ## Example
 
-      defmodule HelloBot do
-        use Telegram.Bot
+  ```elixir
+  defmodule HelloBot do
+    use Telegram.Bot
 
-        @impl Telegram.Bot
-        def handle_update(
-          %{"message" => %{"text" => "/hello", "chat" => %{"id" => chat_id, "username" => username}, "message_id" => message_id}},
-          token
-        ) do
-          Telegram.Api.request(token, "sendMessage",
-            chat_id: chat_id,
-            reply_to_message_id: message_id,
-            text: "Hello #{username}!"
-          )
-        end
+    @impl Telegram.Bot
+    def handle_update(
+      %{"message" => %{"text" => "/hello", "chat" => %{"id" => chat_id, "username" => username}, "message_id" => message_id}},
+      token
+    ) do
+      Telegram.Api.request(token, "sendMessage",
+        chat_id: chat_id,
+        reply_to_message_id: message_id,
+        text: "Hello #{username}!"
+      )
+    end
 
-        def handle_update(_update, _token) do
-          # ignore unknown updates
+    def handle_update(_update, _token) do
+      # ignore unknown updates
 
-          :ok
-        end
-      end
+      :ok
+    end
+  end
+  ```
   """
 
   alias Telegram.Bot.Utils

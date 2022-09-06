@@ -1,7 +1,5 @@
 defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
-  @moduledoc """
-  ChatBot chat session server.
-  """
+  @moduledoc false
 
   use GenServer, restart: :transient
   require Logger

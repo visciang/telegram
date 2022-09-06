@@ -1,7 +1,5 @@
 defmodule Telegram.Bot.ChatBot.Chat.Supervisor do
-  @moduledoc """
-  ChatBot chat supervisor.
-  """
+  @moduledoc false
 
   use Supervisor
   alias Telegram.Bot.{ChatBot.Chat, Utils}

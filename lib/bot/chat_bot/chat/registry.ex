@@ -1,7 +1,5 @@
 defmodule Telegram.Bot.ChatBot.Chat.Registry do
-  @moduledoc """
-  ChatBot chat registry.
-  """
+  @moduledoc false
 
   alias Telegram.Bot.Utils
   alias Telegram.Types

@@ -2,7 +2,7 @@ defmodule Telegram.Webhook do
   @moduledoc """
   Telegram Webhook supervisor.
 
-  ## Usage:
+  ## Usage
 
   In you app supervisor tree:
 
@@ -27,7 +27,7 @@ defmodule Telegram.Webhook do
   Supervisor.start_link(children, opts)
   ```
 
-  ## Ref:
+  ## Ref
   - https://core.telegram.org/bots/api#setwebhook
   - https://core.telegram.org/bots/webhooks
   """
@@ -123,9 +123,7 @@ defmodule Telegram.Webhook do
 end
 
 defmodule Telegram.Webhook.Router do
-  @moduledoc """
-  Telegram Webhook plug router.
-  """
+  @moduledoc false
 
   require Logger
 

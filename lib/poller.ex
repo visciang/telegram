@@ -2,7 +2,7 @@ defmodule Telegram.Poller do
   @moduledoc """
   Telegram poller supervisor.
 
-  ## Usage:
+  ## Usage
 
   In you app supervisor tree:
 
@@ -48,9 +48,7 @@ defmodule Telegram.Poller do
 end
 
 defmodule Telegram.Poller.Task do
-  @moduledoc """
-  Telegram "getUpdates()" poller task.
-  """
+  @moduledoc false
 
   alias Telegram.{Poller, Types}
   require Logger

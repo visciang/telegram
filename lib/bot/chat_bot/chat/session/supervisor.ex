@@ -1,7 +1,5 @@
 defmodule Telegram.Bot.ChatBot.Chat.Session.Supervisor do
-  @moduledoc """
-  ChatBot chat session supervisor.
-  """
+  @moduledoc false
 
   use DynamicSupervisor
   alias Telegram.Bot.Utils

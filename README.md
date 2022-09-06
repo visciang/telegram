@@ -203,7 +203,7 @@ to clearly identify and "trace" every BOT message flow.
 
 # Telegram Client Config
 
-The `Telegram.Client` is based on `Tesla` + `Gun` adapter.
+The Telegram HTTP Client is based on `Tesla` + `Gun` adapter.
 It's possible to change the adapter options (at compile time) via the `[:telegram, :gun_config]` application environment key.
 
 ```elixir
