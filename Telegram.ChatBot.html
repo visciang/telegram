@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.3">
-    <meta name="project" content="telegram v0.20.3">
+    <meta name="generator" content="ExDoc v0.28.5">
+    <meta name="project" content="telegram v0.20.4">
 
-    <title>Telegram.ChatBot — telegram v0.20.3</title>
-    <link rel="stylesheet" href="dist/elixir-d5ff82e6b0f5651c0ac0.css" />
+    <title>Telegram.ChatBot — telegram v0.20.4</title>
+    <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
 
-    <script src="dist/sidebar_items-44fe5c227b.js"></script>
+    <script src="dist/sidebar_items-647bd53928.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a088a6cc33ae3464193e.js"></script>
+    <script async src="dist/app-b5f3440501744dc8be3d.js"></script>
 
 
   </head>
@@ -66,7 +66,7 @@
 telegram
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.20.3
+        v0.20.4
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -83,6 +83,7 @@ telegram
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -99,7 +100,7 @@ telegram
     </a>
 
   <span translate="no">Telegram.ChatBot</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(telegram v0.20.3)</small>
+  <small class="app-vsn" translate="no">(telegram v0.20.4)</small>
 
 </h1>
 
@@ -117,45 +118,45 @@ timers in you bot.</p><h2 id="module-example" class="section-heading">
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="4445585044-1">do</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="3083636353-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
 
   </span><span class="na">@session_ttl</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1_000</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="4445585044-2">(</span><span class="c">_chat</span><span class="p" data-group-id="4445585044-2">)</span><span class="w"> </span><span class="k" data-group-id="4445585044-3">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="3083636353-2">(</span><span class="c">_chat</span><span class="p" data-group-id="3083636353-2">)</span><span class="w"> </span><span class="k" data-group-id="3083636353-3">do</span><span class="w">
     </span><span class="n">count_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
-    </span><span class="p" data-group-id="4445585044-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="4445585044-4">}</span><span class="w">
-  </span><span class="k" data-group-id="4445585044-3">end</span><span class="w">
+    </span><span class="p" data-group-id="3083636353-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="3083636353-4">}</span><span class="w">
+  </span><span class="k" data-group-id="3083636353-3">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4445585044-5">(</span><span class="p" data-group-id="4445585044-6">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4445585044-7">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4445585044-8">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p" data-group-id="4445585044-8">}</span><span class="p" data-group-id="4445585044-7">}</span><span class="p" data-group-id="4445585044-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="4445585044-5">)</span><span class="w"> </span><span class="k" data-group-id="4445585044-9">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="3083636353-5">(</span><span class="p" data-group-id="3083636353-6">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="3083636353-7">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="3083636353-8">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p" data-group-id="3083636353-8">}</span><span class="p" data-group-id="3083636353-7">}</span><span class="p" data-group-id="3083636353-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="3083636353-5">)</span><span class="w"> </span><span class="k" data-group-id="3083636353-9">do</span><span class="w">
     </span><span class="n">count_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count_state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
 
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4445585044-10">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3083636353-10">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
-      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey! You sent me </span><span class="si" data-group-id="4445585044-11">#{</span><span class="n">count_state</span><span class="si" data-group-id="4445585044-11">}</span><span class="s"> messages&quot;</span><span class="w">
-    </span><span class="p" data-group-id="4445585044-10">)</span><span class="w">
+      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey! You sent me </span><span class="si" data-group-id="3083636353-11">#{</span><span class="n">count_state</span><span class="si" data-group-id="3083636353-11">}</span><span class="s"> messages&quot;</span><span class="w">
+    </span><span class="p" data-group-id="3083636353-10">)</span><span class="w">
 
-    </span><span class="p" data-group-id="4445585044-12">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="4445585044-12">}</span><span class="w">
-  </span><span class="k" data-group-id="4445585044-9">end</span><span class="w">
+    </span><span class="p" data-group-id="3083636353-12">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="3083636353-12">}</span><span class="w">
+  </span><span class="k" data-group-id="3083636353-9">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4445585044-13">(</span><span class="n">update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="4445585044-13">)</span><span class="w"> </span><span class="k" data-group-id="4445585044-14">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="3083636353-13">(</span><span class="n">update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="3083636353-13">)</span><span class="w"> </span><span class="k" data-group-id="3083636353-14">do</span><span class="w">
     </span><span class="c1"># ignore unknown updates</span><span class="w">
 
-    </span><span class="p" data-group-id="4445585044-15">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="4445585044-15">}</span><span class="w">
-  </span><span class="k" data-group-id="4445585044-14">end</span><span class="w">
+    </span><span class="p" data-group-id="3083636353-15">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="3083636353-15">}</span><span class="w">
+  </span><span class="k" data-group-id="3083636353-14">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_timeout</span><span class="p" data-group-id="4445585044-16">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="4445585044-16">)</span><span class="w"> </span><span class="k" data-group-id="4445585044-17">do</span><span class="w">
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4445585044-18">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_timeout</span><span class="p" data-group-id="3083636353-16">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="3083636353-16">)</span><span class="w"> </span><span class="k" data-group-id="3083636353-17">do</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3083636353-18">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
       </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;See you!&quot;</span><span class="w">
-    </span><span class="p" data-group-id="4445585044-18">)</span><span class="w">
+    </span><span class="p" data-group-id="3083636353-18">)</span><span class="w">
 
-    </span><span class="k">super</span><span class="p" data-group-id="4445585044-19">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="4445585044-19">)</span><span class="w">
-  </span><span class="k" data-group-id="4445585044-17">end</span><span class="w">
-</span><span class="k" data-group-id="4445585044-1">end</span></code></pre>
+    </span><span class="k">super</span><span class="p" data-group-id="3083636353-19">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="3083636353-19">)</span><span class="w">
+  </span><span class="k" data-group-id="3083636353-17">end</span><span class="w">
+</span><span class="k" data-group-id="3083636353-1">end</span></code></pre>
   </section>
 
 
@@ -252,7 +253,7 @@ Types
     </a>
     <h1 class="signature" translate="no">chat()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L62" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L64" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -280,7 +281,7 @@ Types
     </a>
     <h1 class="signature" translate="no">chat_state()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L65" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -321,7 +322,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">handle_timeout(token, chat_id, chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L87" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -357,7 +358,7 @@ A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it j
     </a>
     <h1 class="signature" translate="no">handle_update(update, token, chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L77" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L79" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -393,7 +394,7 @@ Return the &quot;updated&quot; chat_state.</p>
     </a>
     <h1 class="signature" translate="no">init(chat)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L71" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -423,8 +424,10 @@ Return the initial chat_state.</p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.3) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.5) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>
