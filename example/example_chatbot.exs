@@ -1,8 +1,12 @@
 #!/usr/bin/env elixir
 
-Mix.install([
-  {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"}
-])
+Mix.install(
+  [
+    {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"},
+    {:hackney, "~> 1.18"}
+  ],
+  config_path: "example/config/runtime.exs"
+)
 
 defmodule CountChatBot do
   @moduledoc false

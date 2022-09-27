@@ -5,7 +5,7 @@ defmodule Test.Webhook do
 
   use Tesla, only: [:post], docs: false
 
-  adapter Tesla.Adapter.Gun, timeout: 60_000, connect_timeout: 5_000
+  adapter Tesla.Adapter.Hackney
 
   plug Tesla.Middleware.BaseUrl, @webhook_base_url
   plug Tesla.Middleware.JSON

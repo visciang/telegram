@@ -175,6 +175,32 @@ This library currently implements both models via two supervisors.
 This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind an home internet router).
 Refer to the `Telegram.Poller` module docs fo more info.
 
+
+#### Telegram Client Config
+
+The Telegram HTTP Client is based on `Tesla`.
+
+The `Tesla.Adapter` and options should be configured via the `[:tesla, :adapter]` application environment key.
+(ref. https://hexdocs.pm/tesla/readme.html#adapters)
+
+For example, a good default could be:
+
+```elixir
+config :tesla, adapter: {Tesla.Adapter.Hackney, [recv_timeout: 30_000]}
+```
+
+a dependency should be added accordingly in your `mix.exs`:
+
+```elixir
+ defp deps do
+    [
+      {:telegram, git: "https://github.com/visciang/telegram.git", tag: "xxx"},
+      {:hackney, "~> 1.18"},
+      # ...
+    ]
+  end
+```
+
 ### Webhook
 
 This mode interface with the telegram servers via a webhook, best for production use.
@@ -200,18 +226,6 @@ The state here refer to a specific chat, a conversation (chat_id) between a user
 The library attach two metadata fields to the internal logs: [:bot, :chat_id].
 If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
 to clearly identify and "trace" every BOT message flow.
-
-# Telegram Client Config
-
-The Telegram HTTP Client is based on `Tesla` + `Gun` adapter.
-It's possible to change the adapter options (at compile time) via the `[:telegram, :gun_config]` application environment key.
-
-```elixir
-config :telegram,
-  gun_config: [
-    ...
-  ]
-```
 
 # Sample app
 

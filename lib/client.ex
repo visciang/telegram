@@ -8,18 +8,6 @@ defmodule Telegram.Client do
 
   use Tesla, only: [:get, :post], docs: false
 
-  if Mix.env() == :test do
-    adapter Tesla.Mock
-  else
-    @gun_config Application.compile_env(:telegram, :gun_config,
-                  timeout: 60_000,
-                  connect_timeout: 5_000,
-                  certificates_verification: true
-                )
-
-    adapter Tesla.Adapter.Gun, @gun_config
-  end
-
   plug Tesla.Middleware.BaseUrl, @api_base_url
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Retry
