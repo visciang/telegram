@@ -1,8 +1,13 @@
 #!/usr/bin/env elixir
 
-Mix.install([
-  {:telegram, git: "https://github.com/visciang/telegram.git", branch: "ISSUE-137"}
-])
+Mix.install(
+  [
+    {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"},
+    {:hackney, "~> 1.18"}
+  ],
+  force: true,
+  config_path: "example/config/runtime.exs"
+)
 
 defmodule SleepBot do
   use Telegram.Bot
@@ -55,7 +60,11 @@ defmodule Command do
   end
 
   def send_photo(token, chat_id) do
-    Telegram.Api.request(token, "sendPhoto", chat_id: chat_id, photo: {:file, "test/assets/test.jpg"}, disable_notification: true)
+    Telegram.Api.request(token, "sendPhoto",
+      chat_id: chat_id,
+      photo: {:file, "test/assets/test.jpg"},
+      disable_notification: true
+    )
   end
 
   def unknown(token, update) do

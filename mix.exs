@@ -4,7 +4,7 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.20.4",
+      version: "0.21.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [
@@ -40,11 +40,7 @@ defmodule Telegram.Mixfile do
       {:plug_cowboy, "~> 2.5"},
       # tesla gun adapter + deps
       {:tesla, "~> 1.0"},
-      {:gun, "~> 1.3"},
-      {:cowlib, "~> 2.11", override: true},
-      {:ssl_verify_fun, "~> 1.1"},
-      {:castore, "~> 0.1"},
-      {:idna, "~> 6.1"},
+      {:hackney, "~> 1.18", only: :test},
       # tesla json encoder
       {:jason, "~> 1.0"},
       # retry
