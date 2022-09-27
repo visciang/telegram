@@ -194,7 +194,7 @@ a dependency should be added accordingly in your `mix.exs`:
 ```elixir
  defp deps do
     [
-      {:tesla, "~> 1.0"},
+      {:telegram, git: "https://github.com/visciang/telegram.git", tag: "xxx"},
       {:hackney, "~> 1.18"},
       # ...
     ]
