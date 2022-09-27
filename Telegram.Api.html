@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.5">
-    <meta name="project" content="telegram v0.20.4">
+    <meta name="project" content="telegram v0.21.0">
 
-    <title>Telegram.Api — telegram v0.20.4</title>
+    <title>Telegram.Api — telegram v0.21.0</title>
     <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
 
     <script src="dist/sidebar_items-647bd53928.js"></script>
@@ -66,7 +66,7 @@
 telegram
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.20.4
+        v0.21.0
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -100,7 +100,7 @@ telegram
     </a>
 
   <span translate="no">Telegram.Api</span> 
-  <small class="app-vsn" translate="no">(telegram v0.20.4)</small>
+  <small class="app-vsn" translate="no">(telegram v0.21.0)</small>
 
 </h1>
 
@@ -276,15 +276,15 @@ Functions
       </div>
 
 <p>Download a file.</p><p>Reference: <a href="https://core.telegram.org/bots/api#file">BOT Api</a></p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># send a photo</span><span class="w">
-</span><span class="p" data-group-id="5375653486-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="5375653486-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="5375653486-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5375653486-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="5375653486-3">}</span><span class="p" data-group-id="5375653486-2">)</span><span class="w">
+</span><span class="p" data-group-id="0835612520-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="0835612520-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="0835612520-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0835612520-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="0835612520-3">}</span><span class="p" data-group-id="0835612520-2">)</span><span class="w">
 </span><span class="c1"># pick the &#39;file_obj&#39; with the desired resolution</span><span class="w">
-</span><span class="p" data-group-id="5375653486-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5375653486-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="5375653486-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="5375653486-5">]</span><span class="w">
+</span><span class="p" data-group-id="0835612520-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="0835612520-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="0835612520-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="0835612520-5">]</span><span class="w">
 </span><span class="c1"># get the &#39;file_id&#39;</span><span class="w">
-</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="5375653486-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="5375653486-6">]</span><span class="w">
+</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="0835612520-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="0835612520-6">]</span><span class="w">
 
 </span><span class="c1"># obtain the &#39;file_path&#39; to download the file identified by &#39;file_id&#39;</span><span class="w">
-</span><span class="p" data-group-id="5375653486-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5375653486-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="5375653486-8">}</span><span class="p" data-group-id="5375653486-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="5375653486-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="5375653486-9">)</span><span class="w">
-</span><span class="p" data-group-id="5375653486-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="5375653486-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="5375653486-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="5375653486-11">)</span></code></pre>
+</span><span class="p" data-group-id="0835612520-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0835612520-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="0835612520-8">}</span><span class="p" data-group-id="0835612520-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="0835612520-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="0835612520-9">)</span><span class="w">
+</span><span class="p" data-group-id="0835612520-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="0835612520-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="0835612520-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="0835612520-11">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="request/3">
