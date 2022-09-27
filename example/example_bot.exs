@@ -21,13 +21,6 @@ defmodule SleepBot do
     Command.sleep(token, chat_id, message_id, seconds)
   end
 
-  def handle_update(
-        %{"message" => %{"text" => "/send_photo", "chat" => %{"id" => chat_id}}},
-        token
-      ) do
-    Command.send_photo(token, chat_id) |> IO.inspect()
-  end
-
   def handle_update(update, token) do
     Command.unknown(token, update)
   end
@@ -56,14 +49,6 @@ defmodule Command do
       chat_id: chat_id,
       reply_to_message_id: message_id,
       text: "Awake!"
-    )
-  end
-
-  def send_photo(token, chat_id) do
-    Telegram.Api.request(token, "sendPhoto",
-      chat_id: chat_id,
-      photo: {:file, "test/assets/test.jpg"},
-      disable_notification: true
     )
   end
 
