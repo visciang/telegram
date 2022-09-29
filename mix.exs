@@ -36,9 +36,9 @@ defmodule Telegram.Mixfile do
 
   defp deps do
     [
-      # plug cowboy
+      # HTTP server
       {:plug_cowboy, "~> 2.5"},
-      # tesla gun adapter + deps
+      # HTTP client
       {:tesla, "~> 1.0"},
       {:hackney, "~> 1.18", only: :test},
       # tesla json encoder

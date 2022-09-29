@@ -37,13 +37,24 @@ defmodule Telegram.Webhook do
 
   use Supervisor
 
+  @defautl_port 443
+  @defautl_local_port 4000
+  @defautl_max_connections 40
+
+  @default_config [
+    port: @defautl_port,
+    local_port: @defautl_local_port,
+    max_connections: @defautl_max_connections,
+    set_webhook: true
+  ]
+
   @typedoc """
   Webhook configuration.
 
   - `host`: (reverse proxy) hostname of the HTTPS webhook url (required)
-  - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: 443)
-  - `local_port`: (backend) port of the application HTTP web server (optional, default: 4000)
-  - `max_connections`: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults 40)
+  - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: #{@defautl_port})
+  - `local_port`: (backend) port of the application HTTP web server (optional, default: #{@defautl_local_port})
+  - `max_connections`: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults #{@defautl_max_connections})
   """
   @type config :: [
           host: String.t(),
@@ -52,14 +63,6 @@ defmodule Telegram.Webhook do
           max_connections: 1..100,
           set_webhook: boolean()
         ]
-
-  @default_config [
-    host: "localhost",
-    port: 443,
-    local_port: 4000,
-    max_connections: 40,
-    set_webhook: true
-  ]
 
   @spec start_link(config: config(), bots: [Types.bot_spec()]) :: Supervisor.on_start()
   def start_link(config: config, bots: bot_specs) do
