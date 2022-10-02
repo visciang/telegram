@@ -5,6 +5,7 @@ defmodule Test.Telegram.Poller do
   defmodule TestBotBehaviour do
     use Telegram.Bot
 
+    @impl Telegram.Bot
     def handle_update(update, _token) do
       assert %{"message" => %{"text" => "/test"}} = update
     end

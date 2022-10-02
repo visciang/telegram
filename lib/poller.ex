@@ -50,40 +50,41 @@ end
 defmodule Telegram.Poller.Task do
   @moduledoc false
 
-  alias Telegram.{Poller, Types}
+  alias Telegram.Bot.Dispatch
+  alias Telegram.Types
   require Logger
 
   use Task, restart: :permanent
   use Retry
 
-  @type dispatch_update :: (Types.update(), Types.token() -> any())
-
   defmodule Context do
     @moduledoc false
-    defstruct [:dispatch_update, :token, :offset]
+
+    @enforce_keys [:dispatch, :token, :offset]
+    defstruct @enforce_keys
 
     @type t :: %__MODULE__{
-            dispatch_update: Poller.Task.dispatch_update(),
+            dispatch: Dispatch.t(),
             token: Types.token(),
-            offset: integer()
+            offset: nil | integer()
           }
   end
 
-  @spec start_link({module(), Types.token()}) :: {:ok, pid()}
-  def start_link({bot_behaviour_mod, token}) do
-    Task.start_link(__MODULE__, :run, [bot_behaviour_mod, token])
+  @spec start_link({Dispatch.t(), Types.token()}) :: {:ok, pid()}
+  def start_link({bot_dispatch_behaviour, token}) do
+    Task.start_link(__MODULE__, :run, [bot_dispatch_behaviour, token])
   end
 
   @doc false
-  @spec run(module(), Types.token()) :: no_return()
-  def run(bot_behaviour_module, token) do
-    Logger.metadata(bot: bot_behaviour_module)
+  @spec run(Dispatch.t(), Types.token()) :: no_return()
+  def run(bot_dispatch_behaviour, token) do
+    Logger.metadata(bot: bot_dispatch_behaviour)
     Logger.info("Running in polling mode")
 
     set_polling(token)
 
     context = %Context{
-      dispatch_update: &bot_behaviour_module.dispatch_update/2,
+      dispatch: bot_dispatch_behaviour,
       token: token,
       offset: nil
     }
@@ -132,7 +133,7 @@ defmodule Telegram.Poller.Task do
   defp process_update(update, _acc, context) do
     Logger.debug("process_update: #{inspect(update)}")
 
-    context.dispatch_update.(update, context.token)
+    context.dispatch.dispatch_update(update, context.token)
     update["update_id"] + 1
   end
 
