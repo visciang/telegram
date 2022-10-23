@@ -43,6 +43,7 @@ defmodule Telegram.Bot do
       require Logger
 
       @behaviour Telegram.Bot
+      @behaviour Telegram.Bot.Dispatch
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
@@ -50,7 +51,7 @@ defmodule Telegram.Bot do
         Supervisor.child_spec({Task.Supervisor, name: supervisor_name, max_children: max_bot_concurrency}, [])
       end
 
-      @spec dispatch_update(Types.update(), Types.token()) :: :ok
+      @impl Telegram.Bot.Dispatch
       def dispatch_update(update, token) do
         supervisor_name = Utils.name(__MODULE__, token)
 

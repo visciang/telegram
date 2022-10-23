@@ -13,7 +13,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     defstruct @enforce_keys
   end
 
-  @spec start_link({module(), Types.token(), ChatBot.chat()}) :: GenServer.on_start()
+  @spec start_link({ChatBot.t(), Types.token(), ChatBot.chat()}) :: GenServer.on_start()
   def start_link({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
     GenServer.start_link(
       __MODULE__,
@@ -22,7 +22,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     )
   end
 
-  @spec handle_update(module(), Types.token(), Types.update()) :: any()
+  @spec handle_update(ChatBot.t(), Types.token(), Types.update()) :: any()
   def handle_update(chatbot_behaviour, token, update) do
     with {:get_chat, {:ok, chat}} <- {:get_chat, Utils.get_chat(update)},
          {:get_chat_session_server, {:ok, server}} <-

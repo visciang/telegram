@@ -16,7 +16,7 @@ defmodule Test.Utils.Mock do
 
   alias Test.Utils.Const
 
-  @retry_wait_period Application.compile_env(:telegram, :get_updates_poll_timeout) * 1_000 + 500
+  @retry_wait_period Application.compile_env(:telegram, :get_updates_poll_timeout_s) * 1_000 + 500
 
   def tesla_mock_global_async do
     Tesla.Mock.mock_global(fn %{url: url} = request ->

@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: elixir:1.13.3
+      image: elixir:1.14.1
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Retrieve Cached Dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: mix-cache
         with:
           path: |

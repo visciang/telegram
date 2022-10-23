@@ -61,6 +61,8 @@ defmodule Telegram.ChatBot do
   alias Telegram.Bot.ChatBot.Chat.Session
   alias Telegram.Types
 
+  @type t :: module()
+
   @type chat :: map()
   @type chat_state :: any()
 
@@ -93,6 +95,7 @@ defmodule Telegram.ChatBot do
   defmacro __using__(_use_opts) do
     quote location: :keep do
       @behaviour Telegram.ChatBot
+      @behaviour Telegram.Bot.Dispatch
 
       @impl Telegram.ChatBot
       def handle_timeout(token, chat_id, chat_state) do
@@ -106,7 +109,7 @@ defmodule Telegram.ChatBot do
         Supervisor.child_spec({Chat.Supervisor, {token, max_bot_concurrency}}, [])
       end
 
-      @spec dispatch_update(Types.update(), Types.token()) :: :ok
+      @impl Telegram.Bot.Dispatch
       def dispatch_update(update, token) do
         Session.Server.handle_update(__MODULE__, token, update)
 

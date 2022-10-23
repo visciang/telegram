@@ -138,14 +138,14 @@ defmodule Telegram.Webhook.Router do
 
   post "/:token" do
     update = conn.body_params
-    bot_behaviour_mod = Map.get(opts[:bot_routing_map], token)
+    bot_dispatch_behaviour = Map.get(opts[:bot_routing_map], token)
 
-    Logger.debug("received update: #{inspect(update)}", bot: bot_behaviour_mod, token: token)
+    Logger.debug("received update: #{inspect(update)}", bot: bot_dispatch_behaviour, token: token)
 
-    if bot_behaviour_mod == nil do
+    if bot_dispatch_behaviour == nil do
       Plug.Conn.send_resp(conn, :not_found, "")
     else
-      bot_behaviour_mod.dispatch_update(update, token)
+      bot_dispatch_behaviour.dispatch_update(update, token)
       Plug.Conn.send_resp(conn, :ok, "")
     end
   end
