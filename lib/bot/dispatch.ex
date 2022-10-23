@@ -1,5 +1,7 @@
 defmodule Telegram.Bot.Dispatch do
-  @moduledoc false
+  @moduledoc """
+  Dispatch behaviour
+  """
 
   alias Telegram.Types
 

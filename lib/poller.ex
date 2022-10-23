@@ -102,14 +102,14 @@ defmodule Telegram.Poller.Task do
     end
   end
 
-  defp loop(context) do
+  defp loop(%Context{} = context) do
     updates = wait_updates(context)
 
     next_offset = process_updates(updates, context)
     loop(%Context{context | offset: next_offset})
   end
 
-  defp wait_updates(context) do
+  defp wait_updates(%Context{} = context) do
     opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
     opts = [timeout: conf_get_updates_poll_timeout()] ++ opts_offset
 
@@ -126,11 +126,11 @@ defmodule Telegram.Poller.Task do
     end
   end
 
-  defp process_updates(updates, context) do
+  defp process_updates(updates, %Context{} = context) do
     updates |> Enum.reduce(nil, &process_update(&1, &2, context))
   end
 
-  defp process_update(update, _acc, context) do
+  defp process_update(update, _acc, %Context{} = context) do
     Logger.debug("process_update: #{inspect(update)}")
 
     context.dispatch.dispatch_update(update, context.token)
@@ -139,6 +139,6 @@ defmodule Telegram.Poller.Task do
 
   defp conf_get_updates_poll_timeout do
     # timeout configuration opts unit: seconds
-    Application.get_env(:telegram, :get_updates_poll_timeout, 30)
+    Application.get_env(:telegram, :get_updates_poll_timeout_s, 30)
   end
 end
