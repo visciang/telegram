@@ -12,7 +12,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-2E473B5F.js"></script>
+    <script src="dist/sidebar_items-8A8E2C3D.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -127,6 +127,22 @@ telegram
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:parameter_name/0" translate="no">parameter_name()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:parameter_value/0" translate="no">parameter_value()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:parameters/0" translate="no">parameters()</a>
 
         </div>
@@ -182,14 +198,14 @@ telegram
 Types
     </h1>
     <div class="types-list">
-<section class="detail" id="t:parameters/0">
+<section class="detail" id="t:parameter_name/0">
 
   <div class="detail-header">
-    <a href="#t:parameters/0" class="detail-link" title="Link to this type">
+    <a href="#t:parameter_name/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">parameters()</h1>
+    <h1 class="signature" translate="no">parameter_name()</h1>
 
       <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L6" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -203,7 +219,70 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> parameters() :: <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> parameter_name() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:parameter_value/0">
+
+  <div class="detail-header">
+    <a href="#t:parameter_value/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">parameter_value()</h1>
+
+      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L7" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> parameter_value() ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()
+  | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()
+  | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
+  | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+  | {:json, json_serialized_object :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}
+  | {:file, path :: <a href="https://hexdocs.pm/elixir/Path.html#t:t/0">Path.t</a>()}
+  | {:file_content, content :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(), filename :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:parameters/0">
+
+  <div class="detail-header">
+    <a href="#t:parameters/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">parameters()</h1>
+
+      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L15" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> parameters() :: [{<a href="#t:parameter_name/0">parameter_name</a>(), <a href="#t:parameter_value/0">parameter_value</a>()}]</pre>
 
       </div>
 
@@ -219,7 +298,7 @@ Types
     </a>
     <h1 class="signature" translate="no">request_result()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L7" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L16" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -260,7 +339,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">file(token, file_path)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L45" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L60" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -277,15 +356,15 @@ Functions
       </div>
 
 <p>Download a file.</p><p>Reference: <a href="https://core.telegram.org/bots/api#file">BOT Api</a></p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># send a photo</span><span class="w">
-</span><span class="p" data-group-id="2717819605-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="2717819605-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="2717819605-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2717819605-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="2717819605-3">}</span><span class="p" data-group-id="2717819605-2">)</span><span class="w">
+</span><span class="p" data-group-id="8249614757-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8249614757-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="8249614757-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8249614757-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="8249614757-3">}</span><span class="p" data-group-id="8249614757-2">)</span><span class="w">
 </span><span class="c1"># pick the &#39;file_obj&#39; with the desired resolution</span><span class="w">
-</span><span class="p" data-group-id="2717819605-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="2717819605-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="2717819605-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="2717819605-5">]</span><span class="w">
+</span><span class="p" data-group-id="8249614757-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8249614757-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8249614757-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="8249614757-5">]</span><span class="w">
 </span><span class="c1"># get the &#39;file_id&#39;</span><span class="w">
-</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="2717819605-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="2717819605-6">]</span><span class="w">
+</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="8249614757-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="8249614757-6">]</span><span class="w">
 
 </span><span class="c1"># obtain the &#39;file_path&#39; to download the file identified by &#39;file_id&#39;</span><span class="w">
-</span><span class="p" data-group-id="2717819605-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2717819605-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="2717819605-8">}</span><span class="p" data-group-id="2717819605-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="2717819605-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="2717819605-9">)</span><span class="w">
-</span><span class="p" data-group-id="2717819605-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="2717819605-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="2717819605-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="2717819605-11">)</span></code></pre>
+</span><span class="p" data-group-id="8249614757-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8249614757-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="8249614757-8">}</span><span class="p" data-group-id="8249614757-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="8249614757-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="8249614757-9">)</span><span class="w">
+</span><span class="p" data-group-id="8249614757-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="8249614757-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="8249614757-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="8249614757-11">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="request/3">
@@ -299,7 +378,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">request(token, method, parameters \\ [])</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L30" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -316,7 +395,7 @@ Functions
 
       </div>
 
-<p>Send a Telegram Bot API request.</p><p>Reference: <a href="https://core.telegram.org/bots/api">BOT Api</a></p>
+<p>Send a Telegram Bot API request.</p><p>The request <code class="inline">parameters</code> map to the bots API parameters.</p><ul><li><code class="inline">Integer String Boolean Float</code>: Elixir native data type</li><li><code class="inline">JSON-serialized</code>: <code class="inline">{:json, _}</code> tuple</li><li><code class="inline">InputFile</code>: <code class="inline">{:file, _}</code> or <code class="inline">{:file_content, _, _}</code> tuple</li></ul><p>Reference: <a href="https://core.telegram.org/bots/api">BOT Api</a></p>
   </section>
 </section>
 
