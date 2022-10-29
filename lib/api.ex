@@ -3,11 +3,26 @@ defmodule Telegram.Api do
   Telegram Bot API - HTTP-based interface
   """
 
-  @type parameters :: Keyword.t()
+  @type parameter_name :: atom() | String.t()
+  @type parameter_value ::
+          integer()
+          | float()
+          | String.t()
+          | boolean()
+          | {:json, json_serialized_object :: term()}
+          | {:file, path :: Path.t()}
+          | {:file_content, content :: iodata(), filename :: String.t()}
+  @type parameters :: [{parameter_name(), parameter_value()}]
   @type request_result :: {:ok, term()} | {:error, term()}
 
   @doc """
   Send a Telegram Bot API request.
+
+  The request `parameters` map to the bots API parameters.
+
+  - `Integer String Boolean Float`: Elixir native data type
+  - `JSON-serialized`: `{:json, _}` tuple
+  - `InputFile`: `{:file, _}` or `{:file_content, _, _}` tuple
 
   Reference: [BOT Api](https://core.telegram.org/bots/api)
   """
@@ -15,7 +30,7 @@ defmodule Telegram.Api do
   def request(token, method, parameters \\ []) do
     body =
       parameters
-      |> do_json_markup()
+      |> do_json_serialized_params()
       |> do_body()
 
     Telegram.Client.request(token, method, body)
@@ -76,7 +91,7 @@ defmodule Telegram.Api do
     end)
   end
 
-  defp do_json_markup(parameters) do
+  defp do_json_serialized_params(parameters) do
     Enum.map(parameters, fn
       {name, {:json, value}} ->
         {name, Jason.encode!(value)}
