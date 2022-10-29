@@ -101,10 +101,10 @@ Telegram.Api.request(token, "getUpdates", offset: -1, timeout: 30)
 
 ## Sending files
 
-If a API parameter has a InputFile type and you want to send a local file,
-for example a photo stored locally at "/tmp/photo.jpg", just wrap the parameter
-value in a tuple `{:file, "/tmp/photo.jpg"}`. If the file content is in memory
-wrap it in `{:file_content, data, "photo.jpg"}` tuple.
+If an API parameter has a `InputFile` type and you want to send a local file,
+for example a photo stored at "/tmp/photo.jpg", just wrap the parameter
+value in a `{:file, "/tmp/photo.jpg"}` tuple. If the file content is in memory
+wrap it in a `{:file_content, data, "photo.jpg"}` tuple.
 
 ### [sendPhoto](https://core.telegram.org/bots/api#sendphoto)
 
@@ -133,13 +133,11 @@ file_id = file_obj["file_id"]
 {:ok, file} = Telegram.Api.file(token, file_path)
 ```
 
-## Reply Markup
+## JSON-serialized object parameters
 
-If a API parameter has a "A JSON-serialized object" type (InlineKeyboardMarkup, ReplyKeyboardMarkup, etc),
-just wrap the parameter value in a tuple `{:json, value}`.
-
-Reference: [Keyboards](https://core.telegram.org/bots#keyboards),
-[Inline Keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)
+If an API parameter has a non primitive scalar type it is explicitly pointed out as "A JSON-serialized object"
+(ie `InlineKeyboardMarkup`, `ReplyKeyboardMarkup`, etc).
+In this case you can wrap the parameter value in a `{:json, value}` tuple.
 
 ### [sendMessage](https://core.telegram.org/bots/api#sendmessage) with keyboard
 
