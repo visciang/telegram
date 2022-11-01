@@ -2,9 +2,10 @@
 
 Mix.install(
   [
-    {:telegram, git: "https://github.com/visciang/telegram.git", branch: "master"},
+    {:telegram, github: "visciang/telegram", branch: "master"},
     {:hackney, "~> 1.18"}
   ],
+  # force: true,
   config_path: "example/config/runtime.exs"
 )
 

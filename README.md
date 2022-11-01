@@ -16,7 +16,7 @@ The package can be installed by adding `telegram` to your list of dependencies i
 ```elixir
 def deps do
   [
-    {:telegram, git: "https://github.com/visciang/telegram.git", tag: "xxx"}
+    {:telegram, github: "visciang/telegram", tag: "xxx"}
   ]
 end
 ```
@@ -192,7 +192,7 @@ a dependency should be added accordingly in your `mix.exs`:
 ```elixir
  defp deps do
     [
-      {:telegram, git: "https://github.com/visciang/telegram.git", tag: "xxx"},
+      {:telegram, github: "visciang/telegram", tag: "xxx"},
       {:hackney, "~> 1.18"},
       # ...
     ]
