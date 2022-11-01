@@ -29,6 +29,8 @@ defmodule Telegram.Poller do
 
   @spec start_link(bots: [Types.bot_spec()]) :: Supervisor.on_start()
   def start_link(bots: bot_specs) do
+    assert_tesla_adapter_config()
+
     Supervisor.start_link(__MODULE__, bot_specs, name: __MODULE__)
   end
 
@@ -44,6 +46,22 @@ defmodule Telegram.Poller do
 
     children = bot_specs ++ pollers
     Supervisor.init(children, strategy: :one_for_one)
+  end
+
+  # coveralls-ignore-start
+
+  def assert_tesla_adapter_config do
+    if Application.get_env(:tesla, :adapter) == nil do
+      raise """
+      The tesla adapter has not been configured. This will defaults to the built-in erlang :httpc module.
+
+      Please configure a production ready client, for instance:
+
+      config :tesla, adapter: {Tesla.Adapter.Hackney, [recv_timeout: 40_000]}
+      """
+    end
+
+    # coveralls-ignore-end
   end
 end
 
