@@ -184,7 +184,7 @@ The `Tesla.Adapter` and options should be configured via the `[:tesla, :adapter]
 For example, a good default could be:
 
 ```elixir
-config :tesla, adapter: {Tesla.Adapter.Hackney, [recv_timeout: 30_000]}
+config :tesla, adapter: {Tesla.Adapter.Hackney, [recv_timeout: 40_000]}
 ```
 
 a dependency should be added accordingly in your `mix.exs`:
