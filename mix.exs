@@ -4,7 +4,7 @@ defmodule Telegram.Mixfile do
   def project do
     [
       app: :telegram,
-      version: "0.22.0",
+      version: "0.22.2",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [
@@ -43,8 +43,6 @@ defmodule Telegram.Mixfile do
       {:hackney, "~> 1.18", only: :test},
       # tesla json encoder
       {:jason, "~> 1.0"},
-      # retry
-      {:retry, "~> 0.14"},
       # coverage
       {:excoveralls, "~> 0.12", only: :test},
       # documentation
