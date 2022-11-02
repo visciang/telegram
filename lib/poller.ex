@@ -73,7 +73,6 @@ defmodule Telegram.Poller.Task do
   require Logger
 
   use Task, restart: :permanent
-  use Retry
 
   defmodule Context do
     @moduledoc false
@@ -129,14 +128,12 @@ defmodule Telegram.Poller.Task do
 
   defp wait_updates(%Context{} = context) do
     opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
-    opts = [timeout: conf_get_updates_poll_timeout()] ++ opts_offset
+    opts = [timeout: conf_get_updates_poll_timeout_s()] ++ opts_offset
 
-    retry with: exponential_backoff() |> expiry(conf_get_updates_poll_timeout() * 1_000) do
-      Telegram.Api.request(context.token, "getUpdates", opts)
-    after
+    case Telegram.Api.request(context.token, "getUpdates", opts) do
       {:ok, updates} ->
         updates
-    else
+
       error ->
         # coveralls-ignore-start
         raise "Telegram.Api.request 'getUpdates' error: #{inspect(error)}"
@@ -155,7 +152,7 @@ defmodule Telegram.Poller.Task do
     update["update_id"] + 1
   end
 
-  defp conf_get_updates_poll_timeout do
+  defp conf_get_updates_poll_timeout_s do
     # timeout configuration opts unit: seconds
     Application.get_env(:telegram, :get_updates_poll_timeout_s, 30)
   end

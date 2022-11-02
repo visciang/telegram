@@ -84,10 +84,13 @@ defmodule Test.Telegram.Poller do
                  body = Jason.decode!(body)
                  assert body["offset"] == nil
 
+                 # Error response
                  response = %{"ok" => false, "description" => "AZZ"}
                  Tesla.Mock.json(response, status: 200)
                end
              )
+
+    assert_webhook_setup(tg_token())
 
     assert :ok ==
              tesla_mock_expect_request(
