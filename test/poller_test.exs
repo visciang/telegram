@@ -72,7 +72,7 @@ defmodule Test.Telegram.Poller do
              )
   end
 
-  test "response error" do
+  test "server application error" do
     url = tg_url(tg_token(), "getUpdates")
 
     assert_webhook_setup(tg_token())
@@ -85,7 +85,7 @@ defmodule Test.Telegram.Poller do
                  assert body["offset"] == nil
 
                  # Error response
-                 response = %{"ok" => false, "description" => "AZZ"}
+                 response = %{"ok" => false, "description" => "ERROR"}
                  Tesla.Mock.json(response, status: 200)
                end
              )

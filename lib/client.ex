@@ -5,12 +5,28 @@ defmodule Telegram.Client do
   @type body :: map() | Tesla.Multipart.t()
 
   @api_base_url Application.compile_env(:telegram, :api_base_url, "https://api.telegram.org")
+  @api_max_retries Application.compile_env(:telegram, :api_max_retries, 5)
 
   use Tesla, only: [:get, :post], docs: false
 
   plug Tesla.Middleware.BaseUrl, @api_base_url
   plug Tesla.Middleware.JSON
-  plug Tesla.Middleware.Retry
+
+  require Logger
+
+  plug Tesla.Middleware.Retry,
+    max_retries: @api_max_retries,
+    should_retry: fn
+      {:ok, %{status: 429}} ->
+        Logger.warning("Telegram API throttling, HTTP 429 'Too Many Requests'")
+        true
+
+      {:ok, _} ->
+        false
+
+      {:error, _} ->
+        true
+    end
 
   @doc false
   @spec request(Telegram.Types.token(), Telegram.Types.method(), body()) :: {:ok, term()} | {:error, term()}
