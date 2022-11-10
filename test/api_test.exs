@@ -39,6 +39,28 @@ defmodule Test.Telegram.Api do
                Telegram.Api.request(tg_token(), tg_method())
     end
 
+    test "response 429 ('too many requests' throttling)" do
+      test_pid = self()
+      url = tg_url(tg_token(), tg_method())
+      error_description = "Too Many Requests"
+      response = %{"ok" => false, "description" => error_description}
+
+      Tesla.Mock.mock(fn %{method: :post, url: ^url} ->
+        send(test_pid, :test_429)
+        Tesla.Mock.json(response, status: 429)
+      end)
+
+      api_max_retries = Application.fetch_env!(:telegram, :api_max_retries)
+
+      assert {:error, ^error_description} = Telegram.Api.request(tg_token(), tg_method())
+
+      Enum.each(1..(api_max_retries + 1), fn _ ->
+        assert_receive(:test_429)
+      end)
+
+      refute_received(_)
+    end
+
     test "http adapter error" do
       url = tg_url(tg_token(), tg_method())
 
