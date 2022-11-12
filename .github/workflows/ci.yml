@@ -13,4 +13,3 @@ jobs:
     uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@dev
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
-
