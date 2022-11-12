@@ -10,6 +10,6 @@ jobs:
   build:
     uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@dev
     with:
-      elixir-version: 1.14.2
+      elixir-version: 1.14.1
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
