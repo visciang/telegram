@@ -3,80 +3,13 @@ name: CI
 on:
   push:
     tags:
-      - '*'
+      - "*"
     branches:
       - master
   pull_request:
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-
-    container:
-      image: elixir:1.14.1
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Retrieve Cached Dependencies
-        uses: actions/cache@v3
-        id: mix-cache
-        with:
-          path: |
-            ~/.mix
-            deps
-            _build
-          key: ${{ runner.os }}-${{ hashFiles('mix.*') }}
-
-      - name: Install Dependencies
-        if: steps.mix-cache.outputs.cache-hit != 'true'
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
-          mix deps.unlock --check-unused
-          mix deps.compile
-          mix dialyzer --plt
-
-      - name: Compile
-        env:
-          MIX_ENV: test
-        run: mix compile --warnings-as-errors
-
-      - name: Lint format
-        run: mix format --check-formatted
-
-      - name: Lint xref
-        run: |
-          XREF_EXIT_CODE=0
-          CYCLES=$(mix xref graph --format=cycles --fail-above 0 2>/dev/null) || XREF_EXIT_CODE=$?
-
-          if [ $XREF_EXIT_CODE -ne 0 ]; then
-            echo "Found module dependency cycle:"
-            echo "$CYCLES"
-            exit 1
-          else
-            echo "No cycle found"
-          fi
-
-      - name: Lint dialyzer
-        run: mix dialyzer --no-check
-
-      - name: Lint credo
-        run: mix credo --all --strict
-
-      - name: Test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mix coveralls.github
-
-      - name: Docs Build
-        if: github.ref == 'refs/heads/master'
-        run: mix docs --formatter=html
-
-      - name: Docs Publish
-        if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc
+  build:
+    uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@dev
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
