@@ -1,14 +1,12 @@
 on:
   push:
-    tags:
-      - "*"
-    branches:
-      - master
+    tags: ["*"]
+    branches: ["master"]
   pull_request:
 
 jobs:
   build:
-    uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@dev
+    uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@main
     with:
       elixir-version: 1.14.1
     secrets: inherit
