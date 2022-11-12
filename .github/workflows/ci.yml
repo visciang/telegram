@@ -8,5 +8,5 @@ jobs:
   build:
     uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@main
     with:
-      elixir-version: 1.14.1
+      elixir-version: "1.14.1"
     secrets: inherit
