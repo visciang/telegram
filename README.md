@@ -38,7 +38,7 @@ References:
 
 Given the token of your Bot you can issue any request using:
 * method: Telegram API method name (ex. "getMe", "sendMessage")
-* options: Telegram API method specific parameters (you can use elixir native types)
+* options: Telegram API method specific parameters (you can use Elixir's native types)
 
 ## Examples:
 
@@ -164,13 +164,13 @@ BOT_TOKEN="..." example/example_chatbot.exs
 ## Bot updates processing
 
 The Telegram platform supports two ways of processing bot updates, `getUpdates` and `setWebhook`.
-`getUpdates` is a pull mechanism, `setwebhook` is push. (ref: [bots webhook](https://core.telegram.org/bots/webhooks))
+`getUpdates` is a pull mechanism, `setWebhook` is a push mechanism. (ref: [bots webhook](https://core.telegram.org/bots/webhooks))
 
 This library currently implements both models via two supervisors.
 
 ### Poller
 
-This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind an home internet router).
+This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind a home internet router).
 Refer to the `Telegram.Poller` module docs fo more info.
 
 
@@ -201,29 +201,29 @@ a dependency should be added accordingly in your `mix.exs`:
 
 ### Webhook
 
-This mode interface with the telegram servers via a webhook, best for production use.
-The app is meant to be served over HTTP, a reverse proxy should be plance in front of it, facing the public network over HTTPS.
+This mode interfaces with the Telegram servers via a webhook, best for production use.
+The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.
 Refer to the `Telegram.Webhook` module docs for more info.
 
 ## Dispatch model
 
-We can define stateless / statefull bot.
+We can define stateless / stateful bot.
 
 * A stateless Bot has no memory of previous conversations, it just receives updates, process them and so on.
 
-* A statefull Bot instead can remember what happened in the past.
+* A stateful Bot instead can remember what happened in the past.
 The state here refer to a specific chat, a conversation (chat_id) between a user and a bot "instance".
 
 ## Bot behaviours
 
 * `Telegram.Bot`: works with the **stateless async** dispatch model
-* `Telegram.ChatBot`: works with the **statefull chat** dispatch model
+* `Telegram.ChatBot`: works with the **stateful chat** dispatch model
 
 ## Logging
 
-The library attach two metadata fields to the internal logs: [:bot, :chat_id].
-If your app run more that one bot these fields can be included in your logs (ref. to the Logger config)
-to clearly identify and "trace" every BOT message flow.
+The library attaches two metadata fields to the internal logs: [:bot, :chat_id].
+If your app runs more that one bot these fields can be included in your logs (ref. to the Logger config)
+to clearly identify and "trace" every bot's message flow.
 
 # Sample app
 
