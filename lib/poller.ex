@@ -70,6 +70,7 @@ defmodule Telegram.Poller.Task do
 
   alias Telegram.Bot.Dispatch
   alias Telegram.Types
+  import Telegram.Utils, only: [retry: 1]
   require Logger
 
   use Task, restart: :permanent
@@ -110,11 +111,13 @@ defmodule Telegram.Poller.Task do
   end
 
   defp set_polling(token) do
-    {:ok, %{"url" => url}} = Telegram.Api.request(token, "getWebhookInfo")
+    Logger.info("Checking webhook mode is not active...")
+
+    {:ok, %{"url" => url}} = retry(fn -> Telegram.Api.request(token, "getWebhookInfo") end)
 
     if url != "" do
       Logger.info("Found active webhook (url: #{url})")
-      {:ok, true} = Telegram.Api.request(token, "deleteWebhook")
+      {:ok, true} = retry(fn -> Telegram.Api.request(token, "deleteWebhook") end)
       Logger.info("Webhook deleted")
     end
   end

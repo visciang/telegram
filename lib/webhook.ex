@@ -33,6 +33,7 @@ defmodule Telegram.Webhook do
   """
 
   alias Telegram.Types
+  import Telegram.Utils, only: [retry: 1]
   require Logger
 
   use Supervisor
@@ -119,7 +120,7 @@ defmodule Telegram.Webhook do
 
   defp set_webhook(token, url, max_connections) do
     opts = [url: url, max_connections: max_connections]
-    {:ok, _} = Telegram.Api.request(token, "setWebhook", opts)
+    {:ok, _} = retry(fn -> Telegram.Api.request(token, "setWebhook", opts) end)
   end
 
   # coveralls-ignore-stop
