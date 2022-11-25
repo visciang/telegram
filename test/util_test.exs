@@ -1,31 +1,49 @@
-defmodule Test.Telegram.Bot.Utils do
+defmodule Test.Telegram.Utils do
   use ExUnit.Case, async: true
-  alias Telegram.Bot.Utils
+  alias Telegram.Utils
 
-  test "get_from_username" do
-    assert nil == Utils.get_from_username(%{"something" => "else"})
+  require Logger
 
-    assert {:ok, "test_username"} ==
-             Utils.get_from_username(%{"message" => %{"from" => %{"username" => "test_username"}}})
+  test "retry" do
+    test_pid = self()
+
+    task =
+      Task.async(fn ->
+        fun = fn ->
+          send(test_pid, {:retry, self()})
+
+          receive do
+            :cont -> {:error, nil}
+            :halt -> {:ok, nil}
+          end
+        end
+
+        Utils.retry(fun, :infinity, 10)
+      end)
+
+    receive do
+      {:retry, pid} -> send(pid, :cont)
+    after
+      5_000 -> flunk("timeout")
+    end
+
+    receive do
+      {:retry, pid} -> send(pid, :halt)
+    after
+      5_000 -> flunk("timeout")
+    end
+
+    assert {:ok, nil} = Task.await(task)
   end
 
-  test "get_sent_date" do
-    assert nil == Utils.get_sent_date(%{"something" => "else"})
+  test "no retry" do
+    fun = fn -> {:error, nil} end
 
-    datetime = ~U[2015-05-25 13:26:08Z]
-    assert {:ok, datetime} == Utils.get_sent_date(%{"message" => %{"date" => DateTime.to_unix(datetime, :second)}})
+    task =
+      Task.async(fn ->
+        Utils.retry(fun, 0, 10)
+      end)
 
-    datetime = ~U[2015-05-25 13:26:08Z]
-
-    assert {:ok, datetime} ==
-             Utils.get_sent_date(%{"callback_query" => %{"message" => %{"date" => DateTime.to_unix(datetime, :second)}}})
-  end
-
-  test "get_chat" do
-    assert nil == Utils.get_chat(%{})
-    assert {:ok, %{"id" => "123"}} == Utils.get_chat(%{"message" => %{"chat" => %{"id" => "123"}}})
-
-    assert {:ok, %{"id" => "123"}} ==
-             Utils.get_chat(%{"callback_query" => %{"message" => %{"chat" => %{"id" => "123"}}}})
+    assert {:error, nil} = Task.await(task)
   end
 end
