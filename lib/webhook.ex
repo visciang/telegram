@@ -38,14 +38,14 @@ defmodule Telegram.Webhook do
 
   use Supervisor
 
-  @defautl_port 443
-  @defautl_local_port 4000
-  @defautl_max_connections 40
+  @default_port 443
+  @default_local_port 4000
+  @default_max_connections 40
 
   @default_config [
-    port: @defautl_port,
-    local_port: @defautl_local_port,
-    max_connections: @defautl_max_connections,
+    port: @default_port,
+    local_port: @default_local_port,
+    max_connections: @default_max_connections,
     set_webhook: true
   ]
 
@@ -53,9 +53,9 @@ defmodule Telegram.Webhook do
   Webhook configuration.
 
   - `host`: (reverse proxy) hostname of the HTTPS webhook url (required)
-  - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: #{@defautl_port})
-  - `local_port`: (backend) port of the application HTTP web server (optional, default: #{@defautl_local_port})
-  - `max_connections`: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults #{@defautl_max_connections})
+  - `port`: (reverse proxy) port of the HTTPS webhook url (optional, default: #{@default_port})
+  - `local_port`: (backend) port of the application HTTP web server (optional, default: #{@default_local_port})
+  - `max_connections`: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults #{@default_max_connections})
   """
   @type config :: [
           host: String.t(),
