@@ -171,7 +171,7 @@ This library currently implements both models via two supervisors.
 ### Poller
 
 This mode can be used in a dev environment or if your bot doesn't need to "scale". Being in pull it works well behind a firewall (or behind a home internet router).
-Refer to the `Telegram.Poller` module docs fo more info.
+Refer to the `Telegram.Poller` module docs for more info.
 
 
 #### Telegram Client Config
