@@ -91,6 +91,14 @@ defmodule Telegram.ChatBot do
               | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
               | {:stop, next_chat_state :: chat_state()}
 
+  @doc """
+  On handle_info callback.
+  """
+  @callback handle_info(msg :: any(), token :: Types.token(), chat_id :: String.t(), chat_state :: chat_state()) ::
+              {:ok, next_chat_state :: chat_state()}
+              | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
+              | {:stop, next_chat_state :: chat_state()}
+
   @doc false
   defmacro __using__(_use_opts) do
     quote location: :keep do

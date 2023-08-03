@@ -93,6 +93,23 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     end
   end
 
+  @impl GenServer
+  def handle_info(msg, %State{} = state) do
+    state.chatbot_behaviour.handle_info(msg, state.token, state.chat_id, state.bot_state)
+    |> case do
+      {:ok, bot_state} ->
+        {:noreply, put_in(state.bot_state, bot_state)}
+
+      {:ok, bot_state, timeout} ->
+        {:noreply, put_in(state.bot_state, bot_state), timeout}
+
+      {:stop, bot_state} ->
+        Chat.Registry.unregister(state.token, state.chat_id)
+
+        {:stop, :normal, put_in(state.bot_state, bot_state)}
+    end
+  end
+
   defp get_chat_session_server(chatbot_behaviour, token, %{"id" => chat_id} = chat) do
     Chat.Registry.lookup(token, chat_id)
     |> case do
