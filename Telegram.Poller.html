@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.30.5">
     <meta name="project" content="telegram v0.22.4">
 
     <title>Telegram.Poller — telegram v0.22.4</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-WZEKIBKB.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-906367BA.js"></script>
+    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/sidebar_items-0E813D6C.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-B3DGGEY7.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="api-reference.html" class="sidebar-projectName" translate="no">
 telegram
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.22.4
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -80,7 +81,7 @@ telegram
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -89,13 +90,13 @@ telegram
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -108,23 +109,23 @@ telegram
 
   <section id="moduledoc">
 <p>Telegram poller supervisor.</p><h2 id="module-usage" class="section-heading">
-  <a href="#module-usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">usage</p>
+  <a href="#module-usage">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Usage
   </a>
-  Usage
 </h2>
-<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7704657966-1">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="7704657966-2">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="7704657966-2">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="7704657966-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="7704657966-3">)</span><span class="w">
-</span><span class="p" data-group-id="7704657966-1">]</span><span class="w">
+<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1278953549-1">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1278953549-2">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="1278953549-2">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1278953549-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="1278953549-3">)</span><span class="w">
+</span><span class="p" data-group-id="1278953549-1">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7704657966-4">[</span><span class="w">
-  </span><span class="p" data-group-id="7704657966-5">{</span><span class="nc">Telegram.Poller</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7704657966-6">[</span><span class="p" data-group-id="7704657966-7">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="7704657966-7">}</span><span class="p" data-group-id="7704657966-6">]</span><span class="p" data-group-id="7704657966-5">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1278953549-4">[</span><span class="w">
+  </span><span class="p" data-group-id="1278953549-5">{</span><span class="nc">Telegram.Poller</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1278953549-6">[</span><span class="p" data-group-id="1278953549-7">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="1278953549-7">}</span><span class="p" data-group-id="1278953549-6">]</span><span class="p" data-group-id="1278953549-5">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="7704657966-4">]</span><span class="w">
+</span><span class="p" data-group-id="1278953549-4">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7704657966-8">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="7704657966-8">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="7704657966-9">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7704657966-9">)</span></code></pre>
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1278953549-8">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="1278953549-8">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="1278953549-9">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="1278953549-9">)</span></code></pre>
   </section>
 
 
@@ -132,43 +133,41 @@ telegram
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
+        Summary
       </a>
-      Summary
     </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#assert_tesla_adapter_config/0" translate="no">assert_tesla_adapter_config()</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#assert_tesla_adapter_config/0" translate="no">assert_tesla_adapter_config()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#start_link/1" translate="no">start_link(list)</a>
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
-        </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" translate="no">start_link(list)</a>
 
       </div>
 
-  </div>
+    </div>
+
+</div>
 
   </section>
 
@@ -177,9 +176,8 @@ telegram
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
-      </a>
 Functions
+      </a>
     </h1>
     <div class="functions-list">
 <section class="detail" id="assert_tesla_adapter_config/0">
@@ -191,7 +189,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">assert_tesla_adapter_config()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L53" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -213,7 +211,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L28" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L28" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -235,7 +233,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(list)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/poller.ex#L31" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -259,10 +257,19 @@ Functions
   </section>
 
       <footer class="footer">
-
         <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.5) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 

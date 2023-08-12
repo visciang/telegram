@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.30.5">
     <meta name="project" content="telegram v0.22.4">
 
     <title>Telegram.Bot — telegram v0.22.4</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-WZEKIBKB.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-906367BA.js"></script>
+    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/sidebar_items-0E813D6C.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-B3DGGEY7.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="api-reference.html" class="sidebar-projectName" translate="no">
 telegram
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.22.4
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -80,7 +81,7 @@ telegram
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -89,13 +90,13 @@ telegram
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/visciang/telegram/blob/main/lib/bot.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/telegram/blob/main/lib/bot.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -108,32 +109,32 @@ telegram
 
   <section id="moduledoc">
 <p>Telegram Bot behaviour.</p><h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">example</p>
+  <a href="#module-example">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Example
   </a>
-  Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="4425348712-1">do</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="5241566530-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4425348712-2">(</span><span class="w">
-    </span><span class="p" data-group-id="4425348712-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4425348712-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4425348712-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="4425348712-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="4425348712-4">}</span><span class="p" data-group-id="4425348712-3">}</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="5241566530-2">(</span><span class="w">
+    </span><span class="p" data-group-id="5241566530-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="5241566530-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="5241566530-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="5241566530-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="5241566530-4">}</span><span class="p" data-group-id="5241566530-3">}</span><span class="p">,</span><span class="w">
     </span><span class="n">token</span><span class="w">
-  </span><span class="p" data-group-id="4425348712-2">)</span><span class="w"> </span><span class="k" data-group-id="4425348712-6">do</span><span class="w">
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4425348712-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5241566530-2">)</span><span class="w"> </span><span class="k" data-group-id="5241566530-6">do</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="5241566530-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
       </span><span class="ss">reply_to_message_id</span><span class="p">:</span><span class="w"> </span><span class="n">message_id</span><span class="p">,</span><span class="w">
-      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="4425348712-8">#{</span><span class="n">username</span><span class="si" data-group-id="4425348712-8">}</span><span class="s">!&quot;</span><span class="w">
-    </span><span class="p" data-group-id="4425348712-7">)</span><span class="w">
-  </span><span class="k" data-group-id="4425348712-6">end</span><span class="w">
+      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="5241566530-8">#{</span><span class="n">username</span><span class="si" data-group-id="5241566530-8">}</span><span class="s">!&quot;</span><span class="w">
+    </span><span class="p" data-group-id="5241566530-7">)</span><span class="w">
+  </span><span class="k" data-group-id="5241566530-6">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4425348712-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="4425348712-9">)</span><span class="w"> </span><span class="k" data-group-id="4425348712-10">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="5241566530-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="5241566530-9">)</span><span class="w"> </span><span class="k" data-group-id="5241566530-10">do</span><span class="w">
     </span><span class="c1"># ignore unknown updates</span><span class="w">
 
     </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="4425348712-10">end</span><span class="w">
-</span><span class="k" data-group-id="4425348712-1">end</span></code></pre>
+  </span><span class="k" data-group-id="5241566530-10">end</span><span class="w">
+</span><span class="k" data-group-id="5241566530-1">end</span></code></pre>
   </section>
 
 
@@ -141,27 +142,25 @@ telegram
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
+        Summary
       </a>
-      Summary
     </h1>
+<div class="summary-callbacks summary">
+  <h2>
+    <a href="#callbacks">Callbacks</a>
+  </h2>
 
-  <div class="summary-callbacks summary">
-    <h2>
-      <a href="#callbacks">Callbacks</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#c:handle_update/2" translate="no">handle_update(update, token)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The function receives the telegram update event.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_update/2" translate="no">handle_update(update, token)</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>The function receives the telegram update event.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -170,9 +169,8 @@ telegram
     <h1 class="section-heading">
       <a class="hover-link" href="#callbacks">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
-      </a>
 Callbacks
+      </a>
     </h1>
     <div class="callbacks-list">
 <section class="detail" id="c:handle_update/2">
@@ -184,7 +182,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">handle_update(update, token)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/bot.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/bot.ex#L38" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -211,10 +209,19 @@ Callbacks
   </section>
 
       <footer class="footer">
-
         <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.5) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
