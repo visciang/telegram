@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@main
+    uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@v1
     with:
-      elixir-version: "1.15.4"
+      image: hexpm/elixir:1.15.4-erlang-26.0.2-debian-bookworm-20230612
     secrets: inherit
