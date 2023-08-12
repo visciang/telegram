@@ -38,6 +38,7 @@ defmodule Telegram.Mixfile do
     [
       # HTTP server
       {:plug_cowboy, "~> 2.5"},
+      {:plug, "~> 1.14"},
       # HTTP client
       {:tesla, "~> 1.0"},
       {:hackney, "~> 1.18", only: :test},

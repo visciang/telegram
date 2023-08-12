@@ -5,7 +5,7 @@ defmodule Telegram.Utils do
 
   @type retry_res :: {:ok, term()} | {:error, term()}
 
-  @spec retry((() -> retry_res()), :infinity | non_neg_integer(), pos_integer()) :: retry_res()
+  @spec retry((-> retry_res()), :infinity | non_neg_integer(), pos_integer()) :: retry_res()
   def retry(fun, times \\ :infinity, period \\ 1_000)
 
   def retry(fun, 0, _period) do
