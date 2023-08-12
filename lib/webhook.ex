@@ -86,7 +86,8 @@ defmodule Telegram.Webhook do
         {token, bot_behaviour_mod}
       end)
 
-    Enum.each(bot_specs, fn {bot_behaviour_mod, opts} ->
+    bot_specs
+    |> Enum.each(fn {bot_behaviour_mod, opts} ->
       token = Keyword.fetch!(opts, :token)
       url = %URI{scheme: "https", host: host, path: "/#{token}", port: port} |> to_string()
 
@@ -105,7 +106,7 @@ defmodule Telegram.Webhook do
       {Plug.Cowboy,
        [
          scheme: :http,
-         plug: {Telegram.Webhook.Router, [bot_routing_map: bot_routing_map]},
+         plug: {Telegram.Webhook.Router, bot_routing_map},
          options: [
            port: local_port
          ]
@@ -131,17 +132,18 @@ defmodule Telegram.Webhook.Router do
 
   require Logger
 
-  use Plug.Router
+  use Plug.Router, copy_opts_to_assign: :bot_routing_map
 
   plug :match
   plug Plug.Parsers, parsers: [:json], pass: ["*/*"], json_decoder: Jason
-  plug :dispatch, builder_opts()
+  plug :dispatch
 
   post "/:token" do
     update = conn.body_params
-    bot_dispatch_behaviour = Map.get(opts[:bot_routing_map], token)
+    bot_routing_map = conn.assigns.bot_routing_map
+    bot_dispatch_behaviour = bot_routing_map[token]
 
-    Logger.debug("received update: #{inspect(update)}", bot: bot_dispatch_behaviour)
+    Logger.debug("received update: #{inspect(update)}", bot: inspect(bot_dispatch_behaviour))
 
     if bot_dispatch_behaviour == nil do
       Plug.Conn.send_resp(conn, :not_found, "")
