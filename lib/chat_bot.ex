@@ -45,13 +45,20 @@ defmodule Telegram.ChatBot do
     end
 
     @impl Telegram.ChatBot
+    def handle_info(msg, _token, _chat_id, count_state) do
+      # direct message processing
+
+      {:ok, count_state}
+    end
+
+    @impl Telegram.ChatBot
     def handle_timeout(token, chat_id, count_state) do
       Telegram.Api.request(token, "sendMessage",
         chat_id: chat_id,
         text: "See you!"
       )
 
-      super(token, chat_id, count_state)
+      {:stop, count_state}
     end
   end
   ```
@@ -84,6 +91,8 @@ defmodule Telegram.ChatBot do
               | {:stop, next_chat_state :: chat_state()}
   @doc """
   On timeout callback.
+
+  This callback is optional.
   A default implementation is injected with "use Telegram.ChatBot", it just stops the bot.
   """
   @callback handle_timeout(token :: Types.token(), chat_id :: String.t(), chat_state :: chat_state()) ::
@@ -91,18 +100,42 @@ defmodule Telegram.ChatBot do
               | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
               | {:stop, next_chat_state :: chat_state()}
 
+  @doc """
+  On handle_info callback.
+
+  Can be used to implement bots that act on scheduled events (using `Process.send/3` and `Process.send_after/4`) or to interact via direct message to a a specific chat session (using `lookup/2`).
+
+  This callback is optional.
+  If one is not implemented, the received message will be logged.
+  """
+  @callback handle_info(msg :: any(), token :: Types.token(), chat_id :: String.t(), chat_state :: chat_state()) ::
+              {:ok, next_chat_state :: chat_state()}
+              | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
+              | {:stop, next_chat_state :: chat_state()}
+
+  @optional_callbacks handle_info: 4, handle_timeout: 3
+
   @doc false
   defmacro __using__(_use_opts) do
     quote location: :keep do
       @behaviour Telegram.ChatBot
       @behaviour Telegram.Bot.Dispatch
 
+      require Logger
+
+      @impl Telegram.ChatBot
+      def handle_info(msg, _token, _chat_id, chat_state) do
+        Logger.error("#{inspect(__MODULE__)} received unexpected message in handle_info/4: #{inspect(msg)}~n")
+
+        {:ok, chat_state}
+      end
+
       @impl Telegram.ChatBot
       def handle_timeout(token, chat_id, chat_state) do
         {:stop, chat_state}
       end
 
-      defoverridable handle_timeout: 3
+      defoverridable handle_info: 4, handle_timeout: 3
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
@@ -116,5 +149,16 @@ defmodule Telegram.ChatBot do
         :ok
       end
     end
+  end
+
+  @doc """
+  Lookups the pid of a specific chat session.
+
+  It is up to the user to define and keep a mapping between
+  the business logic specific session identifier and the telegram chat_id.
+  """
+  @spec lookup(Types.token(), String.t()) :: {:error, :not_found} | {:ok, pid}
+  def lookup(token, chat_id) do
+    Chat.Registry.lookup(token, chat_id)
   end
 end
