@@ -227,4 +227,4 @@ to clearly identify and "trace" every bot's message flow.
 
 # Sample app
 
-A chat_bot app: https://github.com/visciang/telegram_example
+A chat_bot app, deployed to Gigalixir PaaS and served in webhook mode: https://github.com/visciang/telegram_example
