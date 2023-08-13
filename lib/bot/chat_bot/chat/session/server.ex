@@ -55,59 +55,22 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @impl GenServer
   def handle_cast({:handle_update, update}, %State{} = state) do
-    state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
-    |> case do
-      {:ok, bot_state} ->
-        {:noreply, put_in(state.bot_state, bot_state)}
-
-      {:ok, bot_state, timeout} ->
-        {:noreply, put_in(state.bot_state, bot_state), timeout}
-
-      {:stop, bot_state} ->
-        Chat.Registry.unregister(state.token, state.chat_id)
-
-        {:stop, :normal, put_in(state.bot_state, bot_state)}
-    end
+    res = state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
+    handle_callback_result(res, state)
   end
 
   @impl GenServer
   def handle_info(:timeout, %State{} = state) do
     Logger.debug("Reached timeout")
 
-    state.chatbot_behaviour.handle_timeout(state.token, state.chat_id, state.bot_state)
-    |> case do
-      # coveralls-ignore-start
-
-      {:ok, bot_state} ->
-        {:noreply, put_in(state.bot_state, bot_state)}
-
-      {:ok, bot_state, timeout} ->
-        {:noreply, put_in(state.bot_state, bot_state), timeout}
-
-      # coveralls-ignore-end
-
-      {:stop, bot_state} ->
-        Chat.Registry.unregister(state.token, state.chat_id)
-
-        {:stop, :normal, put_in(state.bot_state, bot_state)}
-    end
+    res = state.chatbot_behaviour.handle_timeout(state.token, state.chat_id, state.bot_state)
+    handle_callback_result(res, state)
   end
 
   @impl GenServer
   def handle_info(msg, %State{} = state) do
-    state.chatbot_behaviour.handle_info(msg, state.token, state.chat_id, state.bot_state)
-    |> case do
-      {:ok, bot_state} ->
-        {:noreply, put_in(state.bot_state, bot_state)}
-
-      {:ok, bot_state, timeout} ->
-        {:noreply, put_in(state.bot_state, bot_state), timeout}
-
-      {:stop, bot_state} ->
-        Chat.Registry.unregister(state.token, state.chat_id)
-
-        {:stop, :normal, put_in(state.bot_state, bot_state)}
-    end
+    res = state.chatbot_behaviour.handle_info(msg, state.token, state.chat_id, state.bot_state)
+    handle_callback_result(res, state)
   end
 
   defp get_chat_session_server(chatbot_behaviour, token, %{"id" => chat_id} = chat) do
@@ -131,6 +94,20 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
       {:error, :max_children} = error ->
         error
+    end
+  end
+
+  defp handle_callback_result(result, %State{} = state) do
+    case result do
+      {:ok, bot_state} ->
+        {:noreply, put_in(state.bot_state, bot_state)}
+
+      {:ok, bot_state, timeout} ->
+        {:noreply, put_in(state.bot_state, bot_state), timeout}
+
+      {:stop, bot_state} ->
+        Chat.Registry.unregister(state.token, state.chat_id)
+        {:stop, :normal, put_in(state.bot_state, bot_state)}
     end
   end
 end
