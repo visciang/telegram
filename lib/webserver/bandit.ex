@@ -1,6 +1,6 @@
 defmodule Telegram.WebServer.Bandit do
   @moduledoc """
-  Bandit child_spec for plug based webserver
+  Bandit child specification for `Plug` compatible webserver.
 
   See `Telegram.Webhook`.
   """

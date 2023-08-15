@@ -6,12 +6,12 @@ defmodule Telegram.Webhook do
 
   ### WebServer adapter
 
-  Two plug based webserver are supported:
+  Two `Plug` compatible webserver are supported:
 
   - `Telegram.WebServer.Bandit`: use `Bandit`
   - `Telegram.WebServer.Cowboy` (default): use `Plug.Cowboy`
 
-  You should configure the desiser webserver adapter in you app configuration
+  You should configure the desired webserver adapter in you app configuration:
 
   ```elixir
   config :telegram,

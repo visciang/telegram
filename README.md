@@ -203,6 +203,9 @@ a dependency should be added accordingly in your `mix.exs`:
 
 This mode interfaces with the Telegram servers via a webhook, best for production use.
 The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.
+
+It's possible to use two `Plug` compatible webserver: `Bandit` and `Plug.Cowboy`.
+
 Refer to the `Telegram.Webhook` module docs for more info.
 
 ## Dispatch model

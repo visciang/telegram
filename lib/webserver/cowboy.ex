@@ -1,6 +1,6 @@
 defmodule Telegram.WebServer.Cowboy do
   @moduledoc """
-  Cowboy child_spec for plug based webserver.
+  Cowboy child specification for `Plug` compatible webserver.
 
   See `Telegram.Webhook`.
   """
