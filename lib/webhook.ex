@@ -4,7 +4,38 @@ defmodule Telegram.Webhook do
 
   ## Usage
 
-  In you app supervisor tree:
+  ### WebServer adapter
+
+  Two `Plug` compatible webserver are supported:
+
+  - `Telegram.WebServer.Bandit`: use `Bandit`
+  - `Telegram.WebServer.Cowboy` (default): use `Plug.Cowboy`
+
+  You should configure the desired webserver adapter in you app configuration:
+
+  ```elixir
+  config :telegram,
+    webserver: Telegram.WebServer.Bandit
+
+  # OR
+
+  config :telegram,
+    webserver: Telegram.WebServer.Cowboy
+  ```
+
+  and include in you dependencies one of:
+
+  ```elixir
+  {:plug_cowboy, "~> 2.5"}
+
+  # OR
+
+  {:bandit, "~> 1.0-pre"}
+  ```
+
+  ### Supervision tree
+
+  In you app supervision tree:
 
   ```elixir
   webhook_config = [
@@ -102,17 +133,10 @@ defmodule Telegram.Webhook do
       end
     end)
 
-    plug_cowboy_spec =
-      {Plug.Cowboy,
-       [
-         scheme: :http,
-         plug: {Telegram.Webhook.Router, bot_routing_map},
-         options: [
-           port: local_port
-         ]
-       ]}
+    webserver = Application.get_env(:telegram, :webserver, Telegram.WebServer.Bandit)
+    webserver_spec = webserver.child_spec(local_port, bot_routing_map)
 
-    children = bot_specs ++ [plug_cowboy_spec]
+    children = bot_specs ++ [webserver_spec]
 
     Supervisor.init(children, strategy: :one_for_one)
   end

@@ -12,4 +12,8 @@ defmodule Telegram.Types do
   @type max_bot_concurrency :: pos_integer() | :infinity
   @type bot_opts :: [token: token(), max_bot_concurrency: max_bot_concurrency()]
   @type bot_spec :: {Dispatch.t(), bot_opts()}
+
+  @type bot_routing :: %{
+          token() => bot_behaviour :: module()
+        }
 end

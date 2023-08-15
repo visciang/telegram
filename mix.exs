@@ -36,9 +36,10 @@ defmodule Telegram.Mixfile do
 
   defp deps do
     [
-      # HTTP server
-      {:plug_cowboy, "~> 2.5"},
       {:plug, "~> 1.14"},
+      # HTTP servers
+      {:plug_cowboy, "~> 2.5", optional: true},
+      {:bandit, "~> 1.0-pre", optional: true},
       # HTTP client
       {:tesla, "~> 1.0"},
       {:hackney, "~> 1.18", only: :test},
