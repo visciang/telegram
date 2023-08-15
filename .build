@@ -6,6 +6,8 @@ Telegram.Bot.html
 Telegram.ChatBot.html
 Telegram.Poller.html
 Telegram.Types.html
+Telegram.WebServer.Bandit.html
+Telegram.WebServer.Cowboy.html
 Telegram.Webhook.html
 api-reference.html
 dist/handlebars.runtime-NWIB6V2M.js
@@ -35,8 +37,8 @@ dist/merriweather-latin-ext-300-normal-K6L27CZ5.woff2
 dist/merriweather-vietnamese-300-italic-EHHNZPUO.woff2
 dist/merriweather-vietnamese-300-normal-U376L4Z4.woff2
 dist/remixicon-NKANDIL5.woff2
-dist/search_data-E41FAA19.js
-dist/sidebar_items-4F8B4C73.js
+dist/search_data-A582B5BD.js
+dist/sidebar_items-0EAD10D0.js
 index.html
 readme.html
 search.html
