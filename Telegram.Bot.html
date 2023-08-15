@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.30.5">
-    <meta name="project" content="telegram v1.0.0">
+    <meta name="project" content="telegram v1.1.0">
 
-    <title>Telegram.Bot — telegram v1.0.0</title>
+    <title>Telegram.Bot — telegram v1.1.0</title>
     <link rel="stylesheet" href="dist/html-elixir-WZEKIBKB.css" />
 
 
@@ -68,7 +68,7 @@
 telegram
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v1.0.0
+        v1.1.0
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -102,7 +102,7 @@ telegram
     </a>
 
   <span translate="no">Telegram.Bot</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(telegram v1.0.0)</small>
+  <small class="app-vsn" translate="no">(telegram v1.1.0)</small>
 
 </h1>
 
@@ -114,27 +114,27 @@ telegram
     Example
   </a>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="1028626527-1">do</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="4103566675-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="1028626527-2">(</span><span class="w">
-    </span><span class="p" data-group-id="1028626527-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1028626527-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1028626527-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="1028626527-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="1028626527-4">}</span><span class="p" data-group-id="1028626527-3">}</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4103566675-2">(</span><span class="w">
+    </span><span class="p" data-group-id="4103566675-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4103566675-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4103566675-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="4103566675-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="4103566675-4">}</span><span class="p" data-group-id="4103566675-3">}</span><span class="p">,</span><span class="w">
     </span><span class="n">token</span><span class="w">
-  </span><span class="p" data-group-id="1028626527-2">)</span><span class="w"> </span><span class="k" data-group-id="1028626527-6">do</span><span class="w">
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="1028626527-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="4103566675-2">)</span><span class="w"> </span><span class="k" data-group-id="4103566675-6">do</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4103566675-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
       </span><span class="ss">reply_to_message_id</span><span class="p">:</span><span class="w"> </span><span class="n">message_id</span><span class="p">,</span><span class="w">
-      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="1028626527-8">#{</span><span class="n">username</span><span class="si" data-group-id="1028626527-8">}</span><span class="s">!&quot;</span><span class="w">
-    </span><span class="p" data-group-id="1028626527-7">)</span><span class="w">
-  </span><span class="k" data-group-id="1028626527-6">end</span><span class="w">
+      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="4103566675-8">#{</span><span class="n">username</span><span class="si" data-group-id="4103566675-8">}</span><span class="s">!&quot;</span><span class="w">
+    </span><span class="p" data-group-id="4103566675-7">)</span><span class="w">
+  </span><span class="k" data-group-id="4103566675-6">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="1028626527-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="1028626527-9">)</span><span class="w"> </span><span class="k" data-group-id="1028626527-10">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="4103566675-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="4103566675-9">)</span><span class="w"> </span><span class="k" data-group-id="4103566675-10">do</span><span class="w">
     </span><span class="c1"># ignore unknown updates</span><span class="w">
 
     </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="1028626527-10">end</span><span class="w">
-</span><span class="k" data-group-id="1028626527-1">end</span></code></pre>
+  </span><span class="k" data-group-id="4103566675-10">end</span><span class="w">
+</span><span class="k" data-group-id="4103566675-1">end</span></code></pre>
   </section>
 
 
