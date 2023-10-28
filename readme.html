@@ -4,20 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.30.5">
+    <meta name="generator" content="ExDoc v0.30.9">
     <meta name="project" content="telegram v1.1.0">
 
     <title>Telegram — telegram v1.1.0</title>
-    <link rel="stylesheet" href="dist/html-elixir-WZEKIBKB.css" />
+    <link rel="stylesheet" href="dist/html-elixir-XFYN5IVA.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
     <script src="dist/sidebar_items-0EAD10D0.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-B3DGGEY7.js"></script>
+    <script async src="dist/html-J2ASZTQE.js"></script>
 
 
   </head>
@@ -38,22 +38,22 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
+<nav id="sidebar" class="sidebar">
   <form class="sidebar-search" action="search.html">
+    <label class="search-label">
+      <span class="sr-only">Search documentation of telegram</span>
+      <input name="q" type="text" class="search-input" placeholder="Search..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+      <i class="ri-close-line ri-lg" title="Cancel search"></i>
     </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
   </form>
 
   <div class="autocomplete">
@@ -71,20 +71,35 @@ telegram
         v1.1.0
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
@@ -106,183 +121,183 @@ telegram
 </h1>
 
 <p><img src="https://github.com/visciang/telegram/workflows/CI/badge.svg" alt="CI"/> <a href="https://visciang.github.io/telegram/readme.html"><img src="https://img.shields.io/badge/docs-latest-green.svg" alt="Docs"/></a> <a href="https://coveralls.io/github/visciang/telegram?branch=master"><img src="https://coveralls.io/repos/github/visciang/telegram/badge.svg?branch=master" alt="Coverage Status"/></a></p><p>Telegram library for the Elixir language.</p><p>It provides:</p><ul><li>an inteface to the Telegram Bot HTTP-based APIs (<a href="Telegram.Api.html"><code class="inline">Telegram.Api</code></a>) </li><li>a couple of bot behaviours to define you bots (<a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a>, <a href="Telegram.ChatBot.html"><code class="inline">Telegram.ChatBot</code></a>)</li><li>two bot runners (<a href="Telegram.Poller.html"><code class="inline">Telegram.Poller</code></a>, <a href="Telegram.Webhook.html"><code class="inline">Telegram.Webhook</code></a>)</li></ul><h2 id="installation" class="section-heading">
-  <a href="#installation">
+  <a href="#installation" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Installation
   </a>
+  <span class="text">Installation</span>
 </h2>
-<p>The package can be installed by adding <code class="inline">telegram</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="0932193062-1">do</span><span class="w">
-  </span><span class="p" data-group-id="0932193062-2">[</span><span class="w">
-    </span><span class="p" data-group-id="0932193062-3">{</span><span class="ss">:telegram</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;visciang/telegram&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xxx&quot;</span><span class="p" data-group-id="0932193062-3">}</span><span class="w">
-  </span><span class="p" data-group-id="0932193062-2">]</span><span class="w">
-</span><span class="k" data-group-id="0932193062-1">end</span></code></pre><h1>Telegram Bot API</h1><p>This module expose a light layer over the Telegram Bot API HTTP-based interface,
+<p>The package can be installed by adding <code class="inline">telegram</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="0603737255-1">do</span><span class="w">
+  </span><span class="p" data-group-id="0603737255-2">[</span><span class="w">
+    </span><span class="p" data-group-id="0603737255-3">{</span><span class="ss">:telegram</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;visciang/telegram&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xxx&quot;</span><span class="p" data-group-id="0603737255-3">}</span><span class="w">
+  </span><span class="p" data-group-id="0603737255-2">]</span><span class="w">
+</span><span class="k" data-group-id="0603737255-1">end</span></code></pre><h1>Telegram Bot API</h1><p>This module expose a light layer over the Telegram Bot API HTTP-based interface,
 it does not expose any &quot;(data)binding&quot; over the HTTP interface and tries to abstract
 away only the boilerplate for building / sending / serializing the API requests.</p><p>Compared to a full data-binded interface it could result less &quot;typed frendly&quot; but it will
 work with any version of the Bot API, hopefully without updates or incompatibily
 with new Bot API versions (as much as they remain backward compatible).</p><p>References:</p><ul><li><a href="https://core.telegram.org/bots/api">API specification</a></li><li><a href="https://core.telegram.org/bots">Bot intro for developers</a></li></ul><p>Given the token of your Bot you can issue any request using:</p><ul><li>method: Telegram API method name (ex. &quot;getMe&quot;, &quot;sendMessage&quot;)</li><li>options: Telegram API method specific parameters (you can use Elixir's native types)</li></ul><h2 id="examples" class="section-heading">
-  <a href="#examples">
+  <a href="#examples" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Examples:
   </a>
+  <span class="text">Examples:</span>
 </h2>
 <p>Given the bot token (something like):</p><pre><code class="makeup elixir" translate="no"><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11&quot;</span></code></pre><h3 id="getme" class="section-heading">
-  <a href="#getme">
+  <a href="#getme" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#getme">getMe</a>
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#getme">getMe</a></span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="5893170278-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getMe&quot;</span><span class="p" data-group-id="5893170278-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4986949466-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getMe&quot;</span><span class="p" data-group-id="4986949466-1">)</span><span class="w">
 
-</span><span class="p" data-group-id="5893170278-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5893170278-3">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Abc&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1234567</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;is_bot&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;ABC&quot;</span><span class="p" data-group-id="5893170278-3">}</span><span class="p" data-group-id="5893170278-2">}</span></code></pre><h3 id="sendmessage" class="section-heading">
-  <a href="#sendmessage">
+</span><span class="p" data-group-id="4986949466-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4986949466-3">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Abc&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1234567</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;is_bot&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;ABC&quot;</span><span class="p" data-group-id="4986949466-3">}</span><span class="p" data-group-id="4986949466-2">}</span></code></pre><h3 id="sendmessage" class="section-heading">
+  <a href="#sendmessage" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a>
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a></span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4423590628-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello! .. silently&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">disable_notification</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="4423590628-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="1736806493-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello! .. silently&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">disable_notification</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="1736806493-1">)</span><span class="w">
 
-</span><span class="p" data-group-id="4423590628-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="4423590628-3">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4423590628-4">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="1736806493-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="1736806493-3">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1736806493-4">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">208255328</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;last_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Lastname&quot;</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;type&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;private&quot;</span><span class="p">,</span><span class="w">
-      </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="4423590628-4">}</span><span class="p">,</span><span class="w">
+      </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="1736806493-4">}</span><span class="p">,</span><span class="w">
     </span><span class="s">&quot;date&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1505118722</span><span class="p">,</span><span class="w">
-    </span><span class="s">&quot;from&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4423590628-5">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Yyy&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="s">&quot;from&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1736806493-5">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Yyy&quot;</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">234027650</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;is_bot&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
-      </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;yyy&quot;</span><span class="p" data-group-id="4423590628-5">}</span><span class="p">,</span><span class="w">
+      </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;yyy&quot;</span><span class="p" data-group-id="1736806493-5">}</span><span class="p">,</span><span class="w">
     </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1402</span><span class="p">,</span><span class="w">
-    </span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Hello! .. silently&quot;</span><span class="p" data-group-id="4423590628-3">}</span><span class="p" data-group-id="4423590628-2">}</span></code></pre><h3 id="getupdates" class="section-heading">
-  <a href="#getupdates">
+    </span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Hello! .. silently&quot;</span><span class="p" data-group-id="1736806493-3">}</span><span class="p" data-group-id="1736806493-2">}</span></code></pre><h3 id="getupdates" class="section-heading">
+  <a href="#getupdates" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#getupdates">getUpdates</a>
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#getupdates">getUpdates</a></span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3412051330-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getUpdates&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">offset</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p" data-group-id="3412051330-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4696506979-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getUpdates&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">offset</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p" data-group-id="4696506979-1">)</span><span class="w">
 
-</span><span class="p" data-group-id="3412051330-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="3412051330-3">[</span><span class="p" data-group-id="3412051330-4">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="3412051330-5">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="3412051330-6">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="4696506979-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="4696506979-3">[</span><span class="p" data-group-id="4696506979-4">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4696506979-5">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4696506979-6">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">208255328</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;last_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Lastname&quot;</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;type&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;private&quot;</span><span class="p">,</span><span class="w">
-        </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="3412051330-6">}</span><span class="p">,</span><span class="w">
+        </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="4696506979-6">}</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;date&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1505118098</span><span class="p">,</span><span class="w">
-      </span><span class="s">&quot;from&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="3412051330-7">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="s">&quot;from&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="4696506979-7">%{</span><span class="s">&quot;first_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Firstname&quot;</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">208255328</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;is_bot&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;language_code&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;en-IT&quot;</span><span class="p">,</span><span class="w">
         </span><span class="s">&quot;last_name&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Lastname&quot;</span><span class="p">,</span><span class="w">
-        </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="3412051330-7">}</span><span class="p">,</span><span class="w">
+        </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;xxxx&quot;</span><span class="p" data-group-id="4696506979-7">}</span><span class="p">,</span><span class="w">
       </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">1401</span><span class="p">,</span><span class="w">
-      </span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p" data-group-id="3412051330-5">}</span><span class="p">,</span><span class="w">
-    </span><span class="s">&quot;update_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">129745295</span><span class="p" data-group-id="3412051330-4">}</span><span class="p" data-group-id="3412051330-3">]</span><span class="p" data-group-id="3412051330-2">}</span></code></pre><h2 id="sending-files" class="section-heading">
-  <a href="#sending-files">
+      </span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p" data-group-id="4696506979-5">}</span><span class="p">,</span><span class="w">
+    </span><span class="s">&quot;update_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mi">129745295</span><span class="p" data-group-id="4696506979-4">}</span><span class="p" data-group-id="4696506979-3">]</span><span class="p" data-group-id="4696506979-2">}</span></code></pre><h2 id="sending-files" class="section-heading">
+  <a href="#sending-files" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Sending files
   </a>
+  <span class="text">Sending files</span>
 </h2>
 <p>If an API parameter has a <code class="inline">InputFile</code> type and you want to send a local file,
 for example a photo stored at &quot;/tmp/photo.jpg&quot;, just wrap the parameter
 value in a <code class="inline">{:file, &quot;/tmp/photo.jpg&quot;}</code> tuple. If the file content is in memory
 wrap it in a <code class="inline">{:file_content, data, &quot;photo.jpg&quot;}</code> tuple.</p><h3 id="sendphoto" class="section-heading">
-  <a href="#sendphoto">
+  <a href="#sendphoto" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a>
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#sendphoto">sendPhoto</a></span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="2558556533-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2558556533-2">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/tmp/photo.jpg&quot;</span><span class="p" data-group-id="2558556533-2">}</span><span class="p" data-group-id="2558556533-1">)</span><span class="w">
-</span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="2558556533-3">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2558556533-4">{</span><span class="ss">:file_content</span><span class="p">,</span><span class="w"> </span><span class="n">photo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;photo.jpg&quot;</span><span class="p" data-group-id="2558556533-4">}</span><span class="p" data-group-id="2558556533-3">)</span></code></pre><h2 id="downloading-files" class="section-heading">
-  <a href="#downloading-files">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4484166250-1">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4484166250-2">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/tmp/photo.jpg&quot;</span><span class="p" data-group-id="4484166250-2">}</span><span class="p" data-group-id="4484166250-1">)</span><span class="w">
+</span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4484166250-3">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4484166250-4">{</span><span class="ss">:file_content</span><span class="p">,</span><span class="w"> </span><span class="n">photo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;photo.jpg&quot;</span><span class="p" data-group-id="4484166250-4">}</span><span class="p" data-group-id="4484166250-3">)</span></code></pre><h2 id="downloading-files" class="section-heading">
+  <a href="#downloading-files" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Downloading files
   </a>
+  <span class="text">Downloading files</span>
 </h2>
 <p>To download a file from the telegram server you need a <code class="inline">file_path</code> pointer to the file.
-With that you can download the file via <code class="inline">Telegram.Api.file</code>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3515555552-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="3515555552-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3515555552-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3515555552-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="3515555552-3">}</span><span class="p" data-group-id="3515555552-2">)</span><span class="w">
+With that you can download the file via <code class="inline">Telegram.Api.file</code>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="8343462696-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8343462696-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="8343462696-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8343462696-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="8343462696-3">}</span><span class="p" data-group-id="8343462696-2">)</span><span class="w">
 </span><span class="c1"># pick the &#39;file_obj&#39; with the desired resolution</span><span class="w">
-</span><span class="p" data-group-id="3515555552-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="3515555552-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="3515555552-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="3515555552-5">]</span><span class="w">
+</span><span class="p" data-group-id="8343462696-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8343462696-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8343462696-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="8343462696-5">]</span><span class="w">
 </span><span class="c1"># get the &#39;file_id&#39;</span><span class="w">
-</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="3515555552-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="3515555552-6">]</span></code></pre><h3 id="getfile" class="section-heading">
-  <a href="#getfile">
+</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="8343462696-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="8343462696-6">]</span></code></pre><h3 id="getfile" class="section-heading">
+  <a href="#getfile" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#getfile">getFile</a>
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#getfile">getFile</a></span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3603351557-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3603351557-2">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="3603351557-2">}</span><span class="p" data-group-id="3603351557-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3603351557-3">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="3603351557-3">)</span><span class="w">
-</span><span class="p" data-group-id="3603351557-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="3603351557-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="3603351557-5">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="3603351557-5">)</span></code></pre><h2 id="json-serialized-object-parameters" class="section-heading">
-  <a href="#json-serialized-object-parameters">
+<pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7199543081-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7199543081-2">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="7199543081-2">}</span><span class="p" data-group-id="7199543081-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="7199543081-3">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="7199543081-3">)</span><span class="w">
+</span><span class="p" data-group-id="7199543081-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="7199543081-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="7199543081-5">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="7199543081-5">)</span></code></pre><h2 id="json-serialized-object-parameters" class="section-heading">
+  <a href="#json-serialized-object-parameters" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    JSON-serialized object parameters
   </a>
+  <span class="text">JSON-serialized object parameters</span>
 </h2>
 <p>If an API parameter has a non primitive scalar type it is explicitly pointed out as &quot;A JSON-serialized object&quot;
 (ie <code class="inline">InlineKeyboardMarkup</code>, <code class="inline">ReplyKeyboardMarkup</code>, etc).
 In this case you can wrap the parameter value in a <code class="inline">{:json, value}</code> tuple.</p><h3 id="sendmessage-with-keyboard" class="section-heading">
-  <a href="#sendmessage-with-keyboard">
+  <a href="#sendmessage-with-keyboard" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    <a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a> with keyboard
   </a>
+  <span class="text"><a href="https://core.telegram.org/bots/api#sendmessage">sendMessage</a> with keyboard</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="n">keyboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9238252743-1">[</span><span class="w">
-  </span><span class="p" data-group-id="9238252743-2">[</span><span class="s">&quot;A0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A1&quot;</span><span class="p" data-group-id="9238252743-2">]</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="9238252743-3">[</span><span class="s">&quot;B0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B2&quot;</span><span class="p" data-group-id="9238252743-3">]</span><span class="w">
-</span><span class="p" data-group-id="9238252743-1">]</span><span class="w">
-</span><span class="n">keyboard_markup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9238252743-4">%{</span><span class="ss">one_time_keyboard</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">keyboard</span><span class="p">:</span><span class="w"> </span><span class="n">keyboard</span><span class="p" data-group-id="9238252743-4">}</span><span class="w">
-</span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="9238252743-5">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Here a keyboard!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">reply_markup</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9238252743-6">{</span><span class="ss">:json</span><span class="p">,</span><span class="w"> </span><span class="n">keyboard_markup</span><span class="p" data-group-id="9238252743-6">}</span><span class="p" data-group-id="9238252743-5">)</span></code></pre><h1>Telegram Bot</h1><h2 id="quick-start" class="section-heading">
-  <a href="#quick-start">
+<pre><code class="makeup elixir" translate="no"><span class="n">keyboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7707777953-1">[</span><span class="w">
+  </span><span class="p" data-group-id="7707777953-2">[</span><span class="s">&quot;A0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A1&quot;</span><span class="p" data-group-id="7707777953-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="7707777953-3">[</span><span class="s">&quot;B0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B2&quot;</span><span class="p" data-group-id="7707777953-3">]</span><span class="w">
+</span><span class="p" data-group-id="7707777953-1">]</span><span class="w">
+</span><span class="n">keyboard_markup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7707777953-4">%{</span><span class="ss">one_time_keyboard</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">keyboard</span><span class="p">:</span><span class="w"> </span><span class="n">keyboard</span><span class="p" data-group-id="7707777953-4">}</span><span class="w">
+</span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="7707777953-5">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">876532</span><span class="p">,</span><span class="w"> </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Here a keyboard!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">reply_markup</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7707777953-6">{</span><span class="ss">:json</span><span class="p">,</span><span class="w"> </span><span class="n">keyboard_markup</span><span class="p" data-group-id="7707777953-6">}</span><span class="p" data-group-id="7707777953-5">)</span></code></pre><h1>Telegram Bot</h1><h2 id="quick-start" class="section-heading">
+  <a href="#quick-start" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Quick start
   </a>
+  <span class="text">Quick start</span>
 </h2>
 <p>Check the examples under <code class="inline">example/example_*.exs</code>.
 You can run them as a <a href="https://hexdocs.pm/mix/Mix.html"><code class="inline">Mix</code></a> self-contained script.</p><pre><code class="makeup shell" translate="no"><span class="">BOT_TOKEN=&quot;...&quot; example/example_chatbot.exs
 </span></code></pre><h2 id="bot-updates-processing" class="section-heading">
-  <a href="#bot-updates-processing">
+  <a href="#bot-updates-processing" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Bot updates processing
   </a>
+  <span class="text">Bot updates processing</span>
 </h2>
 <p>The Telegram platform supports two ways of processing bot updates, <code class="inline">getUpdates</code> and <code class="inline">setWebhook</code>.
 <code class="inline">getUpdates</code> is a pull mechanism, <code class="inline">setWebhook</code> is a push mechanism. (ref: <a href="https://core.telegram.org/bots/webhooks">bots webhook</a>)</p><p>This library currently implements both models via two supervisors.</p><h3 id="poller" class="section-heading">
-  <a href="#poller">
+  <a href="#poller" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Poller
   </a>
+  <span class="text">Poller</span>
 </h3>
 <p>This mode can be used in a dev environment or if your bot doesn't need to &quot;scale&quot;. Being in pull it works well behind a firewall (or behind a home internet router).
-Refer to the <a href="Telegram.Poller.html"><code class="inline">Telegram.Poller</code></a> module docs for more info.</p><h4>Telegram Client Config</h4><p>The Telegram HTTP Client is based on <a href="https://hexdocs.pm/tesla/1.7.0/Tesla.html"><code class="inline">Tesla</code></a>.</p><p>The <a href="https://hexdocs.pm/tesla/1.7.0/Tesla.Adapter.html"><code class="inline">Tesla.Adapter</code></a> and options should be configured via the <code class="inline">[:tesla, :adapter]</code> application environment key.
-(ref. <a href="https://hexdocs.pm/tesla/readme.html#adapters">https://hexdocs.pm/tesla/readme.html#adapters</a>)</p><p>For example, a good default could be:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:tesla</span><span class="p">,</span><span class="w"> </span><span class="ss">adapter</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2942076600-1">{</span><span class="nc">Tesla.Adapter.Hackney</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2942076600-2">[</span><span class="ss">recv_timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">40_000</span><span class="p" data-group-id="2942076600-2">]</span><span class="p" data-group-id="2942076600-1">}</span></code></pre><p>a dependency should be added accordingly in your <code class="inline">mix.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="w"> </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="7444078325-1">do</span><span class="w">
-    </span><span class="p" data-group-id="7444078325-2">[</span><span class="w">
-      </span><span class="p" data-group-id="7444078325-3">{</span><span class="ss">:telegram</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;visciang/telegram&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xxx&quot;</span><span class="p" data-group-id="7444078325-3">}</span><span class="p">,</span><span class="w">
-      </span><span class="p" data-group-id="7444078325-4">{</span><span class="ss">:hackney</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.18&quot;</span><span class="p" data-group-id="7444078325-4">}</span><span class="p">,</span><span class="w">
+Refer to the <a href="Telegram.Poller.html"><code class="inline">Telegram.Poller</code></a> module docs for more info.</p><h4>Telegram Client Config</h4><p>The Telegram HTTP Client is based on <a href="https://hexdocs.pm/tesla/1.8.0/Tesla.html"><code class="inline">Tesla</code></a>.</p><p>The <a href="https://hexdocs.pm/tesla/1.8.0/Tesla.Adapter.html"><code class="inline">Tesla.Adapter</code></a> and options should be configured via the <code class="inline">[:tesla, :adapter]</code> application environment key.
+(ref. <a href="https://hexdocs.pm/tesla/readme.html#adapters">https://hexdocs.pm/tesla/readme.html#adapters</a>)</p><p>For example, a good default could be:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:tesla</span><span class="p">,</span><span class="w"> </span><span class="ss">adapter</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6887161578-1">{</span><span class="nc">Tesla.Adapter.Hackney</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6887161578-2">[</span><span class="ss">recv_timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">40_000</span><span class="p" data-group-id="6887161578-2">]</span><span class="p" data-group-id="6887161578-1">}</span></code></pre><p>a dependency should be added accordingly in your <code class="inline">mix.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="w"> </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="3548757788-1">do</span><span class="w">
+    </span><span class="p" data-group-id="3548757788-2">[</span><span class="w">
+      </span><span class="p" data-group-id="3548757788-3">{</span><span class="ss">:telegram</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;visciang/telegram&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xxx&quot;</span><span class="p" data-group-id="3548757788-3">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="3548757788-4">{</span><span class="ss">:hackney</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.18&quot;</span><span class="p" data-group-id="3548757788-4">}</span><span class="p">,</span><span class="w">
       </span><span class="c1"># ...</span><span class="w">
-    </span><span class="p" data-group-id="7444078325-2">]</span><span class="w">
-  </span><span class="k" data-group-id="7444078325-1">end</span></code></pre><h3 id="webhook" class="section-heading">
-  <a href="#webhook">
+    </span><span class="p" data-group-id="3548757788-2">]</span><span class="w">
+  </span><span class="k" data-group-id="3548757788-1">end</span></code></pre><h3 id="webhook" class="section-heading">
+  <a href="#webhook" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Webhook
   </a>
+  <span class="text">Webhook</span>
 </h3>
 <p>This mode interfaces with the Telegram servers via a webhook, best for production use.
-The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.</p><p>It's possible to use two <a href="https://hexdocs.pm/plug/1.14.2/Plug.html"><code class="inline">Plug</code></a> compatible webserver: <a href="https://hexdocs.pm/bandit/1.0.0-pre.13/Bandit.html"><code class="inline">Bandit</code></a> and <a href="https://hexdocs.pm/plug_cowboy/2.6.1/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a>.</p><p>Refer to the <a href="Telegram.Webhook.html"><code class="inline">Telegram.Webhook</code></a> module docs for more info.</p><h2 id="dispatch-model" class="section-heading">
-  <a href="#dispatch-model">
+The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.</p><p>It's possible to use two <a href="https://hexdocs.pm/plug/1.15.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver: <a href="https://hexdocs.pm/bandit/1.0.0/Bandit.html"><code class="inline">Bandit</code></a> and <a href="https://hexdocs.pm/plug_cowboy/2.6.1/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a>.</p><p>Refer to the <a href="Telegram.Webhook.html"><code class="inline">Telegram.Webhook</code></a> module docs for more info.</p><h2 id="dispatch-model" class="section-heading">
+  <a href="#dispatch-model" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Dispatch model
   </a>
+  <span class="text">Dispatch model</span>
 </h2>
 <p>We can define stateless / stateful bot.</p><ul><li><p>A stateless Bot has no memory of previous conversations, it just receives updates, process them and so on.</p></li><li><p>A stateful Bot instead can remember what happened in the past.
 The state here refer to a specific chat, a conversation (chat_id) between a user and a bot &quot;instance&quot;.</p></li></ul><h2 id="bot-behaviours" class="section-heading">
-  <a href="#bot-behaviours">
+  <a href="#bot-behaviours" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Bot behaviours
   </a>
+  <span class="text">Bot behaviours</span>
 </h2>
 <ul><li><a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a>: works with the <strong>stateless async</strong> dispatch model</li><li><a href="Telegram.ChatBot.html"><code class="inline">Telegram.ChatBot</code></a>: works with the <strong>stateful chat</strong> dispatch model</li></ul><h2 id="logging" class="section-heading">
-  <a href="#logging">
+  <a href="#logging" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
-    Logging
   </a>
+  <span class="text">Logging</span>
 </h2>
 <p>The library attaches two metadata fields to the internal logs: [:bot, :chat_id].
 If your app runs more that one bot these fields can be included in your logs (ref. to the Logger config)
@@ -317,7 +332,7 @@ API Reference
 
         <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.5) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.9) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -325,7 +340,7 @@ API Reference
       </footer>
     </div>
   </div>
-</section>
+</main>
 </div>
 
 
