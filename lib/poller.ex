@@ -39,9 +39,9 @@ defmodule Telegram.Poller do
     pollers =
       Enum.map(bot_specs, fn {bot_behaviour_mod, opts} ->
         token = Keyword.fetch!(opts, :token)
-        name = Utils.name(Poller.Task, token)
+        id = Utils.name(Poller.Task, token)
 
-        Supervisor.child_spec({Poller.Task, {bot_behaviour_mod, token}}, id: name)
+        Supervisor.child_spec({Poller.Task, {bot_behaviour_mod, token}}, id: id)
       end)
 
     children = bot_specs ++ pollers

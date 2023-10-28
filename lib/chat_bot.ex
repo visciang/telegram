@@ -66,6 +66,7 @@ defmodule Telegram.ChatBot do
 
   alias Telegram.Bot.ChatBot.Chat
   alias Telegram.Bot.ChatBot.Chat.Session
+  alias Telegram.Bot.Utils
   alias Telegram.Types
 
   @type t :: module()
@@ -139,7 +140,9 @@ defmodule Telegram.ChatBot do
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
-        Supervisor.child_spec({Chat.Supervisor, {token, max_bot_concurrency}}, [])
+        id = Utils.name(__MODULE__, token)
+
+        Supervisor.child_spec({Chat.Supervisor, {token, max_bot_concurrency}}, id: id)
       end
 
       @impl Telegram.Bot.Dispatch
