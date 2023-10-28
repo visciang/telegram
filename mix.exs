@@ -39,7 +39,7 @@ defmodule Telegram.Mixfile do
       {:plug, "~> 1.14"},
       # HTTP servers
       {:plug_cowboy, "~> 2.5", optional: true},
-      {:bandit, "~> 1.0-pre", optional: true},
+      {:bandit, "~> 1.0", optional: true},
       # HTTP client
       {:tesla, "~> 1.0"},
       {:hackney, "~> 1.18", only: :test},

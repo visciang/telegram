@@ -8,5 +8,5 @@ jobs:
   build:
     uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@v1
     with:
-      image: hexpm/elixir:1.15.4-erlang-26.0.2-debian-bookworm-20230612
+      image: hexpm/elixir:1.15.7-erlang-26.1.2-debian-bookworm-20230612
     secrets: inherit
