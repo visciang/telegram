@@ -10,6 +10,12 @@ defmodule Test.ChatBot do
   end
 
   @impl Telegram.ChatBot
+  def handle_resume({test_pid, state}) do
+    send(test_pid, :resume)
+    {:ok, state}
+  end
+
+  @impl Telegram.ChatBot
   def handle_update(%{"message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}}, token, count_state) do
     count_state = count_state + 1
 

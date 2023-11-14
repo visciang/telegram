@@ -83,6 +83,16 @@ defmodule Telegram.ChatBot do
               | {:ok, initial_state :: chat_state(), timeout :: timeout()}
 
   @doc """
+  On resume callback.
+
+  This callback is optional.
+  A default implementation is injected with "use Telegram.ChatBot", it just returns the received state.
+  """
+  @callback handle_resume(chat_state :: chat_state()) ::
+              {:ok, next_chat_state :: chat_state()}
+              | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
+
+  @doc """
   Receives the telegram update event and the "current" chat_state.
   Return the "updated" chat_state.
   """
@@ -114,7 +124,7 @@ defmodule Telegram.ChatBot do
               | {:ok, next_chat_state :: chat_state(), timeout :: timeout()}
               | {:stop, next_chat_state :: chat_state()}
 
-  @optional_callbacks handle_info: 4, handle_timeout: 3
+  @optional_callbacks handle_resume: 1, handle_info: 4, handle_timeout: 3
 
   @doc false
   defmacro __using__(_use_opts) do
@@ -123,6 +133,11 @@ defmodule Telegram.ChatBot do
       @behaviour Telegram.Bot.Dispatch
 
       require Logger
+
+      @impl Telegram.ChatBot
+      def handle_resume(chat_state) do
+        {:ok, chat_state}
+      end
 
       @impl Telegram.ChatBot
       def handle_info(msg, _token, _chat_id, chat_state) do
@@ -136,7 +151,7 @@ defmodule Telegram.ChatBot do
         {:stop, chat_state}
       end
 
-      defoverridable handle_info: 4, handle_timeout: 3
+      defoverridable handle_resume: 1, handle_info: 4, handle_timeout: 3
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(token: token, max_bot_concurrency: max_bot_concurrency) do
@@ -151,11 +166,22 @@ defmodule Telegram.ChatBot do
 
         :ok
       end
+
+      @doc """
+      Resume a ChatBot.
+      A chat session for `chat_id` is restored at the previous `state`.
+
+      It's caller responsability to pass the same token used to start this bot.
+      """
+      @spec resume(Types.token(), String.t(), term()) :: :ok | {:error, :already_started | :max_children}
+      def resume(token, chat_id, state) do
+        Session.Server.resume(__MODULE__, token, chat_id, state)
+      end
     end
   end
 
   @doc """
-  Lookups the pid of a specific chat session.
+  Lookup the pid of a specific chat session.
 
   It is up to the user to define and keep a mapping between
   the business logic specific session identifier and the telegram chat_id.

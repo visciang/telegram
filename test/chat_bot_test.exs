@@ -11,7 +11,7 @@ defmodule Test.Telegram.ChatBot do
 
   setup [:setup_test_bot]
 
-  test "basic flow" do
+  test "updates" do
     url_test_response = tg_url(tg_token(), "testResponse")
     chat_id = "chat_id_1234"
 
@@ -37,6 +37,33 @@ defmodule Test.Telegram.ChatBot do
                  false
                )
     end)
+  end
+
+  test "resume" do
+    url_test_response = tg_url(tg_token(), "testResponse")
+    chat_id = "chat_id_1234"
+
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 1,
+               "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
+             })
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_test_response},
+               fn %{body: body} ->
+                 body = Jason.decode!(body)
+                 assert body["chat_id"] == chat_id
+                 assert body["text"] == "1"
+
+                 response = %{"ok" => true, "result" => []}
+                 Tesla.Mock.json(response, status: 200)
+               end,
+               false
+             )
+
+    {:ok, chatbot_server} = Telegram.ChatBot.lookup(tg_token(), chat_id)
 
     assert {:ok, _} =
              Webhook.update(tg_token(), %{
@@ -51,6 +78,33 @@ defmodule Test.Telegram.ChatBot do
                  body = Jason.decode!(body)
                  assert body["chat_id"] == chat_id
                  assert body["text"] == "Bye!"
+
+                 response = %{"ok" => true, "result" => []}
+                 Tesla.Mock.json(response, status: 200)
+               end,
+               false
+             )
+
+    ref = Process.monitor(chatbot_server)
+    assert_receive {:DOWN, ^ref, :process, _, _}
+
+    assert :ok = Test.ChatBot.resume(tg_token(), chat_id, {self(), 50})
+
+    assert_receive :resume
+
+    assert {:ok, _} =
+             Webhook.update(tg_token(), %{
+               "update_id" => 1,
+               "message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}
+             })
+
+    assert :ok ==
+             tesla_mock_expect_request(
+               %{method: :post, url: ^url_test_response},
+               fn %{body: body} ->
+                 body = Jason.decode!(body)
+                 assert body["chat_id"] == chat_id
+                 assert body["text"] == "51"
 
                  response = %{"ok" => true, "result" => []}
                  Tesla.Mock.json(response, status: 200)
