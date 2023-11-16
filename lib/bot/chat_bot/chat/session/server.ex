@@ -22,7 +22,25 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     )
   end
 
-  @spec handle_update(ChatBot.t(), Types.token(), Types.update()) :: any()
+  @spec resume(ChatBot.t(), Types.token(), String.t(), term()) :: :ok | {:error, :already_started | :max_children}
+  def resume(chatbot_behaviour, token, chat_id, state) do
+    chat = %{"resume" => :resume, "id" => chat_id, "state" => state}
+
+    with {:lookup, {:error, :not_found}} <- {:lookup, Chat.Registry.lookup(token, chat_id)},
+         {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat)} do
+      :ok
+    else
+      {:lookup, {:ok, _server}} ->
+        {:error, :already_started}
+
+      {:start, {:error, :max_children} = error} ->
+        # coveralls-ignore-start
+        error
+        # coveralls-ignore-stop
+    end
+  end
+
+  @spec handle_update(ChatBot.t(), Types.token(), Types.update()) :: :ok
   def handle_update(chatbot_behaviour, token, update) do
     with {:get_chat, {:ok, chat}} <- {:get_chat, Utils.get_chat(update)},
          {:get_chat_session_server, {:ok, server}} <-
@@ -35,9 +53,27 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
       {:get_chat_session_server, {:error, :max_children}} ->
         Logger.info("Reached max children, update dropped", bot: chatbot_behaviour, token: token)
     end
+
+    :ok
   end
 
   @impl GenServer
+  def init({chatbot_behaviour, token, %{"resume" => :resume, "id" => chat_id, "state" => bot_state}}) do
+    Logger.metadata(bot: chatbot_behaviour, chat_id: chat_id)
+
+    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat_id, bot_state: bot_state}
+
+    case chatbot_behaviour.handle_resume(bot_state) do
+      {:ok, bot_state} ->
+        {:ok, put_in(state.bot_state, bot_state)}
+
+      {:ok, bot_state, timeout} ->
+        # coveralls-ignore-start
+        {:ok, put_in(state.bot_state, bot_state), timeout}
+        # coveralls-ignore-stop
+    end
+  end
+
   def init({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
     Logger.metadata(bot: chatbot_behaviour, chat_id: chat_id)
 

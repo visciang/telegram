@@ -55,10 +55,10 @@ defmodule Test.Telegram.Api do
       assert {:error, ^error_description} = Telegram.Api.request(tg_token(), tg_method())
 
       Enum.each(1..(api_max_retries + 1), fn _ ->
-        assert_receive(:test_429)
+        assert_receive :test_429
       end)
 
-      refute_received(_)
+      refute_received _
     end
 
     test "http adapter error" do
