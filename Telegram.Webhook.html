@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.30.9">
-    <meta name="project" content="telegram v1.1.1">
+    <meta name="project" content="telegram v1.2.0">
 
-    <title>Telegram.Webhook — telegram v1.1.1</title>
+    <title>Telegram.Webhook — telegram v1.2.0</title>
     <link rel="stylesheet" href="dist/html-elixir-XFYN5IVA.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-0EAD10D0.js"></script>
+    <script src="dist/sidebar_items-8D15BDBE.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 telegram
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v1.1.1
+        v1.2.0
       </div>
     </div>
     <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
@@ -117,7 +117,7 @@ Pages
     </a>
 
   <span translate="no">Telegram.Webhook</span> 
-  <small class="app-vsn" translate="no">(telegram v1.1.1)</small>
+  <small class="app-vsn" translate="no">(telegram v1.2.0)</small>
 
 </h1>
 
@@ -135,40 +135,40 @@ Pages
   </a>
   <span class="text">WebServer adapter</span>
 </h3>
-<p>Two <a href="https://hexdocs.pm/plug/1.15.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver are supported:</p><ul><li><a href="Telegram.WebServer.Bandit.html"><code class="inline">Telegram.WebServer.Bandit</code></a>: use <a href="https://hexdocs.pm/bandit/1.0.0/Bandit.html"><code class="inline">Bandit</code></a></li><li><a href="Telegram.WebServer.Cowboy.html"><code class="inline">Telegram.WebServer.Cowboy</code></a> (default): use <a href="https://hexdocs.pm/plug_cowboy/2.6.1/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a></li></ul><p>You should configure the desired webserver adapter in you app configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
+<p>Two <a href="https://hexdocs.pm/plug/1.15.2/Plug.html"><code class="inline">Plug</code></a> compatible webserver are supported:</p><ul><li><a href="Telegram.WebServer.Bandit.html"><code class="inline">Telegram.WebServer.Bandit</code></a>: use <a href="https://hexdocs.pm/bandit/1.1.1/Bandit.html"><code class="inline">Bandit</code></a></li><li><a href="Telegram.WebServer.Cowboy.html"><code class="inline">Telegram.WebServer.Cowboy</code></a> (default): use <a href="https://hexdocs.pm/plug_cowboy/2.6.1/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a></li></ul><p>You should configure the desired webserver adapter in you app configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
   </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Bandit</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
 </span><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
-  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="8781056822-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="8781056822-1">}</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="4849047380-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="4849047380-1">}</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
-</span><span class="p" data-group-id="8781056822-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0-pre&quot;</span><span class="p" data-group-id="8781056822-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
+</span><span class="p" data-group-id="4849047380-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0-pre&quot;</span><span class="p" data-group-id="4849047380-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
   <a href="#module-supervision-tree" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Supervision tree</span>
 </h3>
-<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3257814202-1">[</span><span class="w">
+<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6533094830-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
   </span><span class="ss">local_port</span><span class="p">:</span><span class="w"> </span><span class="mi">4_000</span><span class="w">
-</span><span class="p" data-group-id="3257814202-1">]</span><span class="w">
+</span><span class="p" data-group-id="6533094830-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3257814202-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3257814202-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="3257814202-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3257814202-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="3257814202-4">)</span><span class="w">
-</span><span class="p" data-group-id="3257814202-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6533094830-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6533094830-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="6533094830-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6533094830-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="6533094830-4">)</span><span class="w">
+</span><span class="p" data-group-id="6533094830-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3257814202-5">[</span><span class="w">
-  </span><span class="p" data-group-id="3257814202-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3257814202-7">[</span><span class="p" data-group-id="3257814202-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="3257814202-8">}</span><span class="p" data-group-id="3257814202-7">]</span><span class="p" data-group-id="3257814202-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6533094830-5">[</span><span class="w">
+  </span><span class="p" data-group-id="6533094830-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6533094830-7">[</span><span class="p" data-group-id="6533094830-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="6533094830-8">}</span><span class="p" data-group-id="6533094830-7">]</span><span class="p" data-group-id="6533094830-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="3257814202-5">]</span><span class="w">
+</span><span class="p" data-group-id="6533094830-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3257814202-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="3257814202-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="3257814202-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="3257814202-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6533094830-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="6533094830-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="6533094830-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="6533094830-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
   <a href="#module-ref" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
