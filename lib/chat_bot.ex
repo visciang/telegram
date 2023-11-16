@@ -87,6 +87,8 @@ defmodule Telegram.ChatBot do
 
   This callback is optional.
   A default implementation is injected with "use Telegram.ChatBot", it just returns the received state.
+
+  Note: a resume/3 function is available on every ChatBot, `MyChatBot.resume(token, chat_id, state)`.
   """
   @callback handle_resume(chat_state :: chat_state()) ::
               {:ok, next_chat_state :: chat_state()}
