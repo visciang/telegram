@@ -4,22 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.31.1">
+    <meta name="generator" content="ExDoc v0.34.1">
     <meta name="project" content="telegram v1.2.1">
 
 
     <title>Telegram.Webhook — telegram v1.2.1</title>
-    <link rel="stylesheet" href="dist/html-elixir-FM2CSD74.css" />
+    <link rel="stylesheet" href="dist/html-elixir-VEFCVPF3.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-43PMFBC7.js"></script>
+    <script src="dist/handlebars.templates-K7URE6B4.js"></script>
     <script src="dist/sidebar_items-8D15BDBE.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-L4O5OK2K.js"></script>
-
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-7XSQ4GTY.js"></script>
 
   </head>
   <body data-type="modules" class="page-module">
@@ -37,13 +34,11 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
 <button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
-
-<div class="background-layer"></div>
 
 <nav id="sidebar" class="sidebar">
 
@@ -89,46 +84,46 @@ Pages
 
 <main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
-      <div class="top-search">
-        <div class="search-settings">
-          <form class="search-bar" action="search.html">
-            <label class="search-label">
-              <span class="sr-only">Search documentation of telegram</span>
-              <input name="q" type="text" class="search-input" placeholder="Search Documentation (press /)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            </label>
-            <button type="submit" class="search-button" aria-label="Submit Search">
-              <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
-            </button>
-            <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
-              <i class="ri-close-line ri-lg" title="Cancel search"></i>
-            </button>
-          </form>
-          <div class="autocomplete">
-          </div>
-          <button class="icon-settings display-settings">
-            <i class="ri-settings-3-line"></i>
-            <span class="sr-only">Settings</span>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of telegram</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
           </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
         </div>
-
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
       </div>
+    </div>
 
-<h1>
+<div id="top-content">
+  <h1>
 
-    <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
+      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
 
-  <span translate="no">Telegram.Webhook</span> 
-  <small class="app-vsn" translate="no">(telegram v1.2.1)</small>
+    <span translate="no">Telegram.Webhook</span> 
+    <small class="app-vsn" translate="no">(telegram v1.2.1)</small>
 
-</h1>
+  </h1>
 
 
-  <section id="moduledoc">
+    <section id="moduledoc">
 <p>Telegram Webhook supervisor.</p><h2 id="module-usage" class="section-heading">
   <a href="#module-usage" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -141,48 +136,49 @@ Pages
   </a>
   <span class="text">WebServer adapter</span>
 </h3>
-<p>Two <a href="https://hexdocs.pm/plug/1.15.3/Plug.html"><code class="inline">Plug</code></a> compatible webserver are supported:</p><ul><li><a href="Telegram.WebServer.Bandit.html"><code class="inline">Telegram.WebServer.Bandit</code></a>: use <a href="https://hexdocs.pm/bandit/1.2.3/Bandit.html"><code class="inline">Bandit</code></a></li><li><a href="Telegram.WebServer.Cowboy.html"><code class="inline">Telegram.WebServer.Cowboy</code></a> (default): use <a href="https://hexdocs.pm/plug_cowboy/2.7.0/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a></li></ul><p>You should configure the desired webserver adapter in you app configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
+<p>Two <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver are supported:</p><ul><li><a href="Telegram.WebServer.Bandit.html"><code class="inline">Telegram.WebServer.Bandit</code></a>: use <a href="https://hexdocs.pm/bandit/1.5.5/Bandit.html"><code class="inline">Bandit</code></a></li><li><a href="Telegram.WebServer.Cowboy.html"><code class="inline">Telegram.WebServer.Cowboy</code></a> (default): use <a href="https://hexdocs.pm/plug_cowboy/2.7.1/Plug.Cowboy.html"><code class="inline">Plug.Cowboy</code></a></li></ul><p>You should configure the desired webserver adapter in you app configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
   </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Bandit</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
 </span><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
-  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3739993705-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="3739993705-1">}</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6647265951-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="6647265951-1">}</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
-</span><span class="p" data-group-id="3739993705-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0-pre&quot;</span><span class="p" data-group-id="3739993705-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
+</span><span class="p" data-group-id="6647265951-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0-pre&quot;</span><span class="p" data-group-id="6647265951-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
   <a href="#module-supervision-tree" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Supervision tree</span>
 </h3>
-<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8383050218-1">[</span><span class="w">
+<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4905557113-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
   </span><span class="ss">local_port</span><span class="p">:</span><span class="w"> </span><span class="mi">4_000</span><span class="w">
-</span><span class="p" data-group-id="8383050218-1">]</span><span class="w">
+</span><span class="p" data-group-id="4905557113-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8383050218-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8383050218-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="8383050218-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8383050218-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="8383050218-4">)</span><span class="w">
-</span><span class="p" data-group-id="8383050218-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4905557113-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="4905557113-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="4905557113-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="4905557113-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="4905557113-4">)</span><span class="w">
+</span><span class="p" data-group-id="4905557113-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8383050218-5">[</span><span class="w">
-  </span><span class="p" data-group-id="8383050218-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8383050218-7">[</span><span class="p" data-group-id="8383050218-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="8383050218-8">}</span><span class="p" data-group-id="8383050218-7">]</span><span class="p" data-group-id="8383050218-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4905557113-5">[</span><span class="w">
+  </span><span class="p" data-group-id="4905557113-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4905557113-7">[</span><span class="p" data-group-id="4905557113-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="4905557113-8">}</span><span class="p" data-group-id="4905557113-7">]</span><span class="p" data-group-id="4905557113-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="8383050218-5">]</span><span class="w">
+</span><span class="p" data-group-id="4905557113-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8383050218-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="8383050218-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="8383050218-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8383050218-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4905557113-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="4905557113-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="4905557113-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="4905557113-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
   <a href="#module-ref" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Ref</span>
 </h2>
 <ul><li><a href="https://core.telegram.org/bots/api#setwebhook">https://core.telegram.org/bots/api#setwebhook</a></li><li><a href="https://core.telegram.org/bots/webhooks">https://core.telegram.org/bots/webhooks</a></li></ul>
-  </section>
+    </section>
 
+</div>
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -198,7 +194,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:config/0" translate="no">config()</a>
+        <a href="#t:config/0" data-no-tooltip translate="no">config()</a>
 
       </div>
 
@@ -214,7 +210,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+        <a href="#child_spec/1" data-no-tooltip translate="no">child_spec(init_arg)</a>
 
       </div>
 
@@ -224,7 +220,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(list)</a>
+        <a href="#start_link/1" data-no-tooltip translate="no">start_link(list)</a>
 
       </div>
 
@@ -246,7 +242,7 @@ Pages
 <section class="detail" id="t:config/0">
 
   <div class="detail-header">
-    <a href="#t:config/0" class="detail-link" title="Link to this type">
+    <a href="#t:config/0" class="detail-link" data-no-tooltip title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
@@ -266,8 +262,8 @@ Pages
 
           <pre translate="no"><span class="attribute">@type</span> config() :: [
   host: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
-  port: <a href="https://www.erlang.org/doc/man/inet.html#type-port_number">:inet.port_number</a>(),
-  local_port: <a href="https://www.erlang.org/doc/man/inet.html#type-port_number">:inet.port_number</a>(),
+  port: <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>(),
+  local_port: <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>(),
   max_connections: 1..100,
   set_webhook: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
 ]</pre>
@@ -292,7 +288,7 @@ Pages
 <section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
@@ -314,7 +310,7 @@ Pages
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
+    <a href="#start_link/1" class="detail-link" data-no-tooltip title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
@@ -344,30 +340,29 @@ Pages
     </div>
   </section>
 
-      <footer class="footer">
-        <p>
+    <footer class="footer">
+      <p>
 
-          <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-          </span>
-        </p>
+        </span>
+      </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.31.1) for the
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.34.1) for the
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
-        </p>
-      </footer>
-    </div>
+      </p>
+
+    </footer>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>
