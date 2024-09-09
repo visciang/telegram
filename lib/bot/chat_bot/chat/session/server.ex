@@ -30,11 +30,11 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
          {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat)} do
       :ok
     else
+      # coveralls-ignore-start
       {:lookup, {:ok, _server}} ->
         {:error, :already_started}
 
       {:start, {:error, :max_children} = error} ->
-        # coveralls-ignore-start
         error
         # coveralls-ignore-stop
     end

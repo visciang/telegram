@@ -61,7 +61,7 @@ defmodule Telegram.Poller do
       """
     end
 
-    # coveralls-ignore-end
+    # coveralls-ignore-stop
   end
 end
 
