@@ -1,16 +1,15 @@
+# coveralls-ignore-start
+
 defmodule Telegram.WebServer.Cowboy do
   @moduledoc """
   Cowboy child specification for `Plug` compatible webserver.
 
   See `Telegram.Webhook`.
   """
-  require Logger
   alias Telegram.Types
 
   @spec child_spec(:inet.port_number(), Types.bot_routing()) :: {module(), term()}
   def child_spec(port, bot_routing_map) do
-    # coveralls-ignore-start
-
     unless Code.ensure_loaded?(Plug.Cowboy) do
       raise """
       Missing :plug_cowboy dependency.
@@ -18,8 +17,6 @@ defmodule Telegram.WebServer.Cowboy do
       See Telegram.Webhook documentation.
       """
     end
-
-    # coveralls-ignore-stop
 
     {Plug.Cowboy,
      [
@@ -31,3 +28,5 @@ defmodule Telegram.WebServer.Cowboy do
      ]}
   end
 end
+
+# coveralls-ignore-stop
