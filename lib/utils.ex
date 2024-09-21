@@ -18,7 +18,7 @@ defmodule Telegram.Utils do
         res
 
       {:error, _} = err ->
-        Logger.info("Api request failed with '#{inspect(err)}'. Retrying  in #{period} ms...")
+        Logger.info("Api request failed with '#{inspect(err)}'. Retrying in #{period} ms...")
 
         Process.sleep(period)
 
