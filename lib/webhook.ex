@@ -2,14 +2,18 @@ defmodule Telegram.Webhook do
   @moduledoc """
   Telegram Webhook supervisor.
 
+  This modules can the used to start a webserver exposing a webhoook endpoint
+  where the telegram server can push updates for your BOT.
+  On start the webhook address for the BOT is posted to the telegram server via the [`setWebHook`](https://core.telegram.org/bots/api#setwebhook) method.
+
   ## Usage
 
   ### WebServer adapter
 
   Two `Plug` compatible webserver are supported:
 
-  - `Telegram.WebServer.Bandit`: use `Bandit`
-  - `Telegram.WebServer.Cowboy` (default): use `Plug.Cowboy`
+  - `Telegram.WebServer.Bandit` (default): use `Bandit`
+  - `Telegram.WebServer.Cowboy`: use `Plug.Cowboy`
 
   You should configure the desired webserver adapter in you app configuration:
 
@@ -30,7 +34,7 @@ defmodule Telegram.Webhook do
 
   # OR
 
-  {:bandit, "~> 1.0-pre"}
+  {:bandit, "~> 1.0"}
   ```
 
   ### Supervision tree
@@ -61,6 +65,15 @@ defmodule Telegram.Webhook do
   ## Ref
   - https://core.telegram.org/bots/api#setwebhook
   - https://core.telegram.org/bots/webhooks
+
+  # Direct Phoenix / Plug integration
+
+  If want to integrate the webhook in a Phoenix / Plug based application facing internet, you should (for each BOT):
+
+  - add a POST route in your endpoints to receive the webhook updates and dispatch them to the BOT.
+  - active the webhook mode posting a [`setWebHook`](https://core.telegram.org/bots/api#setwebhook) request to the telegram server.
+
+  Refer to this module implementation as a guide line for the above.
   """
 
   alias Telegram.Types

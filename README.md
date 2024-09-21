@@ -5,7 +5,7 @@
 Telegram library for the Elixir language.
 
 It provides:
-- an inteface to the Telegram Bot HTTP-based APIs (`Telegram.Api`) 
+- an inteface to the Telegram Bot HTTP-based APIs (`Telegram.Api`)
 - a couple of bot behaviours to define you bots (`Telegram.Bot`, `Telegram.ChatBot`)
 - two bot runners (`Telegram.Poller`, `Telegram.Webhook`)
 
@@ -203,8 +203,9 @@ a dependency should be added accordingly in your `mix.exs`:
 
 This mode interfaces with the Telegram servers via a webhook, best for production use.
 The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.
-
 It's possible to use two `Plug` compatible webserver: `Bandit` and `Plug.Cowboy`.
+
+Alternatively, if you have a Phoenix / Plug based application facing internet, you can directly integrate the webhook.
 
 Refer to the `Telegram.Webhook` module docs for more info.
 
