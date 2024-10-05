@@ -12,7 +12,7 @@ Mix.install(
 defmodule Adapter.Finch do
   use Tesla
 
-  adapter Tesla.Adapter.Finch, name: __MODULE__, receive_timeout: 40_000
+  adapter Tesla.Adapter.Finch, name: __MODULE__
 end
 
 defmodule CountChatBot do
