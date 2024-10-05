@@ -3,15 +3,19 @@
 Mix.install(
   [
     {:telegram, github: "visciang/telegram", branch: "master"},
-    {:hackney, "~> 1.18"}
+    {:finch, "~> 0.19"}
   ],
   # force: true,
   config_path: "example/config/runtime.exs"
 )
 
-defmodule CountChatBot do
-  @moduledoc false
+defmodule Adapter.Finch do
+  use Tesla
 
+  adapter Tesla.Adapter.Finch, name: __MODULE__, receive_timeout: 40_000
+end
+
+defmodule CountChatBot do
   require Logger
 
   use Telegram.ChatBot
@@ -52,7 +56,10 @@ end
 
 {:ok, _} =
   Supervisor.start_link(
-    [{Telegram.Poller, bots: [{CountChatBot, token: token, max_bot_concurrency: 1_000}]}],
+    [
+      {Finch, name: Adapter.Finch},
+      {Telegram.Poller, bots: [{CountChatBot, token: token, max_bot_concurrency: 1_000}]}
+    ],
     strategy: :one_for_one
   )
 
