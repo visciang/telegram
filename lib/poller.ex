@@ -67,6 +67,7 @@ end
 
 defmodule Telegram.Poller.Task do
   @moduledoc false
+  @default_polling_timeout_s 30
 
   alias Telegram.Bot.Dispatch
   alias Telegram.Types
@@ -137,9 +138,26 @@ defmodule Telegram.Poller.Task do
       {:ok, updates} ->
         updates
 
+      # coveralls-ignore-start
+
+      {:error, :timeout} ->
+        Logger.notice("Telegram.Api.request 'getUpdates' timed out. Retrying...")
+
+        Logger.notice("""
+        If you see this error consistently, check you configuration:
+          config :tesla, adapter: {Tesla.Adapter.Hackney, [recv_timeout: 40_000]}")
+
+        The HTTP client receive timeout should be strictly greater than the telegram getUpdates polling timeout.
+
+        The polling timeout defaults to #{@default_polling_timeout_s} s and can be customized under
+          config, :telegram, :get_updates_poll_timeout_s, #{@default_polling_timeout_s}
+        """)
+
+        wait_updates(context)
+
       error ->
-        # coveralls-ignore-start
         raise "Telegram.Api.request 'getUpdates' error: #{inspect(error)}"
+
         # coveralls-ignore-stop
     end
   end
@@ -157,6 +175,6 @@ defmodule Telegram.Poller.Task do
 
   defp conf_get_updates_poll_timeout_s do
     # timeout configuration opts unit: seconds
-    Application.get_env(:telegram, :get_updates_poll_timeout_s, 30)
+    Application.get_env(:telegram, :get_updates_poll_timeout_s, @default_polling_timeout_s)
   end
 end
