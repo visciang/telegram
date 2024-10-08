@@ -9,12 +9,6 @@ Mix.install(
   config_path: "example/config/runtime.exs"
 )
 
-defmodule Adapter.Finch do
-  use Tesla
-
-  adapter Tesla.Adapter.Finch, name: __MODULE__
-end
-
 defmodule CountChatBot do
   require Logger
 
