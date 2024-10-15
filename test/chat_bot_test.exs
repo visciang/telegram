@@ -39,6 +39,41 @@ defmodule Test.Telegram.ChatBot do
     end)
   end
 
+  test "inline query" do
+    url_test_response = tg_url(tg_token(), "testResponse")
+    query_id_base = "chat_id_1234"
+
+    1..3
+    |> Enum.each(fn idx ->
+      assert {:ok, _} =
+               Webhook.update(tg_token(), %{
+                 "update_id" => idx,
+                 "inline_query" => %{
+                   "id" => "#{query_id_base}_#{idx}",
+                   "query" => "some query",
+                   "chat_type" => "private",
+                   "offset" => "",
+                   "from" => %{"id" => "user_id"}
+                 }
+               })
+
+      assert :ok ==
+               tesla_mock_expect_request(
+                 %{method: :post, url: ^url_test_response},
+                 fn %{body: body} ->
+                   body = Jason.decode!(body)
+                   assert body["query_id"] == "#{query_id_base}_#{idx}"
+                   assert body["query"] == "some query"
+                   assert body["text"] == "1"
+
+                   response = %{"ok" => true, "result" => []}
+                   Tesla.Mock.json(response, status: 200)
+                 end,
+                 false
+               )
+    end)
+  end
+
   test "resume" do
     url_test_response = tg_url(tg_token(), "testResponse")
     chat_id = "chat_id_1234"

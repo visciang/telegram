@@ -92,7 +92,12 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   @impl GenServer
   def handle_cast({:handle_update, update}, %State{} = state) do
     res = state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
-    handle_callback_result(res, state)
+
+    if Utils.transient_chat?(update) do
+      handle_callback_result({:stop, elem(res, 1)}, state)
+    else
+      handle_callback_result(res, state)
+    end
   end
 
   @impl GenServer

@@ -65,8 +65,16 @@ defmodule Telegram.Bot.Utils do
       {_update_type, %{"message" => %{"chat" => %{"id" => _} = chat}} = _chat} ->
         {:ok, chat}
 
+      {"inline_query", %{"id" => _} = chat} ->
+        {:ok, chat}
+
       _ ->
         nil
     end)
+  end
+
+  @spec transient_chat?(Types.update()) :: boolean()
+  def transient_chat?(update) do
+    Map.has_key?(update, "inline_query")
   end
 end
