@@ -42,10 +42,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @spec handle_update(ChatBot.t(), Types.token(), Types.update()) :: :ok
   def handle_update(chatbot_behaviour, token, update) do
-    with {:get_chat, {:ok, chat}} <- {:get_chat, Utils.get_chat(update)},
+    with {:get_chat, {chat_type, chat}} <- {:get_chat, get_chat(chatbot_behaviour, update)},
          {:get_chat_session_server, {:ok, server}} <-
            {:get_chat_session_server, get_chat_session_server(chatbot_behaviour, token, chat)} do
-      GenServer.cast(server, {:handle_update, update})
+      GenServer.cast(server, {:handle_update, chat_type, update})
     else
       {:get_chat, nil} ->
         Logger.info("Dropped update without chat #{inspect(update)}", bot: chatbot_behaviour, token: token)
@@ -55,6 +55,20 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     end
 
     :ok
+  end
+
+  defp get_chat(chatbot_behaviour, update) do
+    if function_exported?(chatbot_behaviour, :get_chat, 2) do
+      update_type =
+        update
+        |> Map.drop(["update_id"])
+        |> Map.keys()
+        |> List.first()
+
+      chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
+    else
+      Utils.get_chat(update)
+    end
   end
 
   @impl GenServer
@@ -90,10 +104,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @impl GenServer
-  def handle_cast({:handle_update, update}, %State{} = state) do
+  def handle_cast({:handle_update, chat_type, update}, %State{} = state) do
     res = state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
 
-    if Utils.transient_chat?(update) do
+    if chat_type == :transient do
       handle_callback_result({:stop, elem(res, 1)}, state)
     else
       handle_callback_result(res, state)

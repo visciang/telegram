@@ -56,7 +56,7 @@ defmodule Telegram.Bot.Utils do
   @doc """
   Get the "chat" field in an Update object, if present
   """
-  @spec get_chat(Types.update()) :: {:ok, map()} | nil
+  @spec get_chat(Types.update()) :: {:ok, ChatBot.chat()} | nil
   def get_chat(update) do
     Enum.find_value(update, fn
       {_update_type, %{"chat" => %{"id" => _} = chat}} ->
@@ -65,16 +65,8 @@ defmodule Telegram.Bot.Utils do
       {_update_type, %{"message" => %{"chat" => %{"id" => _} = chat}} = _chat} ->
         {:ok, chat}
 
-      {"inline_query", %{"id" => _} = chat} ->
-        {:ok, chat}
-
       _ ->
         nil
     end)
-  end
-
-  @spec transient_chat?(Types.update()) :: boolean()
-  def transient_chat?(update) do
-    Map.has_key?(update, "inline_query")
   end
 end

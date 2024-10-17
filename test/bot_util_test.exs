@@ -27,17 +27,5 @@ defmodule Test.Telegram.Bot.Utils do
 
     assert {:ok, %{"id" => "123"}} ==
              Utils.get_chat(%{"callback_query" => %{"message" => %{"chat" => %{"id" => "123"}}}})
-
-    assert {:ok, %{"id" => "123"}} == Utils.get_chat(%{"inline_query" => %{"id" => "123"}})
-  end
-
-  test "transient_chat?" do
-    assert false == Utils.transient_chat?(%{})
-    assert false == Utils.transient_chat?(%{"message" => %{"chat" => %{"id" => "123"}}})
-
-    assert false ==
-             Utils.transient_chat?(%{"callback_query" => %{"message" => %{"chat" => %{"id" => "123"}}}})
-
-    assert true == Utils.transient_chat?(%{"inline_query" => %{"id" => "123"}})
   end
 end
