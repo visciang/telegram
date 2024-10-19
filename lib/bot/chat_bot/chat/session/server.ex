@@ -26,9 +26,9 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   def resume(chatbot_behaviour, token, chat_id, bot_state) do
     chat = %Telegram.ChatBot.Chat{
       id: chat_id,
-      metadata: [
+      metadata: %{
         resume: :resume
-      ]
+      }
     }
 
     with {:lookup, {:error, :not_found}} <- {:lookup, Chat.Registry.lookup(token, chat_id)},
@@ -73,7 +73,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @impl GenServer
-  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{metadata: [resume: :resume]} = chat, bot_state}) do
+  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{metadata: %{resume: :resume}} = chat, bot_state}) do
     Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
 
     state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: bot_state}

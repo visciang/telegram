@@ -213,7 +213,7 @@ defmodule Telegram.ChatBot do
 
   ### Return values:
 
-  - Returning `{:ok, %Telegram.ChatBot.Chat{id: id, metadata: [...]}}` will trigger
+  - Returning `{:ok, %Telegram.ChatBot.Chat{id: id, metadata: %{}}}` will trigger
     the bot to spin up a new instance, which will manage the update as a full chat session.
     The instance will be uniquely identified by the return `id` and
     `c:init/1` will be called with the returned `t:Telegram.ChatBot.Chat.t/0` struct.
@@ -236,10 +236,10 @@ defmodule Telegram.ChatBot do
 
       @impl Telegram.ChatBot
       def get_chat(_, %{"chat" => %{"id" => chat_id} = chat}),
-        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: %{chat: chat}}}
 
       def get_chat(_, %{"message" => %{"chat" => %{"id" => chat_id} = chat}}),
-        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: %{chat: chat}}}
 
       def get_chat(_, _), do: :ignore
 
