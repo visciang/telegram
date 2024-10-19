@@ -196,6 +196,9 @@ defmodule Telegram.ChatBot do
   @doc """
   Allows a chatbot to customize how incoming updates are processed.
 
+  This function receives an update and either returns the unique chat identifier
+  associated with it or instructs the bot to ignore the update.
+
   ### Parameters:
 
   - `update_type`: is a string representing the type of update received. For example:
@@ -303,7 +306,7 @@ defmodule Telegram.ChatBot do
   @doc """
   Retrieves the process ID (`pid`) of a specific chat session.
 
-  This function allows you to look up the active process managing a particular chat session
+  This function allows you to look up the active process managing a particular chat session.
 
   Note: it is the user's responsibility to maintain and manage the mapping between
   the custom session identifier (specific to the business logic) and the Telegram `chat_id`.
