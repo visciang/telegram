@@ -7,7 +7,7 @@ defmodule Telegram.ChatBot.Chat do
 
   @type t() :: %__MODULE__{
           id: String.t(),
-          metadata: Keyword.t(any())
+          metadata: Keyword.t(any()) | nil
         }
 
   @enforce_keys [:id]
