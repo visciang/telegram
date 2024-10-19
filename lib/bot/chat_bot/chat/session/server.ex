@@ -3,7 +3,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   use GenServer, restart: :transient
   require Logger
-  alias Telegram.Bot.{ChatBot.Chat, Utils}
+  alias Telegram.Bot.ChatBot.Chat
   alias Telegram.{ChatBot, Types}
 
   defmodule State do
@@ -13,21 +13,26 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     defstruct @enforce_keys
   end
 
-  @spec start_link({ChatBot.t(), Types.token(), ChatBot.chat()}) :: GenServer.on_start()
-  def start_link({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
+  @spec start_link({ChatBot.t(), Types.token(), ChatBot.Chat.t()}) :: GenServer.on_start()
+  def start_link({chatbot_behaviour, token, chat, bot_state}) do
     GenServer.start_link(
       __MODULE__,
-      {chatbot_behaviour, token, chat},
-      name: Chat.Registry.via(token, chat_id)
+      {chatbot_behaviour, token, chat, bot_state},
+      name: Chat.Registry.via(token, chat.id)
     )
   end
 
   @spec resume(ChatBot.t(), Types.token(), String.t(), term()) :: :ok | {:error, :already_started | :max_children}
   def resume(chatbot_behaviour, token, chat_id, state) do
-    chat = %{"resume" => :resume, "id" => chat_id, "state" => state}
+    chat = %Telegram.ChatBot.Chat{
+      id: chat_id,
+      metadata: [
+        resume: :resume
+      ]
+    }
 
     with {:lookup, {:error, :not_found}} <- {:lookup, Chat.Registry.lookup(token, chat_id)},
-         {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat)} do
+         {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat, state)} do
       :ok
     else
       # coveralls-ignore-start
@@ -42,12 +47,12 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @spec handle_update(ChatBot.t(), Types.token(), Types.update()) :: :ok
   def handle_update(chatbot_behaviour, token, update) do
-    with {:get_chat, {chat_type, chat}} <- {:get_chat, get_chat(chatbot_behaviour, update)},
+    with {:get_chat, {:ok, chat}} <- {:get_chat, get_chat(chatbot_behaviour, update)},
          {:get_chat_session_server, {:ok, server}} <-
            {:get_chat_session_server, get_chat_session_server(chatbot_behaviour, token, chat)} do
-      GenServer.cast(server, {:handle_update, chat_type, update})
+      GenServer.cast(server, {:handle_update, update})
     else
-      {:get_chat, nil} ->
+      {:get_chat, :ignore} ->
         Logger.info("Dropped update without chat #{inspect(update)}", bot: chatbot_behaviour, token: token)
 
       {:get_chat_session_server, {:error, :max_children}} ->
@@ -58,24 +63,20 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   defp get_chat(chatbot_behaviour, update) do
-    if function_exported?(chatbot_behaviour, :get_chat, 2) do
-      update_type =
-        update
-        |> Map.drop(["update_id"])
-        |> Map.keys()
-        |> List.first()
+    update_type =
+      update
+      |> Map.drop(["update_id"])
+      |> Map.keys()
+      |> List.first()
 
-      chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
-    else
-      Utils.get_chat(update)
-    end
+    chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
   end
 
   @impl GenServer
-  def init({chatbot_behaviour, token, %{"resume" => :resume, "id" => chat_id, "state" => bot_state}}) do
-    Logger.metadata(bot: chatbot_behaviour, chat_id: chat_id)
+  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{metadata: [resume: :resume]} = chat, bot_state}) do
+    Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
 
-    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat_id, bot_state: bot_state}
+    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: bot_state}
 
     case chatbot_behaviour.handle_resume(bot_state) do
       {:ok, bot_state} ->
@@ -88,10 +89,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     end
   end
 
-  def init({chatbot_behaviour, token, %{"id" => chat_id} = chat}) do
-    Logger.metadata(bot: chatbot_behaviour, chat_id: chat_id)
+  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, bot_state}) do
+    Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
 
-    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat_id, bot_state: nil}
+    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: bot_state}
 
     chatbot_behaviour.init(chat)
     |> case do
@@ -104,14 +105,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @impl GenServer
-  def handle_cast({:handle_update, chat_type, update}, %State{} = state) do
+  def handle_cast({:handle_update, update}, %State{} = state) do
     res = state.chatbot_behaviour.handle_update(update, state.token, state.bot_state)
 
-    if chat_type == :transient do
-      handle_callback_result({:stop, elem(res, 1)}, state)
-    else
-      handle_callback_result(res, state)
-    end
+    handle_callback_result(res, state)
   end
 
   @impl GenServer
@@ -128,8 +125,8 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     handle_callback_result(res, state)
   end
 
-  defp get_chat_session_server(chatbot_behaviour, token, %{"id" => chat_id} = chat) do
-    Chat.Registry.lookup(token, chat_id)
+  defp get_chat_session_server(chatbot_behaviour, token, chat) do
+    Chat.Registry.lookup(token, chat.id)
     |> case do
       {:ok, _server} = ok ->
         ok
@@ -139,8 +136,8 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     end
   end
 
-  defp start_chat_session_server(chatbot_behaviour, token, chat) do
-    child_spec = {__MODULE__, {chatbot_behaviour, token, chat}}
+  defp start_chat_session_server(chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, bot_state \\ nil) do
+    child_spec = {__MODULE__, {chatbot_behaviour, token, chat, bot_state}}
 
     Chat.Session.Supervisor.start_child(child_spec, token)
     |> case do

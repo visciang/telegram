@@ -142,7 +142,7 @@ defmodule Telegram.ChatBot do
   be used. The returned chat must have at least an entry containing the chat
   id
   """
-  @callback get_chat(update_type :: String.t(), update :: Types.update()) :: {:ok, Types.chat()} | {:transient, Types.chat()} | nil
+  @callback get_chat(update_type :: String.t(), update :: Types.update()) :: {:ok, ChatBot.Chat.t()} | :ignore
 
   @optional_callbacks get_chat: 2, handle_resume: 1, handle_info: 4, handle_timeout: 3
 
@@ -153,6 +153,11 @@ defmodule Telegram.ChatBot do
       @behaviour Telegram.Bot.Dispatch
 
       require Logger
+
+      @impl Telegram.ChatBot
+      def get_chat(_, %{"chat" => %{"id" => chat_id} = chat}), do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+      def get_chat(_, %{"message" => %{"chat" => %{"id" => chat_id} = chat}}), do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+      def get_chat(_, _), do: :ignore
 
       @impl Telegram.ChatBot
       def handle_resume(chat_state) do
@@ -171,7 +176,7 @@ defmodule Telegram.ChatBot do
         {:stop, chat_state}
       end
 
-      defoverridable handle_resume: 1, handle_info: 4, handle_timeout: 3
+      defoverridable get_chat: 2, handle_resume: 1, handle_info: 4, handle_timeout: 3
 
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(bot_opts) do

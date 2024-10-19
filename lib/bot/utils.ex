@@ -56,7 +56,7 @@ defmodule Telegram.Bot.Utils do
   @doc """
   Get the "chat" field in an Update object, if present
   """
-  @spec get_chat(Types.update()) :: {:ok, ChatBot.chat()} | nil
+  @spec get_chat(Types.update()) :: {:ok, ChatBot.chat()} | :ignore
   def get_chat(update) do
     Enum.find_value(update, fn
       {_update_type, %{"chat" => %{"id" => _} = chat}} ->
