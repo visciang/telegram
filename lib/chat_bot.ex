@@ -129,14 +129,10 @@ defmodule Telegram.ChatBot do
   @doc """
   Allows a chat bot to customize how updates are handled by this bot.
 
-  A return value of {:ok, %{"id" => id, ...}} will result in a new instance
+  A return value of {:ok, %Telegram.ChatBot.Chat{id: id, metadata [...]}} will result in a new instance
   of the bot being spun up to handle the update as a full chat.
 
-  A return value of {:transient, %{"id" => id, ...}} will result in a transient
-  instance of the bot being spun up to handle the update. In this case the process
-  will only exist to handle this specific update.
-
-  A return value of nil causes the update to be ignored.
+  A return value of :ignore causes the update to be ignored.
 
   This callback is optional and if not implemented the legacy behavior will
   be used. The returned chat must have at least an entry containing the chat
