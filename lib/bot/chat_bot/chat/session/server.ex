@@ -57,15 +57,6 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     :ok
   end
 
-  defp get_chat(chatbot_behaviour, update) do
-    [update_type] =
-      update
-      |> Map.drop(["update_id"])
-      |> Map.keys()
-
-    chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
-  end
-
   @impl GenServer
   def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, bot_state}) when bot_state != nil do
     Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
@@ -119,7 +110,16 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     handle_callback_result(res, state)
   end
 
-  defp get_chat_session_server(chatbot_behaviour, token, chat) do
+  defp get_chat(chatbot_behaviour, update) do
+    [update_type] =
+      update
+      |> Map.drop(["update_id"])
+      |> Map.keys()
+
+    chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
+  end
+
+  defp get_chat_session_server(chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat) do
     Chat.Registry.lookup(token, chat.id)
     |> case do
       {:ok, _server} = ok ->
