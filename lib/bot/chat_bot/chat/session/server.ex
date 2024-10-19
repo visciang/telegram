@@ -23,7 +23,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @spec resume(ChatBot.t(), Types.token(), String.t(), term()) :: :ok | {:error, :already_started | :max_children}
-  def resume(chatbot_behaviour, token, chat_id, state) do
+  def resume(chatbot_behaviour, token, chat_id, bot_state) do
     chat = %Telegram.ChatBot.Chat{
       id: chat_id,
       metadata: [
@@ -32,7 +32,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     }
 
     with {:lookup, {:error, :not_found}} <- {:lookup, Chat.Registry.lookup(token, chat_id)},
-         {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat, state)} do
+         {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat, bot_state)} do
       :ok
     else
       # coveralls-ignore-start
