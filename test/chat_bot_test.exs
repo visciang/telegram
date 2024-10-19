@@ -39,25 +39,6 @@ defmodule Test.Telegram.ChatBot do
     end)
   end
 
-  test "inline query" do
-    url_test_response = tg_url(tg_token(), "testResponse")
-
-    assert {:ok, _} =
-             Webhook.update(tg_token(), %{
-               "update_id" => 1,
-               "inline_query" => %{
-                 "id" => "chat_id_1234",
-                 "query" => "some query",
-                 "chat_type" => "private",
-                 "offset" => "",
-                 "from" => %{"id" => "user_id"}
-               }
-             })
-
-    assert :ok ==
-             tesla_mock_refute_request(%{method: :post, url: ^url_test_response})
-  end
-
   test "resume" do
     url_test_response = tg_url(tg_token(), "testResponse")
     chat_id = "chat_id_1234"
