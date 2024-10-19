@@ -58,11 +58,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   defp get_chat(chatbot_behaviour, update) do
-    update_type =
+    [update_type] =
       update
       |> Map.drop(["update_id"])
       |> Map.keys()
-      |> List.first()
 
     chatbot_behaviour.get_chat(update_type, Map.get(update, update_type))
   end
