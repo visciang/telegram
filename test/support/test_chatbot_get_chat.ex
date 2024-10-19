@@ -7,12 +7,15 @@ defmodule Test.ChatBotGetChat do
   def get_chat("inline_query", %{"id" => _chat_id} = chat) do
     {:transient, chat}
   end
+
   def get_chat(_, %{"message" => %{"chat" => %{"id" => _} = chat}}) do
     {:ok, chat}
   end
+
   def get_chat(_, %{"chat" => %{"id" => _} = chat}) do
     {:ok, chat}
   end
+
   def get_chat(_, _) do
     nil
   end

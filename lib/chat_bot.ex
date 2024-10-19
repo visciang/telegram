@@ -151,8 +151,12 @@ defmodule Telegram.ChatBot do
       require Logger
 
       @impl Telegram.ChatBot
-      def get_chat(_, %{"chat" => %{"id" => chat_id} = chat}), do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
-      def get_chat(_, %{"message" => %{"chat" => %{"id" => chat_id} = chat}}), do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+      def get_chat(_, %{"chat" => %{"id" => chat_id} = chat}),
+        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+
+      def get_chat(_, %{"message" => %{"chat" => %{"id" => chat_id} = chat}}),
+        do: {:ok, %Telegram.ChatBot.Chat{id: chat_id, metadata: [chat: chat]}}
+
       def get_chat(_, _), do: :ignore
 
       @impl Telegram.ChatBot
