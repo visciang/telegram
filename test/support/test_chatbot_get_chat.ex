@@ -4,32 +4,22 @@ defmodule Test.ChatBotGetChat do
   use Telegram.ChatBot
 
   @impl Telegram.ChatBot
-  def get_chat("inline_query", %{"id" => _chat_id} = chat) do
-    {:transient, chat}
+  def get_chat("inline_query", %{"id" => inline_chat_id}) do
+    {:ok, %Telegram.ChatBot.Chat{id: inline_chat_id}}
   end
 
-  def get_chat(_, %{"message" => %{"chat" => %{"id" => _} = chat}}) do
-    {:ok, chat}
-  end
-
-  def get_chat(_, %{"chat" => %{"id" => _} = chat}) do
-    {:ok, chat}
+  def get_chat(_, %{"chat" => %{"id" => chat_id}}) do
+    {:ok, %Telegram.ChatBot.Chat{id: chat_id}}
   end
 
   def get_chat(_, _) do
-    nil
+    :ignore
   end
 
   @impl Telegram.ChatBot
   def init(_chat) do
     count_state = 0
     {:ok, count_state}
-  end
-
-  @impl Telegram.ChatBot
-  def handle_resume({test_pid, state}) do
-    send(test_pid, :resume)
-    {:ok, state}
   end
 
   @impl Telegram.ChatBot
@@ -42,7 +32,7 @@ defmodule Test.ChatBotGetChat do
       text: "#{count_state}"
     )
 
-    {:ok, count_state}
+    {:stop, count_state}
   end
 
   @impl Telegram.ChatBot
@@ -55,15 +45,5 @@ defmodule Test.ChatBotGetChat do
     )
 
     {:ok, count_state}
-  end
-
-  @impl Telegram.ChatBot
-  def handle_update(%{"message" => %{"text" => "/stop", "chat" => %{"id" => chat_id}}}, token, count_state) do
-    Telegram.Api.request(token, "testResponse",
-      chat_id: chat_id,
-      text: "Bye!"
-    )
-
-    {:stop, count_state}
   end
 end

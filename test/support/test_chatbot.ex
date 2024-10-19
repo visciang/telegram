@@ -16,19 +16,6 @@ defmodule Test.ChatBot do
   end
 
   @impl Telegram.ChatBot
-  def handle_update(%{"inline_query" => %{"id" => query_id, "query" => query}}, token, count_state) do
-    count_state = count_state + 1
-
-    Telegram.Api.request(token, "testResponse",
-      query_id: query_id,
-      query: query,
-      text: "#{count_state}"
-    )
-
-    {:ok, count_state}
-  end
-
-  @impl Telegram.ChatBot
   def handle_update(%{"message" => %{"text" => "/count", "chat" => %{"id" => chat_id}}}, token, count_state) do
     count_state = count_state + 1
 
