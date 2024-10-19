@@ -13,7 +13,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     defstruct @enforce_keys
   end
 
-  @spec start_link({ChatBot.t(), Types.token(), ChatBot.Chat.t()}) :: GenServer.on_start()
+  @spec start_link({ChatBot.t(), Types.token(), ChatBot.Chat.t(), nil | term()}) :: GenServer.on_start()
   def start_link({chatbot_behaviour, token, chat, bot_state}) do
     GenServer.start_link(
       __MODULE__,
