@@ -24,12 +24,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
 
   @spec resume(ChatBot.t(), Types.token(), String.t(), term()) :: :ok | {:error, :already_started | :max_children}
   def resume(chatbot_behaviour, token, chat_id, bot_state) do
-    chat = %Telegram.ChatBot.Chat{
-      id: chat_id,
-      metadata: %{
-        resume: :resume
-      }
-    }
+    chat = %Telegram.ChatBot.Chat{id: chat_id}
 
     with {:lookup, {:error, :not_found}} <- {:lookup, Chat.Registry.lookup(token, chat_id)},
          {:start, {:ok, _server}} <- {:start, start_chat_session_server(chatbot_behaviour, token, chat, bot_state)} do
@@ -73,7 +68,7 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
   end
 
   @impl GenServer
-  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{metadata: %{resume: :resume}} = chat, bot_state}) do
+  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, bot_state}) when bot_state != nil do
     Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
 
     state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: bot_state}
@@ -89,10 +84,10 @@ defmodule Telegram.Bot.ChatBot.Chat.Session.Server do
     end
   end
 
-  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, bot_state}) do
+  def init({chatbot_behaviour, token, %Telegram.ChatBot.Chat{} = chat, nil}) do
     Logger.metadata(bot: chatbot_behaviour, chat_id: chat.id)
 
-    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: bot_state}
+    state = %State{token: token, chatbot_behaviour: chatbot_behaviour, chat_id: chat.id, bot_state: nil}
 
     chatbot_behaviour.init(chat)
     |> case do
