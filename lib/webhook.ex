@@ -179,7 +179,7 @@ defmodule Telegram.Webhook do
     bot_specs
     |> Enum.each(fn {bot_behaviour_mod, opts} ->
       token = Keyword.fetch!(opts, :token)
-      url = %URI{scheme: scheme, host: host, path: "/#{token}", port: port} |> to_string()
+      url = %URI{scheme: scheme, host: host, path: "/__telegram_webhook__/#{token}", port: port} |> to_string()
 
       Logger.info("Running in webhook mode #{url}", bot: bot_behaviour_mod, token: token)
 
