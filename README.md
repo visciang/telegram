@@ -205,7 +205,7 @@ This mode interfaces with the Telegram servers via a webhook, best for productio
 The app is meant to be served over HTTP, a reverse proxy should be placed in front of it, facing the public network over HTTPS.
 It's possible to use two `Plug` compatible webserver: `Bandit` and `Plug.Cowboy`.
 
-Alternatively, if you have a Phoenix / Plug based application facing internet, you can directly integrate the webhook.
+Alternatively, if you have a `Phoenix` / `Plug` based application facing internet, you can directly integrate the webhook.
 
 Refer to the `Telegram.Webhook` module docs for more info.
 
