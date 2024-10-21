@@ -3,6 +3,7 @@ Telegram.Api.html
 Telegram.Bot.Dispatch.html
 Telegram.Bot.Utils.html
 Telegram.Bot.html
+Telegram.ChatBot.Chat.html
 Telegram.ChatBot.html
 Telegram.Poller.html
 Telegram.Types.html
@@ -27,8 +28,8 @@ dist/lato-latin-ext-300-normal-VPGGJKJL.woff2
 dist/lato-latin-ext-400-normal-N27NCBWW.woff2
 dist/lato-latin-ext-700-normal-Q2L5DVMW.woff2
 dist/remixicon-NKANDIL5.woff2
-dist/search_data-4920CCA6.js
-dist/sidebar_items-8D15BDBE.js
+dist/search_data-04406780.js
+dist/sidebar_items-2BBF389D.js
 index.html
 readme.html
 search.html

@@ -8,7 +8,7 @@
     <meta name="project" content="telegram v1.2.3">
 
 
-    <title>API Reference — telegram v1.2.3</title>
+    <title>Telegram.ChatBot.Chat — telegram v1.2.3</title>
     <link rel="stylesheet" href="dist/html-elixir-F2VRIOKR.css" />
 
 
@@ -19,7 +19,7 @@
     <script async src="dist/html-YIPIRHGU.js"></script>
 
   </head>
-  <body data-type="extras" class="page-extra">
+  <body data-type="modules" class="page-module">
     <script>
 
       try {
@@ -112,150 +112,90 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/visciang/telegram" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/bot/chat_bot/chat/chat.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
+    <span translate="no">Telegram.ChatBot.Chat</span> 
+    <small class="app-vsn" translate="no">(telegram v1.2.3)</small>
 
-    <span>API Reference <small class="app-vsn">telegram v1.2.3</small></span>
   </h1>
 
 
-  <section class="details-list">
-    <h2 id="modules" class="section-heading">
-  <a href="#modules" class="hover-link">
-    <i class="ri-link-m" aria-hidden="true"></i>
-  </a>
-  <span class="text">Modules</span>
-</h2>
-
-    <div class="summary">
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Api.html" translate="no">Telegram.Api</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Telegram Bot API - HTTP-based interface</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Bot.html" translate="no">Telegram.Bot</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Telegram Bot behaviour.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Bot.Dispatch.html" translate="no">Telegram.Bot.Dispatch</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Dispatch behaviour</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Bot.Utils.html" translate="no">Telegram.Bot.Utils</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Bot utilities</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.ChatBot.html" translate="no">Telegram.ChatBot</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Telegram Chat Bot behaviour.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.ChatBot.Chat.html" translate="no">Telegram.ChatBot.Chat</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A struct that represents a chat extracted from a Telegram update.
+    <section id="moduledoc">
+<p>A struct that represents a chat extracted from a Telegram update.
 Currently the only required field is <code class="inline">id</code>, any other data you may want to pass to
-<a href="Telegram.ChatBot.html#c:init/1"><code class="inline">Telegram.ChatBot.init/1</code></a> should be included under the <code class="inline">metadata</code> field.</p></div>
+<a href="Telegram.ChatBot.html#c:init/1"><code class="inline">Telegram.ChatBot.init/1</code></a> should be included under the <code class="inline">metadata</code> field.</p>
+    </section>
 
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Poller.html" translate="no">Telegram.Poller</a>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" data-no-tooltip translate="no">t()</a>
+
+      </div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">t()</h1>
+
+      <a href="https://github.com/visciang/telegram/blob/main/lib/bot/chat_bot/chat/chat.ex#L8" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
-    <div class="summary-synopsis"><p>Telegram poller supervisor.</p></div>
+  <section class="docstring">
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Types.html" translate="no">Telegram.Types</a>
+      <div class="specs">
 
-  </div>
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Telegram.ChatBot.Chat{id: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), metadata: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil}</pre>
 
-    <div class="summary-synopsis"><p>Telegram types</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.WebServer.Bandit.html" translate="no">Telegram.WebServer.Bandit</a>
 
-  </div>
-
-    <div class="summary-synopsis"><p>Bandit child specification for <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.WebServer.Cowboy.html" translate="no">Telegram.WebServer.Cowboy</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Cowboy child specification for <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="Telegram.Webhook.html" translate="no">Telegram.Webhook</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Telegram Webhook supervisor.</p></div>
-
-</div>
+  </section>
+</section>
 
     </div>
   </section>
 
-
-</div>
-
-<div class="bottom-actions" id="bottom-actions">
-  <div class="bottom-actions-item">
-
-  </div>
-  <div class="bottom-actions-item">
-
-      <a href="readme.html" class="bottom-actions-button" rel="next">
-        <span class="subheader">
-          Next Page →
-        </span>
-        <span class="title">
-Telegram
-        </span>
-      </a>
-
-  </div>
-</div>
     <footer class="footer">
       <p>
 

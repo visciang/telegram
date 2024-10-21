@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-K7URE6B4.js"></script>
-    <script src="dist/sidebar_items-8D15BDBE.js"></script>
+    <script src="dist/sidebar_items-2BBF389D.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-YIPIRHGU.js"></script>
 
@@ -124,64 +124,71 @@ Pages
 
 
     <section id="moduledoc">
-<p>Telegram Chat Bot behaviour.</p><p>The difference with <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> behaviour is that the <a href="Telegram.ChatBot.html"><code class="inline">Telegram.ChatBot</code></a> is &quot;statefull&quot; per chat_id,
-(see <code class="inline">chat_state</code> argument).</p><p>Given that every &quot;conversation&quot; is associated with a long running process is up to you to consider
-a session timeout in your bot state machine design. If you don't you will saturate the max_bot_concurrency
-capacity and then your bot won't accept any new conversation.
-For this you can leverage the underlying gen_server timeout including the timeout in the return value
-of the <a href="#c:init/1"><code class="inline">init/1</code></a> or <a href="#c:handle_update/3"><code class="inline">handle_update/3</code></a> callbacks or, if you need a more complex behaviour, via explicit
-timers in you bot.</p><h2 id="module-example" class="section-heading">
+<p>Telegram Chat Bot behaviour.</p><p>The <a href="Telegram.ChatBot.html"><code class="inline">Telegram.ChatBot</code></a> module provides a stateful chatbot mechanism that manages bot instances
+on a per-chat basis (<code class="inline">chat_id</code>). Unlike the <a href="Telegram.Bot.html"><code class="inline">Telegram.Bot</code></a> behavior, which is stateless,
+each conversation in <a href="Telegram.ChatBot.html"><code class="inline">Telegram.ChatBot</code></a> is tied to a unique <code class="inline">chat_state</code>.</p><p>The <a href="#c:get_chat/2"><code class="inline">get_chat/2</code></a> callback is responsible for routing each incoming update to the correct
+chat session by returning the chat's identifier. If the chat is not yet recognized,
+a new bot instance will automatically be created for that chat.</p><p>Since each conversation is handled by a long-running process, it's crucial to manage session
+timeouts carefully. Without implementing timeouts, your bot may hit the <code class="inline">max_bot_concurrency</code> limit,
+preventing it from handling new conversations. To prevent this, you can utilize the underlying
+<code class="inline">:gen_server</code> timeout mechanism by specifying timeouts in the return values of the <a href="#c:init/1"><code class="inline">init/1</code></a> or
+<a href="#c:handle_update/3"><code class="inline">handle_update/3</code></a> callbacks. Alternatively, for more complex scenarios, you can manage explicit
+timers in your bot's logic.</p><h2 id="module-example" class="section-heading">
   <a href="#module-example" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="9417232674-1">do</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="1232591819-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
 
+  </span><span class="c1"># Session timeout set to 60 seconds</span><span class="w">
   </span><span class="na">@session_ttl</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1_000</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="9417232674-2">(</span><span class="c">_chat</span><span class="p" data-group-id="9417232674-2">)</span><span class="w"> </span><span class="k" data-group-id="9417232674-3">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="1232591819-2">(</span><span class="c">_chat</span><span class="p" data-group-id="1232591819-2">)</span><span class="w"> </span><span class="k" data-group-id="1232591819-3">do</span><span class="w">
+    </span><span class="c1"># Initialize state with a message counter set to 0</span><span class="w">
     </span><span class="n">count_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
-    </span><span class="p" data-group-id="9417232674-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="9417232674-4">}</span><span class="w">
-  </span><span class="k" data-group-id="9417232674-3">end</span><span class="w">
+    </span><span class="p" data-group-id="1232591819-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="1232591819-4">}</span><span class="w">
+  </span><span class="k" data-group-id="1232591819-3">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="9417232674-5">(</span><span class="p" data-group-id="9417232674-6">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="9417232674-7">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="9417232674-8">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p" data-group-id="9417232674-8">}</span><span class="p" data-group-id="9417232674-7">}</span><span class="p" data-group-id="9417232674-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-5">)</span><span class="w"> </span><span class="k" data-group-id="9417232674-9">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="1232591819-5">(</span><span class="p" data-group-id="1232591819-6">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1232591819-7">%{</span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="1232591819-8">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p" data-group-id="1232591819-8">}</span><span class="p" data-group-id="1232591819-7">}</span><span class="p" data-group-id="1232591819-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-5">)</span><span class="w"> </span><span class="k" data-group-id="1232591819-9">do</span><span class="w">
+    </span><span class="c1"># Increment the message count</span><span class="w">
     </span><span class="n">count_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count_state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
 
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="9417232674-10">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="1232591819-10">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
-      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey! You sent me </span><span class="si" data-group-id="9417232674-11">#{</span><span class="n">count_state</span><span class="si" data-group-id="9417232674-11">}</span><span class="s"> messages&quot;</span><span class="w">
-    </span><span class="p" data-group-id="9417232674-10">)</span><span class="w">
+      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey! You sent me </span><span class="si" data-group-id="1232591819-11">#{</span><span class="n">count_state</span><span class="si" data-group-id="1232591819-11">}</span><span class="s"> messages&quot;</span><span class="w">
+    </span><span class="p" data-group-id="1232591819-10">)</span><span class="w">
 
-    </span><span class="p" data-group-id="9417232674-12">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="9417232674-12">}</span><span class="w">
-  </span><span class="k" data-group-id="9417232674-9">end</span><span class="w">
+    </span><span class="p" data-group-id="1232591819-12">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="1232591819-12">}</span><span class="w">
+  </span><span class="k" data-group-id="1232591819-9">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="9417232674-13">(</span><span class="n">update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-13">)</span><span class="w"> </span><span class="k" data-group-id="9417232674-14">do</span><span class="w">
-    </span><span class="c1"># ignore unknown updates</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="1232591819-13">(</span><span class="n">update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-13">)</span><span class="w"> </span><span class="k" data-group-id="1232591819-14">do</span><span class="w">
+    </span><span class="c1"># Ignore unknown updates and maintain the current state</span><span class="w">
 
-    </span><span class="p" data-group-id="9417232674-15">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="9417232674-15">}</span><span class="w">
-  </span><span class="k" data-group-id="9417232674-14">end</span><span class="w">
-
-  </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="9417232674-16">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="c">_chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-16">)</span><span class="w"> </span><span class="k" data-group-id="9417232674-17">do</span><span class="w">
-    </span><span class="c1"># direct message processing</span><span class="w">
-
-    </span><span class="p" data-group-id="9417232674-18">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-18">}</span><span class="w">
-  </span><span class="k" data-group-id="9417232674-17">end</span><span class="w">
+    </span><span class="p" data-group-id="1232591819-15">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p">,</span><span class="w"> </span><span class="na">@session_ttl</span><span class="p" data-group-id="1232591819-15">}</span><span class="w">
+  </span><span class="k" data-group-id="1232591819-14">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_timeout</span><span class="p" data-group-id="9417232674-19">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-19">)</span><span class="w"> </span><span class="k" data-group-id="9417232674-20">do</span><span class="w">
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="9417232674-21">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="1232591819-16">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p">,</span><span class="w"> </span><span class="c">_chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-16">)</span><span class="w"> </span><span class="k" data-group-id="1232591819-17">do</span><span class="w">
+    </span><span class="c1"># Handle direct erlang messages, if needed</span><span class="w">
+
+    </span><span class="p" data-group-id="1232591819-18">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-18">}</span><span class="w">
+  </span><span class="k" data-group-id="1232591819-17">end</span><span class="w">
+
+  </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.ChatBot</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_timeout</span><span class="p" data-group-id="1232591819-19">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-19">)</span><span class="w"> </span><span class="k" data-group-id="1232591819-20">do</span><span class="w">
+    </span><span class="c1"># Send a &quot;goodbye&quot; message upon session timeout</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="1232591819-21">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
       </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;See you!&quot;</span><span class="w">
-    </span><span class="p" data-group-id="9417232674-21">)</span><span class="w">
+    </span><span class="p" data-group-id="1232591819-21">)</span><span class="w">
 
-    </span><span class="p" data-group-id="9417232674-22">{</span><span class="ss">:stop</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="9417232674-22">}</span><span class="w">
-  </span><span class="k" data-group-id="9417232674-20">end</span><span class="w">
-</span><span class="k" data-group-id="9417232674-1">end</span></code></pre>
+    </span><span class="p" data-group-id="1232591819-22">{</span><span class="ss">:stop</span><span class="p">,</span><span class="w"> </span><span class="n">count_state</span><span class="p" data-group-id="1232591819-22">}</span><span class="w">
+  </span><span class="k" data-group-id="1232591819-20">end</span><span class="w">
+</span><span class="k" data-group-id="1232591819-1">end</span></code></pre>
     </section>
 
 </div>
@@ -230,11 +237,21 @@ timers in you bot.</p><h2 id="module-example" class="section-heading">
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#c:get_chat/2" data-no-tooltip translate="no">get_chat(update_type, update)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Allows a chatbot to customize how incoming updates are processed.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#c:handle_info/4" data-no-tooltip translate="no">handle_info(msg, token, chat_id, chat_state)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>On handle_info callback.</p></div>
+        <div class="summary-synopsis"><p>Invoked to handle arbitrary erlang messages (e.g., scheduled events or direct messages).</p></div>
 
     </div>
 
@@ -244,7 +261,7 @@ timers in you bot.</p><h2 id="module-example" class="section-heading">
 
       </div>
 
-        <div class="summary-synopsis"><p>On resume callback.</p></div>
+        <div class="summary-synopsis"><p>Invoked when a chat session is resumed.</p></div>
 
     </div>
 
@@ -254,7 +271,7 @@ timers in you bot.</p><h2 id="module-example" class="section-heading">
 
       </div>
 
-        <div class="summary-synopsis"><p>On timeout callback.</p></div>
+        <div class="summary-synopsis"><p>Callback invoked when a session times out.</p></div>
 
     </div>
 
@@ -264,8 +281,7 @@ timers in you bot.</p><h2 id="module-example" class="section-heading">
 
       </div>
 
-        <div class="summary-synopsis"><p>Receives the telegram update event and the &quot;current&quot; chat_state.
-Return the &quot;updated&quot; chat_state.</p></div>
+        <div class="summary-synopsis"><p>Handles incoming Telegram update events and processes them based on the current <code class="inline">chat_state</code>.</p></div>
 
     </div>
 
@@ -275,8 +291,7 @@ Return the &quot;updated&quot; chat_state.</p></div>
 
       </div>
 
-        <div class="summary-synopsis"><p>Invoked once when the chat starts.
-Return the initial chat_state.</p></div>
+        <div class="summary-synopsis"><p>Invoked when a chat session is first initialized. Returns the initial <code class="inline">chat_state</code> for the session.</p></div>
 
     </div>
 
@@ -292,7 +307,7 @@ Return the initial chat_state.</p></div>
 
       </div>
 
-        <div class="summary-synopsis"><p>Lookup the pid of a specific chat session.</p></div>
+        <div class="summary-synopsis"><p>Retrieves the process ID (<code class="inline">pid</code>) of a specific chat session.</p></div>
 
     </div>
 
@@ -318,7 +333,7 @@ Return the initial chat_state.</p></div>
     </a>
     <h1 class="signature" translate="no">chat()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L74" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L83" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -346,7 +361,7 @@ Return the initial chat_state.</p></div>
     </a>
     <h1 class="signature" translate="no">chat_state()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L75" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -374,7 +389,7 @@ Return the initial chat_state.</p></div>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L72" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L81" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -405,6 +420,57 @@ Return the initial chat_state.</p></div>
       <span class="text">Callbacks</span>
     </h1>
     <div class="callbacks-list">
+<section class="detail" id="c:get_chat/2">
+
+  <div class="detail-header">
+    <a href="#c:get_chat/2" class="detail-link" data-no-tooltip title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">get_chat(update_type, update)</h1>
+
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L228" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(optional)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> get_chat(update_type :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), update :: <a href="Telegram.Types.html#t:update/0">Telegram.Types.update</a>()) ::
+  {:ok, <a href="Telegram.ChatBot.Chat.html#t:t/0">Telegram.ChatBot.Chat.t</a>()} | :ignore</pre>
+
+      </div>
+
+<p>Allows a chatbot to customize how incoming updates are processed.</p><p>This function receives an update and either returns the unique chat identifier
+associated with it or instructs the bot to ignore the update.</p><h3 id="c:get_chat/2-parameters" class="section-heading">
+  <a href="#c:get_chat/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters:</span>
+</h3>
+<ul><li><code class="inline">update_type</code>: is a string representing the type of update received. For example:<ul><li><code class="inline">message</code>: For new messages.</li><li><code class="inline">edited_message</code>: For edited messages.</li><li><code class="inline">inline_query</code>: For inline queries.</li></ul></li><li><code class="inline">update</code>: the update object received, containing the data associated with the <code class="inline">update_type</code>.
+The object structure depends on the type of update:<ul><li>For <code class="inline">message</code> and <code class="inline">edited_message</code> updates, the object is of type <a href="https://core.telegram.org/bots/api#message"><code class="inline">Message</code></a>,
+which contains fields such as text, sender, and chat.</li><li>For <code class="inline">inline_query</code> updates, the object is of type <a href="https://core.telegram.org/bots/api#inlinequery"><code class="inline">InlineQuery</code></a>, containing fields like query and from.</li></ul></li></ul><p>Refer to the official Telegram Bot API <a href="https://core.telegram.org/bots/api#update">documentation</a>
+for a complete list of update types.</p><h3 id="c:get_chat/2-return-values" class="section-heading">
+  <a href="#c:get_chat/2-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values:</span>
+</h3>
+<ul><li>Returning <code class="inline">{:ok, %Telegram.ChatBot.Chat{id: id, metadata: %{}}}</code> will trigger
+the bot to spin up a new instance, which will manage the update as a full chat session.
+The instance will be uniquely identified by the return <code class="inline">id</code> and
+<a href="#c:init/1"><code class="inline">init/1</code></a> will be called with the returned <a href="Telegram.ChatBot.Chat.html#t:t/0"><code class="inline">Telegram.ChatBot.Chat.t/0</code></a> struct.</li><li>Returning <code class="inline">:ignore</code> will cause the update to be disregarded entirely.</li></ul><p>This callback is <strong>optional</strong>.
+If not implemented, the bot will dispatch updates of type <a href="https://core.telegram.org/bots/api#message"><code class="inline">Message</code></a>.</p>
+  </section>
+</section>
 <section class="detail" id="c:handle_info/4">
 
   <div class="detail-header">
@@ -414,7 +480,7 @@ Return the initial chat_state.</p></div>
     </a>
     <h1 class="signature" translate="no">handle_info(msg, token, chat_id, chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L124" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L191" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -440,8 +506,20 @@ Return the initial chat_state.</p></div>
 
       </div>
 
-<p>On handle_info callback.</p><p>Can be used to implement bots that act on scheduled events (using <a href="https://hexdocs.pm/elixir/Process.html#send/3"><code class="inline">Process.send/3</code></a> and <a href="https://hexdocs.pm/elixir/Process.html#send_after/4"><code class="inline">Process.send_after/4</code></a>) or to interact via direct message to a a specific chat session (using <a href="#lookup/2"><code class="inline">lookup/2</code></a>).</p><p>This callback is optional.
-If one is not implemented, the received message will be logged.</p>
+<p>Invoked to handle arbitrary erlang messages (e.g., scheduled events or direct messages).</p><p>This callback can be used for:</p><ul><li>Scheduled Events: handle messages triggered by Process.send/3 or Process.send_after/4.</li><li>Direct Interactions: respond to direct messages sent to a specific chat session retrieved via <a href="#lookup/2"><code class="inline">lookup/2</code></a>.</li></ul><h3 id="c:handle_info/4-parameters" class="section-heading">
+  <a href="#c:handle_info/4-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters:</span>
+</h3>
+<ul><li><code class="inline">msg</code>: the message received.</li><li><code class="inline">token</code>: the bot's authentication token, used to make API requests.</li><li><code class="inline">chat_id</code>: the ID of the chat session associated with the message.</li><li><code class="inline">chat_state</code>: the current state of the chat session.</li></ul><h3 id="c:handle_info/4-return-values" class="section-heading">
+  <a href="#c:handle_info/4-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values:</span>
+</h3>
+<ul><li><code class="inline">{:ok, next_chat_state}</code>: updates the session with a new <code class="inline">next_chat_state</code>.</li><li><code class="inline">{:ok, next_chat_state, timeout}</code>: updates the <code class="inline">next_chat_state</code> and sets a new <code class="inline">timeout</code>.</li><li><code class="inline">{:stop, next_chat_state}</code>: terminates the session and returns the final <code class="inline">chat_state</code>.</li></ul><p>This callback is <strong>optional</strong>.
+If not implemented, any received message will be logged by default.</p>
   </section>
 </section>
 <section class="detail" id="c:handle_resume/1">
@@ -453,7 +531,7 @@ If one is not implemented, the received message will be logged.</p>
     </a>
     <h1 class="signature" translate="no">handle_resume(chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L93" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L119" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -473,8 +551,14 @@ If one is not implemented, the received message will be logged.</p>
 
       </div>
 
-<p>On resume callback.</p><p>This callback is optional.
-A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it just returns the received state.</p><p>Note: a resume/3 function is available on every ChatBot, <code class="inline">MyChatBot.resume(token, chat_id, state)</code>.</p>
+<p>Invoked when a chat session is resumed.</p><p>If implemented, this function allows custom logic when resuming a session, for example,
+updating the state or setting a new timeout.</p><p>Note: you can manually resume a session by calling <code class="inline">MyChatBot.resume(token, chat_id, state)</code>.</p><h3 id="c:handle_resume/1-return-values" class="section-heading">
+  <a href="#c:handle_resume/1-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values</span>
+</h3>
+<ul><li><code class="inline">{:ok, next_chat_state}</code>: resumes the session with the provided <code class="inline">next_chat_state</code>.</li><li><code class="inline">{:ok, next_chat_state, timeout}</code>: resumes the session with the <code class="inline">next_chat_state</code> and sets a new <code class="inline">timeout</code>.</li></ul><p>The <code class="inline">timeout</code> can be used to schedule actions after a specific period of inactivity.</p>
   </section>
 </section>
 <section class="detail" id="c:handle_timeout/3">
@@ -486,7 +570,7 @@ A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it j
     </a>
     <h1 class="signature" translate="no">handle_timeout(token, chat_id, chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L163" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -511,8 +595,20 @@ A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it j
 
       </div>
 
-<p>On timeout callback.</p><p>This callback is optional.
-A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it just stops the bot.</p>
+<p>Callback invoked when a session times out.</p><h3 id="c:handle_timeout/3-parameters" class="section-heading">
+  <a href="#c:handle_timeout/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h3>
+<ul><li><code class="inline">token</code>: the bot's authentication token, used for making API requests.</li><li><code class="inline">chat_id</code>: the ID of the chat where the session timed out.</li><li><code class="inline">chat_state</code>: the current state of the chat session at the time of the timeout.</li></ul><h3 id="c:handle_timeout/3-return-values" class="section-heading">
+  <a href="#c:handle_timeout/3-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return Values:</span>
+</h3>
+<ul><li><code class="inline">{:ok, next_chat_state}</code>: keeps the session alive with an updated <code class="inline">next_chat_state</code>.</li><li><code class="inline">{:ok, next_chat_state, timeout}</code>: updates the <code class="inline">next_chat_state</code> and sets a new <code class="inline">timeout</code>.</li><li><code class="inline">{:stop, next_chat_state}</code>: terminates the session and finalizes the <code class="inline">chat_state</code>.</li></ul><p>This callback is <strong>optional</strong>.
+If not implemented, the bot will stops when a timeout occurs.</p>
   </section>
 </section>
 <section class="detail" id="c:handle_update/3">
@@ -524,7 +620,7 @@ A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it j
     </a>
     <h1 class="signature" translate="no">handle_update(update, token, chat_state)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L101" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L140" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -547,8 +643,19 @@ A default implementation is injected with &quot;use Telegram.ChatBot&quot;, it j
 
       </div>
 
-<p>Receives the telegram update event and the &quot;current&quot; chat_state.
-Return the &quot;updated&quot; chat_state.</p>
+<p>Handles incoming Telegram update events and processes them based on the current <code class="inline">chat_state</code>.</p><h3 id="c:handle_update/3-parameters" class="section-heading">
+  <a href="#c:handle_update/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters:</span>
+</h3>
+<ul><li><code class="inline">update</code>: the incoming Telegram <a href="https://core.telegram.org/bots/api#update">update</a> event (e.g., a message, an inline query).</li><li><code class="inline">token</code>: the bot's authentication token, used to make API requests.</li><li><code class="inline">chat_state</code>: the current state of the chat session.</li></ul><h3 id="c:handle_update/3-return-values" class="section-heading">
+  <a href="#c:handle_update/3-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values:</span>
+</h3>
+<ul><li><code class="inline">{:ok, next_chat_state}</code>: updates the chat session with the new <code class="inline">next_chat_state</code>.</li><li><code class="inline">{:ok, next_chat_state, timeout}</code>: updates the <code class="inline">next_chat_state</code> and sets a new <code class="inline">timeout</code> for the session.</li><li><code class="inline">{:stop, next_chat_state}</code>: terminates the chat session and returns the final <code class="inline">next_chat_state</code>.</li></ul><p>The <code class="inline">timeout</code> option can be used to define how long the bot will wait for the next event before triggering a timeout.</p>
   </section>
 </section>
 <section class="detail" id="c:init/1">
@@ -560,7 +667,7 @@ Return the &quot;updated&quot; chat_state.</p>
     </a>
     <h1 class="signature" translate="no">init(chat)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L81" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L100" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -572,14 +679,25 @@ Return the &quot;updated&quot; chat_state.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> init(chat :: <a href="#t:chat/0">chat</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> init(chat :: <a href="Telegram.ChatBot.Chat.html#t:t/0">Telegram.ChatBot.Chat.t</a>()) ::
   {:ok, initial_state :: <a href="#t:chat_state/0">chat_state</a>()}
   | {:ok, initial_state :: <a href="#t:chat_state/0">chat_state</a>(), timeout :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">timeout</a>()}</pre>
 
       </div>
 
-<p>Invoked once when the chat starts.
-Return the initial chat_state.</p>
+<p>Invoked when a chat session is first initialized. Returns the initial <code class="inline">chat_state</code> for the session.</p><h3 id="c:init/1-parameters" class="section-heading">
+  <a href="#c:init/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters:</span>
+</h3>
+<ul><li><code class="inline">chat</code>: the <a href="Telegram.ChatBot.Chat.html#t:t/0"><code class="inline">Telegram.ChatBot.Chat.t/0</code></a> struct returned by <a href="#c:get_chat/2"><code class="inline">get_chat/2</code></a>.</li></ul><h3 id="c:init/1-return-values" class="section-heading">
+  <a href="#c:init/1-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values</span>
+</h3>
+<ul><li><code class="inline">{:ok, initial_state}</code>: initializes the session with the provided <code class="inline">initial_state</code>.</li><li><code class="inline">{:ok, initial_state, timeout}</code>: initializes the session with the provided <code class="inline">initial_state</code>, and sets a timeout for the session.</li></ul><p>The <code class="inline">timeout</code> can be used to schedule actions after a certain period of inactivity.</p>
   </section>
 </section>
 
@@ -603,7 +721,7 @@ Return the initial chat_state.</p>
     </a>
     <h1 class="signature" translate="no">lookup(token, chat_id)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L195" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/chat_bot.ex#L320" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -620,8 +738,14 @@ Return the initial chat_state.</p>
 
       </div>
 
-<p>Lookup the pid of a specific chat session.</p><p>It is up to the user to define and keep a mapping between
-the business logic specific session identifier and the telegram chat_id.</p>
+<p>Retrieves the process ID (<code class="inline">pid</code>) of a specific chat session.</p><p>This function allows you to look up the active process managing a particular chat session.</p><p>Note: it is the user's responsibility to maintain and manage the mapping between
+the custom session identifier (specific to the business logic) and the Telegram <code class="inline">chat_id</code>.</p><h3 id="lookup/2-return-values" class="section-heading">
+  <a href="#lookup/2-return-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return values:</span>
+</h3>
+<ul><li><code class="inline">{:ok, pid}</code>: successfully found the pid of the chat session.</li><li><code class="inline">{:error, :not_found}</code>: no active session was found for the provided <code class="inline">chat_id</code>.</li></ul>
   </section>
 </section>
 
