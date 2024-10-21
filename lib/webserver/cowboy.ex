@@ -6,10 +6,9 @@ defmodule Telegram.WebServer.Cowboy do
 
   See `Telegram.Webhook`.
   """
-  alias Telegram.Types
 
-  @spec child_spec(:inet.port_number(), Types.bot_routing()) :: {module(), term()}
-  def child_spec(port, bot_routing_map) do
+  @spec child_spec(:inet.port_number()) :: {module(), term()}
+  def child_spec(port) do
     unless Code.ensure_loaded?(Plug.Cowboy) do
       raise """
       Missing :plug_cowboy dependency.
@@ -21,7 +20,7 @@ defmodule Telegram.WebServer.Cowboy do
     {Plug.Cowboy,
      [
        scheme: :http,
-       plug: {Telegram.Webhook.Router, bot_routing_map},
+       plug: Telegram.Webhook.Router,
        options: [
          port: port
        ]

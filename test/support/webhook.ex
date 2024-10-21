@@ -12,7 +12,7 @@ defmodule Test.Webhook do
 
   @doc false
   def update(token, body) do
-    "/#{token}"
+    "/__telegram_webhook__/#{token}"
     |> post(body)
     |> process_response()
   end
