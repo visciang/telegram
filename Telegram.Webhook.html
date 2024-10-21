@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-K7URE6B4.js"></script>
-    <script src="dist/sidebar_items-2BBF389D.js"></script>
+    <script src="dist/sidebar_items-7E6DDFB1.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-YIPIRHGU.js"></script>
 
@@ -126,7 +126,8 @@ Pages
     <section id="moduledoc">
 <p>Telegram Webhook supervisor.</p><p>This modules can the used to start a webserver exposing a webhoook endpoint
 where the telegram server can push updates for your BOT.
-On start the webhook address for the BOT is posted to the telegram server via the <a href="https://core.telegram.org/bots/api#setwebhook"><code class="inline">setWebHook</code></a> method.</p><h2 id="module-usage" class="section-heading">
+On start the webhook address for the BOT is posted to the telegram server
+via the <a href="https://core.telegram.org/bots/api#setwebhook"><code class="inline">setWebHook</code></a> method.</p><h2 id="module-usage" class="section-heading">
   <a href="#module-usage" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -144,40 +145,66 @@ On start the webhook address for the BOT is posted to the telegram server via th
 </span><span class="c1"># OR</span><span class="w">
 
 </span><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
-  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3861910446-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="3861910446-1">}</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9131571400-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="9131571400-1">}</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
-</span><span class="p" data-group-id="3861910446-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0&quot;</span><span class="p" data-group-id="3861910446-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
+</span><span class="p" data-group-id="9131571400-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0&quot;</span><span class="p" data-group-id="9131571400-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
   <a href="#module-supervision-tree" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Supervision tree</span>
 </h3>
-<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8295200540-1">[</span><span class="w">
+<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9268302915-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
   </span><span class="ss">local_port</span><span class="p">:</span><span class="w"> </span><span class="mi">4_000</span><span class="w">
-</span><span class="p" data-group-id="8295200540-1">]</span><span class="w">
+</span><span class="p" data-group-id="9268302915-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8295200540-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8295200540-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="8295200540-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="8295200540-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="8295200540-4">)</span><span class="w">
-</span><span class="p" data-group-id="8295200540-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9268302915-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="9268302915-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="9268302915-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="9268302915-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="9268302915-4">)</span><span class="w">
+</span><span class="p" data-group-id="9268302915-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8295200540-5">[</span><span class="w">
-  </span><span class="p" data-group-id="8295200540-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8295200540-7">[</span><span class="p" data-group-id="8295200540-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="8295200540-8">}</span><span class="p" data-group-id="8295200540-7">]</span><span class="p" data-group-id="8295200540-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9268302915-5">[</span><span class="w">
+  </span><span class="p" data-group-id="9268302915-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9268302915-7">[</span><span class="p" data-group-id="9268302915-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="9268302915-8">}</span><span class="p" data-group-id="9268302915-7">]</span><span class="p" data-group-id="9268302915-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="8295200540-5">]</span><span class="w">
+</span><span class="p" data-group-id="9268302915-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8295200540-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="8295200540-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="8295200540-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8295200540-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9268302915-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="9268302915-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="9268302915-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="9268302915-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
   <a href="#module-ref" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Ref</span>
 </h2>
-<ul><li><a href="https://core.telegram.org/bots/api#setwebhook">https://core.telegram.org/bots/api#setwebhook</a></li><li><a href="https://core.telegram.org/bots/webhooks">https://core.telegram.org/bots/webhooks</a></li></ul><h1>Direct Phoenix / Plug integration</h1><p>If want to integrate the webhook in a Phoenix / Plug based application facing internet, you should (for each BOT):</p><ul><li>add a POST route in your endpoints to receive the webhook updates and dispatch them to the BOT.</li><li>active the webhook mode posting a <a href="https://core.telegram.org/bots/api#setwebhook"><code class="inline">setWebHook</code></a> request to the telegram server.</li></ul><p>Refer to this module implementation as a guide line for the above.</p>
+<ul><li><a href="https://core.telegram.org/bots/api#setwebhook">https://core.telegram.org/bots/api#setwebhook</a></li><li><a href="https://core.telegram.org/bots/webhooks">https://core.telegram.org/bots/webhooks</a></li></ul><h1>Direct <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> integration</h1><p>To integrate the webhook in a <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> based application facing internet,
+configure a <code class="inline">nil</code>, telegram webserver</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span></code></pre><p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5791489060-1">[</span><span class="w">
+  </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="w">
+</span><span class="p" data-group-id="5791489060-1">]</span><span class="w">
+
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5791489060-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="5791489060-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="5791489060-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="5791489060-4">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="5791489060-4">)</span><span class="w">
+</span><span class="p" data-group-id="5791489060-2">]</span><span class="w">
+
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5791489060-5">[</span><span class="w">
+  </span><span class="p" data-group-id="5791489060-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5791489060-7">[</span><span class="p" data-group-id="5791489060-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="5791489060-8">}</span><span class="p" data-group-id="5791489060-7">]</span><span class="p" data-group-id="5791489060-6">}</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+</span><span class="p" data-group-id="5791489060-5">]</span><span class="w">
+
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5791489060-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="5791489060-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="5791489060-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="5791489060-10">)</span></code></pre><p>In your app <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> router:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="6762088825-1">do</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
+
+  </span><span class="c1"># ... my app routes ...</span><span class="w">
+
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="6762088825-2">do</span><span class="w">
+    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="6762088825-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="6762088825-3">)</span><span class="w">
+  </span><span class="k" data-group-id="6762088825-2">end</span><span class="w">
+</span><span class="k" data-group-id="6762088825-1">end</span></code></pre>
     </section>
 
 </div>
@@ -222,7 +249,18 @@ On start the webhook address for the BOT is posted to the telegram server via th
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" data-no-tooltip translate="no">start_link(list)</a>
+        <a href="#post_webhook/2" data-no-tooltip translate="no">post_webhook(conn, token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>This function can be used to process an incoming webhook request
+if you opted to serve the webhook in your app via a <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> router.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" data-no-tooltip translate="no">start_link(opts)</a>
 
       </div>
 
@@ -250,7 +288,7 @@ On start the webhook address for the BOT is posted to the telegram server via th
     </a>
     <h1 class="signature" translate="no">config()</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L104" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L146" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -264,6 +302,7 @@ On start the webhook address for the BOT is posted to the telegram server via th
 
           <pre translate="no"><span class="attribute">@type</span> config() :: [
   host: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  scheme: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
   port: <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>(),
   local_port: <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>(),
   max_connections: 1..100,
@@ -272,7 +311,8 @@ On start the webhook address for the BOT is posted to the telegram server via th
 
       </div>
 
-<p>Webhook configuration.</p><ul><li><code class="inline">host</code>: (reverse proxy) hostname of the HTTPS webhook url (required)</li><li><code class="inline">port</code>: (reverse proxy) port of the HTTPS webhook url (optional, default: 443)</li><li><code class="inline">local_port</code>: (backend) port of the application HTTP web server (optional, default: 4000)</li><li><code class="inline">max_connections</code>: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults 40)</li></ul>
+<p>Webhook configuration.</p><ul><li><code class="inline">scheme</code>: webhook server connection type - &quot;http&quot; or &quot;https&quot; (optional, default: https)</li><li><code class="inline">host</code>: hostname of the webhook url (required)</li><li><code class="inline">port</code>: port of the webhook url (optional, default: 443)</li><li><code class="inline">local_port</code>: (backend) port of the application HTTP web server.
+Used only if <code class="inline">telegram.webhook</code> is configured (optional, default: 4000)</li><li><code class="inline">max_connections</code>: maximum allowed number of simultaneous connections to the webhook for update delivery (optional, defaults 40)</li></ul>
   </section>
 </section>
 
@@ -296,7 +336,7 @@ On start the webhook address for the BOT is posted to the telegram server via th
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -309,6 +349,43 @@ On start the webhook address for the BOT is posted to the telegram server via th
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
+<section class="detail" id="post_webhook/2">
+
+  <div class="detail-header">
+    <a href="#post_webhook/2" class="detail-link" data-no-tooltip title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">post_webhook(conn, token)</h1>
+
+      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L239" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> post_webhook(<a href="https://hexdocs.pm/plug/1.16.1/Plug.Conn.html#t:t/0">Plug.Conn.t</a>(), <a href="Telegram.Types.html#t:token/0">Telegram.Types.token</a>()) :: <a href="https://hexdocs.pm/plug/1.16.1/Plug.Conn.html#t:t/0">Plug.Conn.t</a>()</pre>
+
+      </div>
+
+<p>This function can be used to process an incoming webhook request
+if you opted to serve the webhook in your app via a <a href="https://hexdocs.pm/plug/1.16.1/Plug.html"><code class="inline">Plug</code></a> router.</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="8150400511-1">do</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
+
+  </span><span class="c1"># ... my app routes ...</span><span class="w">
+
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="8150400511-2">do</span><span class="w">
+    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="8150400511-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="8150400511-3">)</span><span class="w">
+  </span><span class="k" data-group-id="8150400511-2">end</span><span class="w">
+</span><span class="k" data-group-id="8150400511-1">end</span></code></pre>
+  </section>
+</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -316,9 +393,9 @@ On start the webhook address for the BOT is posted to the telegram server via th
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(list)</h1>
+    <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L113" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/visciang/telegram/blob/main/lib/webhook.ex#L155" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
