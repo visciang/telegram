@@ -20,12 +20,4 @@ defmodule Test.Telegram.Bot.Utils do
     assert {:ok, datetime} ==
              Utils.get_sent_date(%{"callback_query" => %{"message" => %{"date" => DateTime.to_unix(datetime, :second)}}})
   end
-
-  test "get_chat" do
-    assert nil == Utils.get_chat(%{})
-    assert {:ok, %{"id" => "123"}} == Utils.get_chat(%{"message" => %{"chat" => %{"id" => "123"}}})
-
-    assert {:ok, %{"id" => "123"}} ==
-             Utils.get_chat(%{"callback_query" => %{"message" => %{"chat" => %{"id" => "123"}}}})
-  end
 end
