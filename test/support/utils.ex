@@ -15,10 +15,11 @@ defmodule Test.Utils.Mock do
   @moduledoc false
 
   alias Test.Utils.Const
+  import ExUnit.Assertions
 
   @retry_wait_period Application.compile_env(:telegram, :get_updates_poll_timeout_s) * 1_000 + 500
 
-  def tesla_mock_global_async do
+  def setup_tesla_mock_global_async(_context) do
     Tesla.Mock.mock_global(fn %{url: url} = request ->
       test_pid = get_test_pid_from_request_url(url)
 
@@ -29,11 +30,13 @@ defmodule Test.Utils.Mock do
           response
       end
     end)
+
+    :ok
   end
 
   defmacro tesla_mock_expect_request(request_pattern, fun_process_req_resp, no_pending_requests \\ true) do
     quote do
-      assert_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
+      assert_receive {:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period)
 
       try do
         unquote(fun_process_req_resp).(request)
@@ -54,7 +57,7 @@ defmodule Test.Utils.Mock do
 
   defmacro tesla_mock_refute_request(request_pattern) do
     quote do
-      refute_receive({:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period))
+      refute_receive {:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period)
       :ok
     end
   end

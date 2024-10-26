@@ -4,12 +4,8 @@ defmodule Test.Telegram.ChatBotTimeout do
   alias Test.Webhook
   import Test.Utils.{Const, Mock}
 
-  setup_all do
-    Test.Utils.Mock.tesla_mock_global_async()
-    :ok
-  end
-
-  setup [:setup_test_bot]
+  setup_all {Test.Utils.Mock, :setup_tesla_mock_global_async}
+  setup :setup_test_bot
 
   test "timeout" do
     url_test_response = tg_url(tg_token(), "testResponse")

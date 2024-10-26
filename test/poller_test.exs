@@ -11,17 +11,8 @@ defmodule Test.Telegram.Poller do
     end
   end
 
-  setup_all do
-    Test.Utils.Mock.tesla_mock_global_async()
-    :ok
-  end
-
-  setup _context do
-    bots = [{TestBotBehaviour, [token: tg_token(), max_bot_concurrency: 1]}]
-    start_supervised!({Telegram.Poller, bots: bots})
-
-    :ok
-  end
+  setup_all {Test.Utils.Mock, :setup_tesla_mock_global_async}
+  setup :setup_test_bot
 
   test "basic flow" do
     url_get_updates = tg_url(tg_token(), "getUpdates")
@@ -126,5 +117,12 @@ defmodule Test.Telegram.Poller do
                  Tesla.Mock.json(response, status: 200)
                end
              )
+  end
+
+  defp setup_test_bot(_context) do
+    bots = [{TestBotBehaviour, [token: tg_token(), max_bot_concurrency: 1]}]
+    start_supervised!({Telegram.Poller, bots: bots})
+
+    :ok
   end
 end
