@@ -17,7 +17,7 @@ defmodule Test.Telegram.Webhook do
              })
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_test_response},
                fn _request ->
                  response = %{"ok" => true, "result" => "ok"}

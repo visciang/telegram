@@ -20,7 +20,7 @@ defmodule Test.Telegram.Poller do
     assert_webhook_setup(tg_token())
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_get_updates},
                fn %{body: body} ->
                  body = Jason.decode!(body)
@@ -32,7 +32,7 @@ defmodule Test.Telegram.Poller do
              )
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_get_updates},
                fn %{body: body} ->
                  body = Jason.decode!(body)
@@ -51,7 +51,7 @@ defmodule Test.Telegram.Poller do
              )
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_get_updates},
                fn %{body: body} ->
                  body = Jason.decode!(body)
@@ -69,7 +69,7 @@ defmodule Test.Telegram.Poller do
     assert_webhook_setup(tg_token())
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url},
                fn %{body: body} ->
                  body = Jason.decode!(body)
@@ -84,7 +84,7 @@ defmodule Test.Telegram.Poller do
     assert_webhook_setup(tg_token())
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url},
                fn %{body: body} ->
                  body = Jason.decode!(body)
@@ -101,7 +101,7 @@ defmodule Test.Telegram.Poller do
     url_delete_webhook = tg_url(token, "deleteWebhook")
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_get_webhook_info},
                fn _ ->
                  response = %{"ok" => true, "result" => %{"url" => "url"}}
@@ -110,7 +110,7 @@ defmodule Test.Telegram.Poller do
              )
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_delete_webhook},
                fn _ ->
                  response = %{"ok" => true, "result" => true}

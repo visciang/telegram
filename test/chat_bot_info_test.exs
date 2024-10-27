@@ -19,7 +19,7 @@ defmodule Test.Telegram.ChatBotInfo do
              })
 
     assert :ok ==
-             tesla_mock_expect_request(
+             tesla_mock_assert_request(
                %{method: :post, url: ^url_test_response},
                fn %{body: _body} ->
                  response = %{"ok" => true, "result" => "ok"}

@@ -34,7 +34,7 @@ defmodule Test.Utils.Mock do
     :ok
   end
 
-  defmacro tesla_mock_expect_request(request_pattern, fun_process_req_resp, no_pending_requests \\ true) do
+  defmacro tesla_mock_assert_request(request_pattern, fun_process_req_resp, no_pending_requests \\ true) do
     quote do
       assert_receive {:tesla_mock_request, mock_pid, request = unquote(request_pattern)}, unquote(@retry_wait_period)
 

@@ -20,7 +20,7 @@ defmodule Test.Telegram.ChatBotGetChat do
                })
 
       assert :ok ==
-               tesla_mock_expect_request(
+               tesla_mock_assert_request(
                  %{method: :post, url: ^url_test_response},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
@@ -54,7 +54,7 @@ defmodule Test.Telegram.ChatBotGetChat do
                })
 
       assert :ok ==
-               tesla_mock_expect_request(
+               tesla_mock_assert_request(
                  %{method: :post, url: ^url_test_response},
                  fn %{body: body} ->
                    body = Jason.decode!(body)
