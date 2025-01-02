@@ -18,6 +18,8 @@ defmodule Test.Telegram.Bot.Utils do
     datetime = ~U[2015-05-25 13:26:08Z]
 
     assert {:ok, datetime} ==
-             Utils.get_sent_date(%{"callback_query" => %{"message" => %{"date" => DateTime.to_unix(datetime, :second)}}})
+             Utils.get_sent_date(%{
+               "callback_query" => %{"message" => %{"date" => DateTime.to_unix(datetime, :second)}}
+             })
   end
 end
