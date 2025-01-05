@@ -20,6 +20,7 @@ jobs:
       - name: Run Pipeline
         run: |
           source .github/workflows/docker.sh
+          set -x
           run_pipeline all
 
       - name: Teardown Docker Buildx

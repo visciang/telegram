@@ -82,8 +82,6 @@ function run_pipeline {
             run_pipeline dialyzer
             run_pipeline credo
             run_pipeline docs
-            run_pipeline release
-            run_pipeline app
             ;;
         *)
             echo "unknown target '$TARGET'"
