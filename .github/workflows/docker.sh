@@ -5,6 +5,8 @@ set -eo pipefail
 BUILDX_BUILDER_NAME="test-builder"
 BUILDKIT_VERSION="v0.18.2"
 
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
 function docker_buildx_setup {
     docker buildx create --name=$BUILDX_BUILDER_NAME --driver=docker-container --driver-opt=image=moby/buildkit:$BUILDKIT_VERSION
 }
