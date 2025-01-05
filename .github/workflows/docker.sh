@@ -42,7 +42,12 @@ function _docker_buildx_build_opts {
         CACHE_OPTS="--cache-to "type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-to "type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-from "type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-from "type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY""
     fi
 
-    echo "--target $TARGET --builder "$BUILDX_BUILDER_NAME" --build-arg ELIXIR_BASE_IMAGE="$ELIXIR_BASE_IMAGE" --build-arg APP_BASE_IMAGE="$APP_BASE_IMAGE" --file tmp/docker_build_cache_s3/Dockerfile $CACHE_OPTS"
+    BUILDER_OPTS=""
+    if [ "$GITHUB_ACTIONS" != "true" ]; then
+        BUILDER_OPTS="--builder $BUILDX_BUILDER_NAME"
+    fi
+
+    echo "--target $TARGET --build-arg ELIXIR_BASE_IMAGE="$ELIXIR_BASE_IMAGE" --build-arg APP_BASE_IMAGE="$APP_BASE_IMAGE" --file tmp/docker_build_cache_s3/Dockerfile $BUILDER_OPTS $CACHE_OPTS"
 }
 
 function run_pipeline {
