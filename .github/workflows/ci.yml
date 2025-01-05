@@ -12,12 +12,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: |
-            image=moby/buildkit:v0.18.2
-
-      - name: Run
+      - name: Setup Docker Buildx
         run: |
-          .github/workflows/docker.sh all
+          source .github/workflows/docker.sh
+          docker_buildx_setup
+
+      - name: Run Pipeline
+        run: |
+          source .github/workflows/docker.sh
+          run_pipeline all
+
+      - name: Teardown Docker Buildx
+        if: always()
+        run: |
+          source .github/workflows/docker.sh
+          docker_buildx_teardown

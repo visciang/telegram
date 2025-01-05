@@ -95,5 +95,3 @@ function run_pipeline {
             return 1;;
     esac
 }
-
-run_pipeline "$1"
