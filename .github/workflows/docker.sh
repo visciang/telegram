@@ -5,8 +5,6 @@ set -eo pipefail
 BUILDX_BUILDER_NAME="test-builder"
 BUILDKIT_VERSION="v0.18.2"
 
-export DOCKER_CLI_EXPERIMENTAL=enabled
-
 function docker_buildx_setup {
     docker buildx create --name=$BUILDX_BUILDER_NAME --driver=docker-container --driver-opt=image=moby/buildkit:$BUILDKIT_VERSION
 }
@@ -36,12 +34,12 @@ function _docker_buildx_build_opts {
         GIT_SHA="$GITHUB_SHA"
         GIT_BRANCH="$GITHUB_REF_NAME"
 
-        CACHE_OPTS="--cache-to=gha,mode=max --cache-from=gha"
+        CACHE_OPTS="--cache-to \"type=gha,mode=max\" --cache-from \"type=gha\""
     else
         GIT_SHA="$(git rev-parse --short HEAD)"
         GIT_BRANCH="$(git branch --show-current)"
 
-        CACHE_OPTS="--cache-to "type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-to "type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-from "type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY" --cache-from "type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY""
+        CACHE_OPTS="--cache-to \"type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY\" --cache-to \"type=s3,mode=max,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY\" --cache-from \"type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_1,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY\" --cache-from \"type=s3,region=eu-west-1,bucket=$BUILD_CACHE_S3_BUCKET,name=$BUILD_CACHE_S3_MANIFEST_NAME_2,endpoint_url=$BUILD_CACHE_S3_ENDPOINT_URL,access_key_id=$BUILD_CACHE_S3_ACCESS_KEY_ID,secret_access_key=$BUILD_CACHE_S3_SECRET_ACCESS_KEY\""
     fi
 
     BUILDER_OPTS=""
