@@ -18,10 +18,6 @@ jobs:
           driver-opts: |
             image=moby/buildkit:v0.18.2
 
-      - name: Bake
-        uses: docker/bake-action@v5
-        with:
-          files: |
-            .github/workflows/docker.sh all
-          targets: |
-            all
+      - name: Run
+        run: |
+          .github/workflows/docker.sh all
