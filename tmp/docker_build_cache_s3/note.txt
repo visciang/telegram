@@ -1,0 +1,63 @@
+#------ MINIO s3 DOCKER BUILD CACHE ------
+
+# START MINIO SERVER (STORAGE PATH ./docker-cache)
+
+mkdir /minio
+minio server ./minio
+
+
+# CONFIGURE mc CLI (myminio IS THE ALIAS TO REACH THE LOCAL MINIO SERVER)
+
+mc alias set 'myminio' 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin'
+mc mb myminio/docker
+
+
+# SETUP ACCESS KEYS (RW / RO)
+
+echo '
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        }
+    ]
+}
+' > ro_policy.json
+
+mc admin accesskey create myminio/ --name DOCKER --access-key dockerkey --secret-key dockerkey
+mc admin accesskey create myminio/ --name DOCKER --policy ro_policy.json --access-key dockerkey_ro --secret-key dockerkey
+rm ro_policy.json
+
+
+# ENABLE EXPERIMENTAL FEATURES IN DOCKER (daemon.json)
+
+{
+  "experimental": true
+}
+
+
+# CREATE A BUILDX INSTANCE RUNNING buildkit V0.18.2
+
+docker buildx create --name=test-builder --driver=docker-container --driver-opt=image=moby/buildkit:v0.18.2
+
+export RO_BUILD_CACHE_OPTS="--cache-from type=s3,region=eu-west-1,bucket=docker,name=toolchain,endpoint_url=http://192.168.1.12:9000,access_key_id=dockerkey_ro,secret_access_key=dockerkey"
+
+export RW_BUILD_CACHE_OPTS="--cache-to type=s3,mode=max,region=eu-west-1,bucket=docker,name=toolchain,endpoint_url=http://192.168.1.12:9000,access_key_id=dockerkey,secret_access_key=dockerkey --cache-from type=s3,region=eu-west-1,bucket=docker,name=toolchain,endpoint_url=http://192.168.1.12:9000,access_key_id=dockerkey,secret_access_key=dockerkey"
+
+export BUILD_ARGS_OPTS="--build-arg APP_BASE_IMAGE=alpine:3.20.3 --build-arg ELIXIR_BASE_IMAGE=hexpm/elixir:1.18.1-erlang-27.2-alpine-3.20.3 --build-arg APP_NAME=telegram"
+
+export DOCKER_BUILD="docker buildx build --builder test-builder --file tmp/docker_build_cache_s3/Dockerfile $BUILD_ARGS_OPTS $RW_BUILD_CACHE_OPTS"
+
+eval $DOCKER_BUILD --target test .
+eval $DOCKER_BUILD --target format .
+eval $DOCKER_BUILD --target dialyzer .
+eval $DOCKER_BUILD --target docs --output "type=local,dest=./output" .
+eval $DOCKER_BUILD --target app .

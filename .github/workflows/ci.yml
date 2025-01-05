@@ -22,6 +22,6 @@ jobs:
         uses: docker/bake-action@v5
         with:
           files: |
-            .github/workflows/bake.hcl
+            .github/workflows/docker.sh all
           targets: |
             all
