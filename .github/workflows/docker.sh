@@ -46,9 +46,9 @@ function _docker_buildx_build_opts {
 }
 
 function docker_pipeline {
-    OPTS="$(_docker_buildx_build_opts "$TARGET")"
-
     for TARGET in "$@"; do
+        OPTS="$(_docker_buildx_build_opts "$TARGET")"
+
         case "$TARGET" in
             "compile")
                 eval docker buildx build $OPTS .
