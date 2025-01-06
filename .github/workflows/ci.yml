@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
       - name: Setup Docker Buildx
         run: |
           source .github/workflows/docker.sh
@@ -20,8 +23,7 @@ jobs:
       - name: Run Pipeline
         run: |
           source .github/workflows/docker.sh
-          set -x
-          run_pipeline all
+          docker_pipeline compile format test dialyzer credo docs
 
       - name: Teardown Docker Buildx
         if: always()
