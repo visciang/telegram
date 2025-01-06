@@ -23,7 +23,7 @@ jobs:
       - name: Run Pipeline
         run: |
           source .github/workflows/docker.sh
-          docker_pipeline compile format test dialyzer credo docs
+          docker_pipeline
 
       - name: Teardown Docker Buildx
         if: always()

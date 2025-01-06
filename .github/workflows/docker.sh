@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
-
 BUILDX_BUILDER_NAME="test-builder"
 BUILDKIT_VERSION="v0.18.2"
 
@@ -46,45 +44,21 @@ function _docker_buildx_build_opts {
 }
 
 function docker_pipeline {
-    for TARGET in "$@"; do
-        OPTS="$(_docker_buildx_build_opts "$TARGET")"
+    TARGET="${1:-all}"
+    OPTS="$(_docker_buildx_build_opts "$TARGET")"
 
-        case "$TARGET" in
-            "compile")
-                eval docker buildx build $OPTS .
-                ;;
-            "format")
-                eval docker buildx build $OPTS .
-                ;;
-            "test")
-                eval docker buildx build $OPTS .
-                ;;
-            "dialyzer")
-                eval docker buildx build $OPTS .
-                ;;
-            "credo")
-                eval docker buildx build $OPTS .
-                ;;
-            "docs")
-                eval docker buildx build $OPTS --output "type=local,dest=." .
-                ;;
-            "release")
-                eval docker buildx build $OPTS --build-arg RELEASE_NAME="$RELEASE_NAME" .
-                ;;
-            "app")
-                eval docker buildx build $OPTS --build-arg APP_NAME="$APP_NAME" --build-arg RELEASE_NAME="$RELEASE_NAME" .
-                ;;
-            "all")
-                docker_pipeline compile
-                docker_pipeline format
-                docker_pipeline test
-                docker_pipeline dialyzer
-                docker_pipeline credo
-                docker_pipeline docs
-                ;;
-            *)
-                echo "unknown target '$TARGET'"
-                return 1;;
-        esac
-    done
+    case "$TARGET" in
+        # "release")
+        #     eval docker buildx build $OPTS --build-arg RELEASE_NAME="$RELEASE_NAME" .
+        #     ;;
+        # "app")
+        #     eval docker buildx build $OPTS --build-arg APP_NAME="$APP_NAME" --build-arg RELEASE_NAME="$RELEASE_NAME" .
+        #     ;;
+        "all")
+            eval docker buildx build $OPTS --output "type=local,dest=." .
+            ;;
+        *)
+            eval docker buildx build $OPTS .
+            ;;
+    esac
 }

@@ -78,14 +78,10 @@ COPY .credo.exs* .credo.exs
 RUN mix credo ${MIX_CREDO_ARGS}
 
 
-FROM compile_dev AS docs_build
+FROM compile_dev AS docs
 ARG MIX_DOCS_ARGS="--formatter=html"
 COPY --parents ./**/*.md ./
 RUN mix docs ${MIX_DOCS_ARGS}
-
-
-FROM scratch AS docs
-COPY --from=docs_build /build/doc /doc
 
 
 FROM compile_prod AS release
@@ -102,3 +98,14 @@ COPY --from=release /build/_release /app
 RUN ln -s /app/bin/${APP_NAME} /app/bin/app
 ENTRYPOINT ["/app/bin/app"]
 CMD ["start"]
+
+
+FROM scratch AS all
+COPY --from=compile /done* /done
+COPY --from=format /done* /done
+COPY --from=test /done* /done
+COPY --from=dialyzer /done* /done
+COPY --from=credo /done* /done
+COPY --from=docs /done* /done
+
+COPY --from=docs /build/doc /doc
