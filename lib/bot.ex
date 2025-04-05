@@ -48,7 +48,7 @@ defmodule Telegram.Bot do
       @spec child_spec(Types.bot_opts()) :: Supervisor.child_spec()
       def child_spec(bot_opts) do
         token = Keyword.fetch!(bot_opts, :token)
-        max_bot_concurrency = Keyword.fetch!(bot_opts, :max_bot_concurrency)
+        max_bot_concurrency = Keyword.get(bot_opts, :max_bot_concurrency, Types.default_max_bot_concurrency())
 
         supervisor_name = Utils.name(__MODULE__, token)
         Supervisor.child_spec({Task.Supervisor, name: supervisor_name, max_children: max_bot_concurrency}, [])

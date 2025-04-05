@@ -51,7 +51,7 @@ defmodule Telegram.Webhook do
 
   bot_config = [
     token: Application.fetch_env!(:my_app, :token_counter_bot),
-    max_bot_concurrency: Application.fetch_env!(:my_app, :max_bot_concurrency)
+    allowed_updates: []  # optional (refer to Telegram.Types.bot_opts())
   ]
 
   children = [
@@ -87,7 +87,7 @@ defmodule Telegram.Webhook do
 
   bot_config = [
     token: Application.fetch_env!(:my_app, :token_counter_bot),
-    max_bot_concurrency: Application.fetch_env!(:my_app, :max_bot_concurrency)
+    allowed_updates: []  # optional (refer to Telegram.Types.bot_opts())
   ]
 
   children = [
@@ -179,13 +179,15 @@ defmodule Telegram.Webhook do
     bot_specs
     |> Enum.each(fn {bot_behaviour_mod, opts} ->
       token = Keyword.fetch!(opts, :token)
+      allowed_updates = Keyword.get(opts, :allowed_updates, [])
+
       url = %URI{scheme: scheme, host: host, path: "/__telegram_webhook__/#{token}", port: port} |> to_string()
 
       Logger.info("Running in webhook mode #{url}", bot: bot_behaviour_mod, token: token)
 
       if set_webhook do
         # coveralls-ignore-start
-        set_webhook(token, url, max_connections)
+        set_webhook(token, url, max_connections, allowed_updates)
         # coveralls-ignore-stop
       else
         Logger.info("Skipped setWebhook as requested via config.set_webhook", bot: bot_behaviour_mod, token: token)
@@ -212,8 +214,8 @@ defmodule Telegram.Webhook do
 
   # coveralls-ignore-start
 
-  defp set_webhook(token, url, max_connections) do
-    opts = [url: url, max_connections: max_connections]
+  defp set_webhook(token, url, max_connections, allowed_updates) do
+    opts = [url: url, max_connections: max_connections, allowed_updates: {:json, allowed_updates}]
     {:ok, _} = retry(fn -> Telegram.Api.request(token, "setWebhook", opts) end)
   end
 
