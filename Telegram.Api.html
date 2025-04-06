@@ -4,35 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.34.2">
-    <meta name="project" content="telegram v2.0.0">
+    <meta name="generator" content="ExDoc v0.37.3">
+    <meta name="project" content="telegram v2.1.0">
 
 
-    <title>Telegram.Api — telegram v2.0.0</title>
-    <link rel="stylesheet" href="dist/html-elixir-F2VRIOKR.css" />
+    <title>Telegram.Api — telegram v2.1.0</title>
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-K7URE6B4.js"></script>
-    <script src="dist/sidebar_items-7E6DDFB1.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-YIPIRHGU.js"></script>
+    <script defer src="dist/sidebar_items-FD56A45C.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-ALU6OERS.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -50,41 +37,17 @@
 telegram
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v2.0.0
+          v2.1.0
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -93,8 +56,8 @@ Pages
             <span class="sr-only">Search documentation of telegram</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -110,17 +73,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Telegram.Api</span> 
+      <small class="app-vsn" translate="no">(telegram v2.1.0)</small>
+
+    </h1>
 
       <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Telegram.Api</span> 
-    <small class="app-vsn" translate="no">(telegram v2.0.0)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -143,7 +108,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:parameter_name/0" data-no-tooltip translate="no">parameter_name()</a>
+        <a href="#t:parameter_name/0" data-no-tooltip="" translate="no">parameter_name()</a>
 
       </div>
 
@@ -151,7 +116,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:parameter_value/0" data-no-tooltip translate="no">parameter_value()</a>
+        <a href="#t:parameter_value/0" data-no-tooltip="" translate="no">parameter_value()</a>
 
       </div>
 
@@ -159,7 +124,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:parameters/0" data-no-tooltip translate="no">parameters()</a>
+        <a href="#t:parameters/0" data-no-tooltip="" translate="no">parameters()</a>
 
       </div>
 
@@ -167,7 +132,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:request_result/0" data-no-tooltip translate="no">request_result()</a>
+        <a href="#t:request_result/0" data-no-tooltip="" translate="no">request_result()</a>
 
       </div>
 
@@ -181,7 +146,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#file/2" data-no-tooltip translate="no">file(token, file_path)</a>
+        <a href="#file/2" data-no-tooltip="" translate="no">file(token, file_path)</a>
 
       </div>
 
@@ -191,7 +156,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#request/3" data-no-tooltip translate="no">request(token, method, parameters \\ [])</a>
+        <a href="#request/3" data-no-tooltip="" translate="no">request(token, method, parameters \\ [])</a>
 
       </div>
 
@@ -215,18 +180,18 @@ Pages
 <section class="detail" id="t:parameter_name/0">
 
   <div class="detail-header">
-    <a href="#t:parameter_name/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:parameter_name/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">parameter_name()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L6" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">parameter_name()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L6" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -243,18 +208,18 @@ Pages
 <section class="detail" id="t:parameter_value/0">
 
   <div class="detail-header">
-    <a href="#t:parameter_value/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:parameter_value/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">parameter_value()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L7" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">parameter_value()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L7" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -278,18 +243,18 @@ Pages
 <section class="detail" id="t:parameters/0">
 
   <div class="detail-header">
-    <a href="#t:parameters/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:parameters/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">parameters()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L15" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">parameters()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L15" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -306,18 +271,18 @@ Pages
 <section class="detail" id="t:request_result/0">
 
   <div class="detail-header">
-    <a href="#t:request_result/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:request_result/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">request_result()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L16" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request_result()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L16" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -346,18 +311,18 @@ Pages
 <section class="detail" id="file/2">
 
   <div class="detail-header">
-    <a href="#file/2" class="detail-link" data-no-tooltip title="Link to this function">
+    <a href="#file/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">file(token, file_path)</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L60" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">file(token, file_path)</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L60" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -369,15 +334,15 @@ Pages
       </div>
 
 <p>Download a file.</p><p>Reference: <a href="https://core.telegram.org/bots/api#file">BOT Api</a></p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># send a photo</span><span class="w">
-</span><span class="p" data-group-id="3330037406-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="3330037406-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3330037406-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3330037406-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="3330037406-3">}</span><span class="p" data-group-id="3330037406-2">)</span><span class="w">
+</span><span class="p" data-group-id="8281396215-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8281396215-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="8281396215-2">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendPhoto&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"> </span><span class="ss">photo</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8281396215-3">{</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example/photo.jpg&quot;</span><span class="p" data-group-id="8281396215-3">}</span><span class="p" data-group-id="8281396215-2">)</span><span class="w">
 </span><span class="c1"># pick the &#39;file_obj&#39; with the desired resolution</span><span class="w">
-</span><span class="p" data-group-id="3330037406-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="3330037406-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="3330037406-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="3330037406-5">]</span><span class="w">
+</span><span class="p" data-group-id="8281396215-4">[</span><span class="n">file_obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8281396215-4">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p" data-group-id="8281396215-5">[</span><span class="s">&quot;photo&quot;</span><span class="p" data-group-id="8281396215-5">]</span><span class="w">
 </span><span class="c1"># get the &#39;file_id&#39;</span><span class="w">
-</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="3330037406-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="3330037406-6">]</span><span class="w">
+</span><span class="n">file_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_obj</span><span class="p" data-group-id="8281396215-6">[</span><span class="s">&quot;file_id&quot;</span><span class="p" data-group-id="8281396215-6">]</span><span class="w">
 
 </span><span class="c1"># obtain the &#39;file_path&#39; to download the file identified by &#39;file_id&#39;</span><span class="w">
-</span><span class="p" data-group-id="3330037406-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3330037406-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="3330037406-8">}</span><span class="p" data-group-id="3330037406-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3330037406-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="3330037406-9">)</span><span class="w">
-</span><span class="p" data-group-id="3330037406-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="3330037406-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="3330037406-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="3330037406-11">)</span></code></pre>
+</span><span class="p" data-group-id="8281396215-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8281396215-8">%{</span><span class="s">&quot;file_path&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="8281396215-8">}</span><span class="p" data-group-id="8281396215-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="8281396215-9">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;getFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">file_id</span><span class="p">:</span><span class="w"> </span><span class="n">file_id</span><span class="p" data-group-id="8281396215-9">)</span><span class="w">
+</span><span class="p" data-group-id="8281396215-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="8281396215-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">file</span><span class="p" data-group-id="8281396215-11">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p" data-group-id="8281396215-11">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="request/3">
@@ -385,18 +350,18 @@ Pages
     <span id="request/2"></span>
 
   <div class="detail-header">
-    <a href="#request/3" class="detail-link" data-no-tooltip title="Link to this function">
+    <a href="#request/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">request(token, method, parameters \\ [])</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L30" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request(token, method, parameters \\ [])</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/api.ex#L30" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -428,7 +393,7 @@ Pages
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.34.2) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.3) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 

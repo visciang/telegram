@@ -4,35 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.34.2">
-    <meta name="project" content="telegram v2.0.0">
+    <meta name="generator" content="ExDoc v0.37.3">
+    <meta name="project" content="telegram v2.1.0">
 
 
-    <title>Telegram.Types — telegram v2.0.0</title>
-    <link rel="stylesheet" href="dist/html-elixir-F2VRIOKR.css" />
+    <title>Telegram.Types — telegram v2.1.0</title>
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-K7URE6B4.js"></script>
-    <script src="dist/sidebar_items-7E6DDFB1.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-YIPIRHGU.js"></script>
+    <script defer src="dist/sidebar_items-FD56A45C.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-ALU6OERS.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -50,41 +37,17 @@
 telegram
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v2.0.0
+          v2.1.0
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -93,8 +56,8 @@ Pages
             <span class="sr-only">Search documentation of telegram</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -110,17 +73,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Telegram.Types</span> 
+      <small class="app-vsn" translate="no">(telegram v2.1.0)</small>
+
+    </h1>
 
       <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Telegram.Types</span> 
-    <small class="app-vsn" translate="no">(telegram v2.0.0)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -143,7 +108,17 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:bot_opts/0" data-no-tooltip translate="no">bot_opts()</a>
+        <a href="#t:bot_opts/0" data-no-tooltip="" translate="no">bot_opts()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Bot options.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:bot_routing/0" data-no-tooltip="" translate="no">bot_routing()</a>
 
       </div>
 
@@ -151,7 +126,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:bot_routing/0" data-no-tooltip translate="no">bot_routing()</a>
+        <a href="#t:bot_spec/0" data-no-tooltip="" translate="no">bot_spec()</a>
 
       </div>
 
@@ -159,7 +134,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:bot_spec/0" data-no-tooltip translate="no">bot_spec()</a>
+        <a href="#t:max_bot_concurrency/0" data-no-tooltip="" translate="no">max_bot_concurrency()</a>
 
       </div>
 
@@ -167,7 +142,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:max_bot_concurrency/0" data-no-tooltip translate="no">max_bot_concurrency()</a>
+        <a href="#t:method/0" data-no-tooltip="" translate="no">method()</a>
 
       </div>
 
@@ -175,7 +150,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:method/0" data-no-tooltip translate="no">method()</a>
+        <a href="#t:token/0" data-no-tooltip="" translate="no">token()</a>
 
       </div>
 
@@ -183,7 +158,21 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:token/0" data-no-tooltip translate="no">token()</a>
+        <a href="#t:update/0" data-no-tooltip="" translate="no">update()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#default_allowed_updates/0" data-no-tooltip="" translate="no">default_allowed_updates()</a>
 
       </div>
 
@@ -191,7 +180,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:update/0" data-no-tooltip translate="no">update()</a>
+        <a href="#default_max_bot_concurrency/0" data-no-tooltip="" translate="no">default_max_bot_concurrency()</a>
 
       </div>
 
@@ -213,46 +202,50 @@ Pages
 <section class="detail" id="t:bot_opts/0">
 
   <div class="detail-header">
-    <a href="#t:bot_opts/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:bot_opts/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">bot_opts()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L13" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bot_opts()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L24" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> bot_opts() :: [token: <a href="#t:token/0">token</a>(), max_bot_concurrency: <a href="#t:max_bot_concurrency/0">max_bot_concurrency</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> bot_opts() :: [
+  token: <a href="#t:token/0">token</a>(),
+  max_bot_concurrency: <a href="#t:max_bot_concurrency/0">max_bot_concurrency</a>(),
+  allowed_updates: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()]
+]</pre>
 
       </div>
 
-
+<p>Bot options.</p><ul><li><code class="inline">token</code>: bot token</li><li><code class="inline">max_bot_concurrency</code>: maximum number of bots that can run concurrently. Defaults to <code class="inline">:infinity</code>.</li><li><code class="inline">allowed_updates</code>: list of allowed updates (ref: <a href="https://core.telegram.org/bots/api#getupdates">https://core.telegram.org/bots/api#getupdates</a>). Defaults to <code class="inline">[]</code>.</li></ul>
   </section>
 </section>
 <section class="detail" id="t:bot_routing/0">
 
   <div class="detail-header">
-    <a href="#t:bot_routing/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:bot_routing/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">bot_routing()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L16" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bot_routing()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L31" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -269,18 +262,18 @@ Pages
 <section class="detail" id="t:bot_spec/0">
 
   <div class="detail-header">
-    <a href="#t:bot_spec/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:bot_spec/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">bot_spec()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L14" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bot_spec()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L29" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -297,18 +290,18 @@ Pages
 <section class="detail" id="t:max_bot_concurrency/0">
 
   <div class="detail-header">
-    <a href="#t:max_bot_concurrency/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:max_bot_concurrency/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">max_bot_concurrency()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L12" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">max_bot_concurrency()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L15" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -325,18 +318,18 @@ Pages
 <section class="detail" id="t:method/0">
 
   <div class="detail-header">
-    <a href="#t:method/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:method/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">method()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L9" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">method()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L12" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -353,18 +346,18 @@ Pages
 <section class="detail" id="t:token/0">
 
   <div class="detail-header">
-    <a href="#t:token/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:token/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">token()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L8" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">token()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L11" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -381,18 +374,18 @@ Pages
 <section class="detail" id="t:update/0">
 
   <div class="detail-header">
-    <a href="#t:update/0" class="detail-link" data-no-tooltip title="Link to this type">
+    <a href="#t:update/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">update()</h1>
-
-      <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L10" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update()</h1>
 
 
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L13" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -400,6 +393,74 @@ Pages
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> update() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="default_allowed_updates/0">
+
+  <div class="detail-header">
+    <a href="#default_allowed_updates/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">default_allowed_updates()</h1>
+
+
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L39" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> default_allowed_updates() :: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="default_max_bot_concurrency/0">
+
+  <div class="detail-header">
+    <a href="#default_max_bot_concurrency/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">default_max_bot_concurrency()</h1>
+
+
+        <a href="https://github.com/visciang/telegram/blob/main/lib/types.ex#L36" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> default_max_bot_concurrency() :: <a href="#t:max_bot_concurrency/0">max_bot_concurrency</a>()</pre>
 
       </div>
 
@@ -423,7 +484,7 @@ Pages
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.34.2) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.3) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
