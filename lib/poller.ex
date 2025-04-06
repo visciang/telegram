@@ -9,7 +9,8 @@ defmodule Telegram.Poller do
   ```elixir
   bot_config = [
     token: Application.fetch_env!(:my_app, :token_counter_bot),
-    max_bot_concurrency: Application.fetch_env!(:my_app, :max_bot_concurrency)
+    max_bot_concurrency: Application.fetch_env!(:my_app, :max_bot_concurrency),
+    allowed_updates: []   # optional (refer to Telegram.Types.bot_opts())
   ]
 
   children = [
@@ -39,9 +40,11 @@ defmodule Telegram.Poller do
     pollers =
       Enum.map(bot_specs, fn {bot_behaviour_mod, opts} ->
         token = Keyword.fetch!(opts, :token)
+        allowed_updates = Keyword.get(opts, :allowed_updates, Types.default_allowed_updates())
+
         id = Utils.name(Poller.Task, token)
 
-        Supervisor.child_spec({Poller.Task, {bot_behaviour_mod, token}}, id: id)
+        Supervisor.child_spec({Poller.Task, {bot_behaviour_mod, token, allowed_updates}}, id: id)
       end)
 
     children = bot_specs ++ pollers
@@ -79,24 +82,25 @@ defmodule Telegram.Poller.Task do
   defmodule Context do
     @moduledoc false
 
-    @enforce_keys [:dispatch, :token, :offset]
+    @enforce_keys [:dispatch, :token, :allowed_updates, :offset]
     defstruct @enforce_keys
 
     @type t :: %__MODULE__{
             dispatch: Dispatch.t(),
             token: Types.token(),
+            allowed_updates: [String.t()],
             offset: nil | integer()
           }
   end
 
-  @spec start_link({Dispatch.t(), Types.token()}) :: {:ok, pid()}
-  def start_link({bot_dispatch_behaviour, token}) do
-    Task.start_link(__MODULE__, :run, [bot_dispatch_behaviour, token])
+  @spec start_link({Dispatch.t(), Types.token(), [String.t()]}) :: {:ok, pid()}
+  def start_link({bot_dispatch_behaviour, token, allowed_updates}) do
+    Task.start_link(__MODULE__, :run, [bot_dispatch_behaviour, token, allowed_updates])
   end
 
   @doc false
-  @spec run(Dispatch.t(), Types.token()) :: no_return()
-  def run(bot_dispatch_behaviour, token) do
+  @spec run(Dispatch.t(), Types.token(), [String.t()]) :: no_return()
+  def run(bot_dispatch_behaviour, token, allowed_updates) do
     Logger.metadata(bot: bot_dispatch_behaviour)
     Logger.info("Running in polling mode")
 
@@ -105,6 +109,7 @@ defmodule Telegram.Poller.Task do
     context = %Context{
       dispatch: bot_dispatch_behaviour,
       token: token,
+      allowed_updates: allowed_updates,
       offset: nil
     }
 
@@ -132,7 +137,9 @@ defmodule Telegram.Poller.Task do
 
   defp wait_updates(%Context{} = context) do
     opts_offset = if context.offset != nil, do: [offset: context.offset], else: []
-    opts = [timeout: conf_get_updates_poll_timeout_s()] ++ opts_offset
+
+    opts =
+      [timeout: conf_get_updates_poll_timeout_s(), allowed_updates: {:json, context.allowed_updates}] ++ opts_offset
 
     case Telegram.Api.request(context.token, "getUpdates", opts) do
       {:ok, updates} ->
