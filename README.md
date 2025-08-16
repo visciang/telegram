@@ -150,6 +150,32 @@ keyboard_markup = %{one_time_keyboard: true, keyboard: keyboard}
 Telegram.Api.request(token, "sendMessage", chat_id: 876532, text: "Here a keyboard!", reply_markup: {:json, keyboard_markup})
 ```
 
+## Sending files inside JSON-serialized objects
+
+Sometimes you need to send a file inside a JSON-serialized object. A typical example is `editMessageMedia`, where the `media` parameter is an `InputMedia` object, which can contain a file.
+
+In this case, you can send the file as a separate top-level parameter and reference it inside the JSON object using the `attach://<param_name>` syntax. The library will automatically switch to a `multipart/form-data` request.
+
+### [editMessageMedia](https://core.telegram.org/bots/api#editmessagemedia)
+
+```elixir
+params = [
+  chat_id: chat_id,
+  message_id: some_message_id,
+  # The file is sent as a top-level parameter
+  _file: {:file_content, file_data, "video.mp4"},
+  # The media parameter is a JSON-serialized object
+  media:
+    {:json,
+     %{
+       type: "video",
+       # The file is referenced here
+       media: "attach://_file"
+     }}
+]
+Telegram.Api.request(token, "editMessageMedia", params)
+```
+
 # Telegram Bot
 
 ## Quick start
