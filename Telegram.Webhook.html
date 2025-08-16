@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-FD56A45C.js"></script>
+    <script defer src="dist/sidebar_items-4957D354.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-ALU6OERS.js"></script>
 
@@ -110,34 +110,34 @@ via the <a href="https://core.telegram.org/bots/api#setwebhook"><code class="inl
 </span><span class="c1"># OR</span><span class="w">
 
 </span><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
-  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0232503885-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="0232503885-1">}</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="nc">Telegram.WebServer.Cowboy</span></code></pre><p>and include in you dependencies one of:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3407648919-1">{</span><span class="ss">:plug_cowboy</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.5&quot;</span><span class="p" data-group-id="3407648919-1">}</span><span class="w">
 
 </span><span class="c1"># OR</span><span class="w">
 
-</span><span class="p" data-group-id="0232503885-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0&quot;</span><span class="p" data-group-id="0232503885-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
+</span><span class="p" data-group-id="3407648919-2">{</span><span class="ss">:bandit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.0&quot;</span><span class="p" data-group-id="3407648919-2">}</span></code></pre><h3 id="module-supervision-tree" class="section-heading">
   <a href="#module-supervision-tree" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Supervision tree</span>
 </h3>
-<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6903602319-1">[</span><span class="w">
+<p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6230754325-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
   </span><span class="ss">local_port</span><span class="p">:</span><span class="w"> </span><span class="mi">4_000</span><span class="w">
-</span><span class="p" data-group-id="6903602319-1">]</span><span class="w">
+</span><span class="p" data-group-id="6230754325-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6903602319-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6903602319-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="6903602319-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6903602319-4">[</span><span class="p" data-group-id="6903602319-4">]</span><span class="w">  </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
-</span><span class="p" data-group-id="6903602319-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6230754325-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6230754325-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="6230754325-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6230754325-4">[</span><span class="p" data-group-id="6230754325-4">]</span><span class="w">  </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
+</span><span class="p" data-group-id="6230754325-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6903602319-5">[</span><span class="w">
-  </span><span class="p" data-group-id="6903602319-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6903602319-7">[</span><span class="p" data-group-id="6903602319-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="6903602319-8">}</span><span class="p" data-group-id="6903602319-7">]</span><span class="p" data-group-id="6903602319-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6230754325-5">[</span><span class="w">
+  </span><span class="p" data-group-id="6230754325-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6230754325-7">[</span><span class="p" data-group-id="6230754325-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="6230754325-8">}</span><span class="p" data-group-id="6230754325-7">]</span><span class="p" data-group-id="6230754325-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="6903602319-5">]</span><span class="w">
+</span><span class="p" data-group-id="6230754325-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6903602319-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="6903602319-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="6903602319-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="6903602319-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6230754325-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="6230754325-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="6230754325-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="6230754325-10">)</span></code></pre><h2 id="module-ref" class="section-heading">
   <a href="#module-ref" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -145,31 +145,31 @@ via the <a href="https://core.telegram.org/bots/api#setwebhook"><code class="inl
 </h2>
 <ul><li><a href="https://core.telegram.org/bots/api#setwebhook">https://core.telegram.org/bots/api#setwebhook</a></li><li><a href="https://core.telegram.org/bots/webhooks">https://core.telegram.org/bots/webhooks</a></li></ul><h1>Direct <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> integration</h1><p>To integrate the webhook in a <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> based application facing internet,
 configure a <code class="inline">nil</code>, telegram webserver</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:telegram</span><span class="p">,</span><span class="w">
-  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span></code></pre><p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3381216860-1">[</span><span class="w">
+  </span><span class="ss">webserver</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span></code></pre><p>In you app supervision tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">webhook_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5211127356-1">[</span><span class="w">
   </span><span class="ss">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myapp.public-domain.com&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="w">
-</span><span class="p" data-group-id="3381216860-1">]</span><span class="w">
+</span><span class="p" data-group-id="5211127356-1">]</span><span class="w">
 
-</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3381216860-2">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3381216860-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="3381216860-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3381216860-4">[</span><span class="p" data-group-id="3381216860-4">]</span><span class="w">  </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
-</span><span class="p" data-group-id="3381216860-2">]</span><span class="w">
+</span><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5211127356-2">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="5211127356-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="5211127356-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5211127356-4">[</span><span class="p" data-group-id="5211127356-4">]</span><span class="w">  </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
+</span><span class="p" data-group-id="5211127356-2">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3381216860-5">[</span><span class="w">
-  </span><span class="p" data-group-id="3381216860-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3381216860-7">[</span><span class="p" data-group-id="3381216860-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="3381216860-8">}</span><span class="p" data-group-id="3381216860-7">]</span><span class="p" data-group-id="3381216860-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5211127356-5">[</span><span class="w">
+  </span><span class="p" data-group-id="5211127356-6">{</span><span class="nc">Telegram.Webhook</span><span class="p">,</span><span class="w"> </span><span class="ss">config</span><span class="p">:</span><span class="w"> </span><span class="n">webhook_config</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5211127356-7">[</span><span class="p" data-group-id="5211127356-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="5211127356-8">}</span><span class="p" data-group-id="5211127356-7">]</span><span class="p" data-group-id="5211127356-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="3381216860-5">]</span><span class="w">
+</span><span class="p" data-group-id="5211127356-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3381216860-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="3381216860-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="3381216860-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="3381216860-10">)</span></code></pre><p>In your app <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> router:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="3186170335-1">do</span><span class="w">
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5211127356-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="5211127356-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="5211127356-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="5211127356-10">)</span></code></pre><p>In your app <code class="inline">Phoenix</code> / <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> router:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="3264499401-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
 
   </span><span class="c1"># ... my app routes ...</span><span class="w">
 
-  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="3186170335-2">do</span><span class="w">
-    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="3186170335-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="3186170335-3">)</span><span class="w">
-  </span><span class="k" data-group-id="3186170335-2">end</span><span class="w">
-</span><span class="k" data-group-id="3186170335-1">end</span></code></pre>
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="3264499401-2">do</span><span class="w">
+    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="3264499401-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="3264499401-3">)</span><span class="w">
+  </span><span class="k" data-group-id="3264499401-2">end</span><span class="w">
+</span><span class="k" data-group-id="3264499401-1">end</span></code></pre>
     </section>
 
 </div>
@@ -340,15 +340,15 @@ Used only if <code class="inline">telegram.webhook</code> is configured (optiona
       </div>
 
 <p>This function can be used to process an incoming webhook request
-if you opted to serve the webhook in your app via a <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> router.</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="9252361117-1">do</span><span class="w">
+if you opted to serve the webhook in your app via a <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> router.</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.Router</span><span class="w"> </span><span class="k" data-group-id="4614442651-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
 
   </span><span class="c1"># ... my app routes ...</span><span class="w">
 
-  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="9252361117-2">do</span><span class="w">
-    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="9252361117-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="9252361117-3">)</span><span class="w">
-  </span><span class="k" data-group-id="9252361117-2">end</span><span class="w">
-</span><span class="k" data-group-id="9252361117-1">end</span></code></pre>
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/__telegram_webhook__/:token&quot;</span><span class="w"> </span><span class="k" data-group-id="4614442651-2">do</span><span class="w">
+    </span><span class="nc">Telegram.Webhook</span><span class="o">.</span><span class="n">post_webhook</span><span class="p" data-group-id="4614442651-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p" data-group-id="4614442651-3">)</span><span class="w">
+  </span><span class="k" data-group-id="4614442651-2">end</span><span class="w">
+</span><span class="k" data-group-id="4614442651-1">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">

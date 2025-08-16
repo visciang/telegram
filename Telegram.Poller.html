@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-FD56A45C.js"></script>
+    <script defer src="dist/sidebar_items-4957D354.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-ALU6OERS.js"></script>
 
@@ -95,19 +95,19 @@ telegram
   </a>
   <span class="text">Usage</span>
 </h2>
-<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4294101578-1">[</span><span class="w">
-  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="4294101578-2">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="4294101578-2">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="4294101578-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="4294101578-3">)</span><span class="p">,</span><span class="w">
-  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4294101578-4">[</span><span class="p" data-group-id="4294101578-4">]</span><span class="w">   </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
-</span><span class="p" data-group-id="4294101578-1">]</span><span class="w">
+<p>In you app supervisor tree:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9965314635-1">[</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="9965314635-2">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:token_counter_bot</span><span class="p" data-group-id="9965314635-2">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_bot_concurrency</span><span class="p">:</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="9965314635-3">(</span><span class="ss">:my_app</span><span class="p">,</span><span class="w"> </span><span class="ss">:max_bot_concurrency</span><span class="p" data-group-id="9965314635-3">)</span><span class="p">,</span><span class="w">
+  </span><span class="ss">allowed_updates</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9965314635-4">[</span><span class="p" data-group-id="9965314635-4">]</span><span class="w">   </span><span class="c1"># optional (refer to Telegram.Types.bot_opts())</span><span class="w">
+</span><span class="p" data-group-id="9965314635-1">]</span><span class="w">
 
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4294101578-5">[</span><span class="w">
-  </span><span class="p" data-group-id="4294101578-6">{</span><span class="nc">Telegram.Poller</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4294101578-7">[</span><span class="p" data-group-id="4294101578-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="4294101578-8">}</span><span class="p" data-group-id="4294101578-7">]</span><span class="p" data-group-id="4294101578-6">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9965314635-5">[</span><span class="w">
+  </span><span class="p" data-group-id="9965314635-6">{</span><span class="nc">Telegram.Poller</span><span class="p">,</span><span class="w"> </span><span class="ss">bots</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9965314635-7">[</span><span class="p" data-group-id="9965314635-8">{</span><span class="nc">MyApp.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_config</span><span class="p" data-group-id="9965314635-8">}</span><span class="p" data-group-id="9965314635-7">]</span><span class="p" data-group-id="9965314635-6">}</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="4294101578-5">]</span><span class="w">
+</span><span class="p" data-group-id="9965314635-5">]</span><span class="w">
 
-</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4294101578-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="4294101578-9">]</span><span class="w">
-</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="4294101578-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="4294101578-10">)</span></code></pre>
+</span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9965314635-9">[</span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Supervisor</span><span class="p" data-group-id="9965314635-9">]</span><span class="w">
+</span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="9965314635-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="9965314635-10">)</span></code></pre>
     </section>
 
 </div>
