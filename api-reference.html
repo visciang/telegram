@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.37.3">
+    <meta name="generator" content="ExDoc v0.40.1">
     <meta name="project" content="telegram v2.1.0">
 
 
     <title>API Reference — telegram v2.1.0</title>
 
-    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
+    <link rel="stylesheet" href="dist/html-elixir-YJO4MOOW.css" />
 
-    <script defer src="dist/sidebar_items-4957D354.js"></script>
+    <script defer src="dist/sidebar_items-E251A642.js"></script>
     <script defer src="docs_config.js"></script>
-    <script defer src="dist/html-ALU6OERS.js"></script>
+    <script defer src="dist/html-YU4BZFVS.js"></script>
 
   </head>
   <body>
@@ -41,7 +41,7 @@ telegram
         </div>
       </div>
     </div>
-    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras="Pages"></ul>
   </div>
 </nav>
 
@@ -54,16 +54,34 @@ telegram
         <form class="search-bar" action="search.html">
           <label class="search-label">
             <span class="sr-only">Search documentation of telegram</span>
-            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
-          </button>
-          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
-            <i class="ri-close-line ri-lg" title="Cancel search"></i>
-          </button>
         </form>
         <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
         </div>
         <button class="icon-settings display-settings">
           <i class="ri-settings-3-line"></i>
@@ -74,7 +92,7 @@ telegram
 
 <div id="top-content">
   <div class="heading-with-actions top-heading">
-    <h1>API Reference <small class="app-vsn">telegram v2.1.0</small></h1>
+    <h1>API Reference <small class="app-vsn">telegram v#2.1.0</small></h1>
 
 
       <a href="https://github.com/visciang/telegram" title="View Source" class="icon-action" rel="help">
@@ -84,19 +102,12 @@ telegram
 
   </div>
 
-
-  <section class="details-list">
-    <h2 id="modules" class="section-heading">
-  <a href="#modules" class="hover-link">
-    <i class="ri-link-m" aria-hidden="true"></i>
-  </a>
-  <span class="text">Modules</span>
-</h2>
-
-    <div class="summary">
+    <section class="details-list">
+      <h2 id="modules" class="section-heading">Modules</h2>
+      <div class="summary">
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Api.html" translate="no">Telegram.Api</a>
+    <a href="Telegram.Api.html" translate="no">Telegram.<wbr>Api</a>
 
   </div>
 
@@ -105,7 +116,7 @@ telegram
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Bot.html" translate="no">Telegram.Bot</a>
+    <a href="Telegram.Bot.html" translate="no">Telegram.<wbr>Bot</a>
 
   </div>
 
@@ -114,7 +125,7 @@ telegram
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Bot.Dispatch.html" translate="no">Telegram.Bot.Dispatch</a>
+    <a href="Telegram.Bot.Dispatch.html" translate="no">Telegram.<wbr>Bot.<wbr>Dispatch</a>
 
   </div>
 
@@ -123,7 +134,7 @@ telegram
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Bot.Utils.html" translate="no">Telegram.Bot.Utils</a>
+    <a href="Telegram.Bot.Utils.html" translate="no">Telegram.<wbr>Bot.<wbr>Utils</a>
 
   </div>
 
@@ -132,7 +143,7 @@ telegram
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.ChatBot.html" translate="no">Telegram.ChatBot</a>
+    <a href="Telegram.ChatBot.html" translate="no">Telegram.<wbr>ChatBot</a>
 
   </div>
 
@@ -141,7 +152,7 @@ telegram
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.ChatBot.Chat.html" translate="no">Telegram.ChatBot.Chat</a>
+    <a href="Telegram.ChatBot.Chat.html" translate="no">Telegram.<wbr>ChatBot.<wbr>Chat</a>
 
   </div>
 
@@ -152,7 +163,7 @@ Currently the only required field is <code class="inline">id</code>, any other d
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Poller.html" translate="no">Telegram.Poller</a>
+    <a href="Telegram.Poller.html" translate="no">Telegram.<wbr>Poller</a>
 
   </div>
 
@@ -161,7 +172,7 @@ Currently the only required field is <code class="inline">id</code>, any other d
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Types.html" translate="no">Telegram.Types</a>
+    <a href="Telegram.Types.html" translate="no">Telegram.<wbr>Types</a>
 
   </div>
 
@@ -170,25 +181,25 @@ Currently the only required field is <code class="inline">id</code>, any other d
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.WebServer.Bandit.html" translate="no">Telegram.WebServer.Bandit</a>
+    <a href="Telegram.WebServer.Bandit.html" translate="no">Telegram.<wbr>WebServer.<wbr>Bandit</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Bandit child specification for <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
+    <div class="summary-synopsis"><p>Bandit child specification for <a href="https://hexdocs.pm/plug/1.19.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.WebServer.Cowboy.html" translate="no">Telegram.WebServer.Cowboy</a>
+    <a href="Telegram.WebServer.Cowboy.html" translate="no">Telegram.<wbr>WebServer.<wbr>Cowboy</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Cowboy child specification for <a href="https://hexdocs.pm/plug/1.17.0/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
+    <div class="summary-synopsis"><p>Cowboy child specification for <a href="https://hexdocs.pm/plug/1.19.1/Plug.html"><code class="inline">Plug</code></a> compatible webserver.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="Telegram.Webhook.html" translate="no">Telegram.Webhook</a>
+    <a href="Telegram.Webhook.html" translate="no">Telegram.<wbr>Webhook</a>
 
   </div>
 
@@ -196,47 +207,32 @@ Currently the only required field is <code class="inline">id</code>, any other d
 
 </div>
 
-    </div>
-  </section>
+      </div>
+    </section>
 
 
-</div>
-
-<div class="bottom-actions" id="bottom-actions">
-  <div class="bottom-actions-item">
-
-  </div>
-  <div class="bottom-actions-item">
-
-      <a href="readme.html" class="bottom-actions-button" rel="next">
-        <span class="subheader">
-          Next Page →
-        </span>
-        <span class="title">
-Telegram
-        </span>
-      </a>
-
-  </div>
 </div>
     <footer class="footer">
-      <p>
 
-        <span class="line">
-          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-            Search HexDocs
-          </button>
+        <p>
 
-        </span>
-      </p>
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Go to package docs">
+              Go to package docs
+            </button>
 
-      <p class="built-using">
-        Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.3) for the
 
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          </span>
+        </p>
 
-      </p>
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.40.1) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+
 
     </footer>
   </div>
