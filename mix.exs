@@ -7,14 +7,6 @@ defmodule Telegram.Mixfile do
       version: "2.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.github": :test,
-        "coveralls.detail": :test,
-        "coveralls.post": :test,
-        "coveralls.html": :test,
-        docs: :dev
-      ],
       test_coverage: [tool: ExCoveralls],
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
@@ -31,6 +23,21 @@ defmodule Telegram.Mixfile do
     ]
   end
 
+  # CLI environment preferences for Mix tasks
+  # Needed for backwards compatibility with Elixir < 1.18
+  def cli do
+    [
+      preferred_envs: [
+        coveralls: :test,
+        "coveralls.github": :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        docs: :dev
+      ]
+    ]
+  end
+
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
@@ -42,7 +49,7 @@ defmodule Telegram.Mixfile do
       {:bandit, "~> 1.0", optional: true},
       # HTTP client
       {:tesla, "~> 1.0"},
-      {:hackney, "~> 1.18", only: :test},
+      {:hackney, "~> 1.21", only: :test},
       # tesla json encoder
       {:jason, "~> 1.0"},
       # coverage

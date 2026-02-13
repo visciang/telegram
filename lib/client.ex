@@ -7,32 +7,35 @@ defmodule Telegram.Client do
   @api_base_url Application.compile_env(:telegram, :api_base_url, "https://api.telegram.org")
   @api_max_retries Application.compile_env(:telegram, :api_max_retries, 5)
 
-  use Tesla, only: [:get, :post], docs: false
-
-  plug Tesla.Middleware.BaseUrl, @api_base_url
-  plug Tesla.Middleware.JSON
-
   require Logger
 
-  plug Tesla.Middleware.Retry,
-    max_retries: @api_max_retries,
-    should_retry: fn
-      {:ok, %{status: 429}} ->
-        Logger.warning("Telegram API throttling, HTTP 429 'Too Many Requests'")
-        true
+  defp client do
+    middleware = [
+      {Tesla.Middleware.BaseUrl, @api_base_url},
+      Tesla.Middleware.JSON,
+      {Tesla.Middleware.Retry,
+       max_retries: @api_max_retries,
+       should_retry: fn
+         {:ok, %{status: 429}} ->
+           Logger.warning("Telegram API throttling, HTTP 429 'Too Many Requests'")
+           true
 
-      {:ok, _} ->
-        false
+         {:ok, _} ->
+           false
 
-      {:error, _} ->
-        true
-    end
+         {:error, _} ->
+           true
+       end}
+    ]
+
+    Tesla.client(middleware)
+  end
 
   @doc false
   @spec request(Telegram.Types.token(), Telegram.Types.method(), body()) :: {:ok, term()} | {:error, term()}
   def request(token, method, body) do
     "/bot#{token}/#{method}"
-    |> post(body)
+    |> then(&Tesla.post(client(), &1, body))
     |> process_response()
   end
 
@@ -40,7 +43,7 @@ defmodule Telegram.Client do
   @spec file(Telegram.Types.token(), file_path()) :: {:ok, Tesla.Env.body()} | {:error, term()}
   def file(token, file_path) do
     "/file/bot#{token}/#{file_path}"
-    |> get()
+    |> then(&Tesla.get(client(), &1))
     |> process_file_response()
   end
 
