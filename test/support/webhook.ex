@@ -3,17 +3,19 @@ defmodule Test.Webhook do
 
   @webhook_base_url "http://localhost:4000"
 
-  use Tesla, only: [:post], docs: false
+  defp client do
+    middleware = [
+      {Tesla.Middleware.BaseUrl, @webhook_base_url},
+      Tesla.Middleware.JSON
+    ]
 
-  adapter Tesla.Adapter.Hackney
-
-  plug Tesla.Middleware.BaseUrl, @webhook_base_url
-  plug Tesla.Middleware.JSON
+    Tesla.client(middleware, Tesla.Adapter.Hackney)
+  end
 
   @doc false
   def update(token, body) do
     "/__telegram_webhook__/#{token}"
-    |> post(body)
+    |> then(&Tesla.post(client(), &1, body))
     |> process_response()
   end
 
