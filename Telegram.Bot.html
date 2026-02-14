@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.40.1">
-    <meta name="project" content="telegram v2.1.0">
+    <meta name="project" content="telegram v2.1.1">
 
 
-    <title>Telegram.Bot — telegram v2.1.0</title>
+    <title>Telegram.Bot — telegram v2.1.1</title>
 
     <link rel="stylesheet" href="dist/html-elixir-YJO4MOOW.css" />
 
@@ -37,7 +37,7 @@
 telegram
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v2.1.0
+          v2.1.1
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@ telegram
   <div class="heading-with-actions top-heading">
     <h1>
       <span translate="no">Telegram.<wbr>Bot</span> <small>behaviour</small>
-      <small class="app-vsn" translate="no">(telegram v2.1.0)</small>
+      <small class="app-vsn" translate="no">(telegram v2.1.1)</small>
 
     </h1>
 
@@ -110,27 +110,27 @@ telegram
 
 
     <section id="moduledoc">
-<p>Telegram Bot behaviour.</p><h2 id="module-example" class="section-heading"><a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Example</span></h2><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="2712643365-1">do</span><span class="w">
+<p>Telegram Bot behaviour.</p><h2 id="module-example" class="section-heading"><a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Example</span></h2><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">HelloBot</span><span class="w"> </span><span class="k" data-group-id="7944029008-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="nc">Telegram.Bot</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="2712643365-2">(</span><span class="w">
-    </span><span class="p" data-group-id="2712643365-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="2712643365-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="2712643365-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="2712643365-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="2712643365-4">}</span><span class="p" data-group-id="2712643365-3">}</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="7944029008-2">(</span><span class="w">
+    </span><span class="p" data-group-id="7944029008-3">%{</span><span class="s">&quot;message&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="7944029008-4">%{</span><span class="s">&quot;text&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chat&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="7944029008-5">%{</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;username&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">username</span><span class="p" data-group-id="7944029008-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;message_id&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="n">message_id</span><span class="p" data-group-id="7944029008-4">}</span><span class="p" data-group-id="7944029008-3">}</span><span class="p">,</span><span class="w">
     </span><span class="n">token</span><span class="w">
-  </span><span class="p" data-group-id="2712643365-2">)</span><span class="w"> </span><span class="k" data-group-id="2712643365-6">do</span><span class="w">
-    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="2712643365-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="7944029008-2">)</span><span class="w"> </span><span class="k" data-group-id="7944029008-6">do</span><span class="w">
+    </span><span class="nc">Telegram.Api</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="7944029008-7">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sendMessage&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">chat_id</span><span class="p">:</span><span class="w"> </span><span class="n">chat_id</span><span class="p">,</span><span class="w">
       </span><span class="ss">reply_to_message_id</span><span class="p">:</span><span class="w"> </span><span class="n">message_id</span><span class="p">,</span><span class="w">
-      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="2712643365-8">#{</span><span class="n">username</span><span class="si" data-group-id="2712643365-8">}</span><span class="s">!&quot;</span><span class="w">
-    </span><span class="p" data-group-id="2712643365-7">)</span><span class="w">
-  </span><span class="k" data-group-id="2712643365-6">end</span><span class="w">
+      </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello </span><span class="si" data-group-id="7944029008-8">#{</span><span class="n">username</span><span class="si" data-group-id="7944029008-8">}</span><span class="s">!&quot;</span><span class="w">
+    </span><span class="p" data-group-id="7944029008-7">)</span><span class="w">
+  </span><span class="k" data-group-id="7944029008-6">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="2712643365-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="2712643365-9">)</span><span class="w"> </span><span class="k" data-group-id="2712643365-10">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_update</span><span class="p" data-group-id="7944029008-9">(</span><span class="c">_update</span><span class="p">,</span><span class="w"> </span><span class="c">_token</span><span class="p" data-group-id="7944029008-9">)</span><span class="w"> </span><span class="k" data-group-id="7944029008-10">do</span><span class="w">
     </span><span class="c1"># ignore unknown updates</span><span class="w">
 
     </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="2712643365-10">end</span><span class="w">
-</span><span class="k" data-group-id="2712643365-1">end</span></code></pre>
+  </span><span class="k" data-group-id="7944029008-10">end</span><span class="w">
+</span><span class="k" data-group-id="7944029008-1">end</span></code></pre>
     </section>
 
 </div>
