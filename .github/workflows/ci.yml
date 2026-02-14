@@ -3,10 +3,23 @@ on:
     tags: ["*"]
     branches: ["master"]
   pull_request:
+  workflow_call:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        include:
+          - image: hexpm/elixir:1.16.3-erlang-26.2.5.4-debian-bookworm-20260202
+            build-docs: false
+          - image: hexpm/elixir:1.17.3-erlang-27.3-debian-bookworm-20260202
+            build-docs: false
+          - image: hexpm/elixir:1.18.4-erlang-28.3.1-debian-trixie-20260202
+            build-docs: false
+          - image: hexpm/elixir:1.19.5-erlang-28.3.1-debian-trixie-20260202
+            build-docs: true
     uses: visciang/gha-elixir-workflow/.github/workflows/elixir.yml@v1
     with:
-      image: hexpm/elixir:1.16.1-erlang-26.2.2-debian-bookworm-20240130
+      image: ${{ matrix.image }}
+      build-docs: ${{ matrix.build-docs }}
     secrets: inherit
